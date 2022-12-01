@@ -10,3 +10,10 @@ Shelly beginners, see this: https://spot-hinta.fi/shelly-ohjeita-aloittelijalle/
 3. Configure scripts according to your needs
 
 Enjoy automatic control of your relays when electricity price is cheap (or at least not the most expensive)
+
+
+## Shelly scripts in this package
+
+1. "Rank and Price limit" - this script can control up to four relays (2 + 2) according to the fixed price and "rank"
+2. "Outdoor temperature adjusted heating" - this script can control up to 3 relays according to the adjusted "rank" based on temperature forecast
+3. "Monitoring" - this script keeps first two scripts running and optionally restarts Shelly if Internet connection is lost
