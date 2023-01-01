@@ -16,7 +16,9 @@ let SETTINGS_1 =
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "20,23", // During these hours relay is always ON. 
+    BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
+    PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
+    PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Bathroom floor",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
@@ -34,7 +36,9 @@ let SETTINGS_2 =
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "20,23", // During these hours relay is always ON. 
+    BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
+    PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
+    PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Big boiler",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
@@ -52,7 +56,9 @@ let SETTINGS_3 =
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "20,23", // During these hours relay is always ON. 
+    BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
+    PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
+    PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Livingroom",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
@@ -95,7 +101,11 @@ Timer.set(60000, true, function (ud) {
 
         // First relay control is executed
         if (Relay_1_Executed === false) {
-            Shelly.call("HTTP.GET", { url: GetDynamicUrl(SETTINGS_1) }, function (res, error_code, error_msg, ud) {
+
+            let urlToCall = GetDynamicUrl(SETTINGS_1);
+            print("URL to call (dynamic 1): " + urlToCall);
+
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_1.RelayName);
                 let result = RunResponse(error_code, error_msg, res.code,
                     SETTINGS_1.Relay, SETTINGS_1.RelayName, SETTINGS_1.BackupHours, SETTINGS_1.Inverted);
@@ -105,7 +115,11 @@ Timer.set(60000, true, function (ud) {
 
         // Second relay control is executed
         if (Relay_2_Executed === false) {
-            Shelly.call("HTTP.GET", { url: GetDynamicUrl(SETTINGS_2) }, function (res, error_code, error_msg, ud) {
+
+            let urlToCall = GetDynamicUrl(SETTINGS_2);
+            print("URL to call (dynamic 2): " + urlToCall);
+
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_2.RelayName);
                 let result = RunResponse(error_code, error_msg, res.code,
                     SETTINGS_2.Relay, SETTINGS_2.RelayName, SETTINGS_2.BackupHours, SETTINGS_2.Inverted);
@@ -115,7 +129,11 @@ Timer.set(60000, true, function (ud) {
 
         // Third relay control is executed
         if (Relay_3_Executed === false) {
-            Shelly.call("HTTP.GET", { url: GetDynamicUrl(SETTINGS_3) }, function (res, error_code, error_msg, ud) {
+
+            let urlToCall = GetDynamicUrl(SETTINGS_3);
+            print("URL to call (dynamic 3): " + urlToCall);
+
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_3.RelayName);
                 let result = RunResponse(error_code, error_msg, res.code,
                     SETTINGS_3.Relay, SETTINGS_3.RelayName, SETTINGS_3.BackupHours, SETTINGS_3.Inverted);
@@ -202,5 +220,7 @@ function GetDynamicUrl(settingsNow) {
     url += "&priceAlwaysAllowed=" + settingsNow.PriceAlwaysAllowed;
     url += "&postalCode=" + settingsNow.PostalCode;
     url += "&boosterHours=" + settingsNow.BoosterHours;
+    url += "&priorityHours=" + settingsNow.PriorityHours;
+    url += "&priceModifier=" + settingsNow.PriceModifier;
     return url;
 }
