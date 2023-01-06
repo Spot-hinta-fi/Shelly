@@ -1,4 +1,4 @@
-Shelly - Monitoring.js : Monitoring script
+Shelly%20-%20Monitoring.js : Monitoring script
 ===
 This script ise used to monitor other script execution and when needed restarts the scripts.
 
