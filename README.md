@@ -1,12 +1,14 @@
 # API.SPOT-HINTA.FI / Shelly smart relays
-Simple Shelly scripts to automate relays according to the Finnish electricity spot prices, which are read from the api.spot-hinta.fi (see this site https://spot-hinta.fi for more info in Finnish). Purpose is to install all three scripts into Shelly and then configure for each relay appropriate controlling mechanism.
+Simple Shelly scripts to automate relays according to the electricity spot prices, which are read from the api.spot-hinta.fi. Scripts work in Finland, Sweden, Norway, Denmark, Estonia, Latvia and Lithuania. See Swagger documentation: https://api.spot-hinta.fi/swagger/ui
+
+Purpose is to install all three scripts into Shelly and then configure for each relay appropriate controlling mechanism.
 
 ## Installation instructions
-Shelly beginners, see this first: https://spot-hinta.fi/shelly-ohjeita-aloittelijalle/  (in Finnish).
+Shelly beginners, see this first: https://spot-hinta.fi/shelly-ohjeita-aloittelijalle/  (in Finnish only today, sorry).
 
 1. Open Shelly UI with a browser
-2. Upload all three scripts, "Monitoring" script as last script
-3. Configure scripts according to your needs, scripts have lots of comments
+2. Upload all three scripts simply with Shelly library functionality
+3. Configure scripts according to your needs, scripts have lots of comments in English
 4. Activate also Monitoring script and then test that Monitoring script works by manually stopping two other scripts
 5. Test scripts by changing parameters to see that relay is doing its job
 
