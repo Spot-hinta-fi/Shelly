@@ -1,10 +1,10 @@
-Shelly-Rank_and_Price_limit.js : Spot-price and Rank controlled heating
+Shelly-Rank_and_Price_limit.js : Spot-price and Rank controlled relays
 ===
 With this script it is possible to control 1-4 different relays by using price limit only or cheapest hours option. This script is suitable when a fixed price limit or fixed number of cheapest hours is enough. For example water boiler heating.
 
-Shelly-Outdoor_temperature_adjusted_heating.js : Weather forecast adjusted heating
+Shelly-Outdoor_temperature_adjusted_heating.js : Rank controlled relays with dynamic weather forecast based rank modification
 ===
-With this script, it is possible to control 1-3 relays according to the weather forecast adjusted 'rank' and has plenty of other features too. This is suitable for a more complex heating requirements.
+With this script, it is possible to control 1-3 relays according to the weather forecast adjusted 'rank' and it has plenty of other features too. This is suitable for a more complex heating requirements.
 
 Shelly-Monitoring.js : Monitoring script
 ===
