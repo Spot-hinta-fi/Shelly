@@ -42,6 +42,7 @@ let SETTINGS_RANK_PRICE_1 =
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     Rank: "5", // "Rank" limit (number of cheapest hours today)
     PriceAllowed: "0", // "Allow always cheap prices". Price when relay is always ON. Full Euro cents.
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -60,6 +61,7 @@ let SETTINGS_RANK_PRICE_2 =
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     Rank: "5", // "Rank" limit (number of cheapest hours today)
     PriceAllowed: "0", // "Allow always cheap prices". Price when relay is always ON. Full Euro cents.
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -233,7 +235,8 @@ function RunBackupHourRule(backupHours, relay, relayName, inverted) {
 function BuildUrl(settingsNow) {
 
     let url = "https://api.spot-hinta.fi/JustNowRank/" + settingsNow.Rank + "/" + settingsNow.PriceAllowed;
-    url += "?boosterHours=" + settingsNow.BoosterHours;
+    url += "?maxPrice=" + settingsNow.MaxPrice;
+    url += "&boosterHours=" + settingsNow.BoosterHours;
     url += "&priorityHours=" + settingsNow.PriorityHours;
     url += "&priceModifier=" + settingsNow.PriceModifier;
     url += "&region=" + settingsNow.Region;
