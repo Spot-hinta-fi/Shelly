@@ -1,7 +1,10 @@
 /* More information about the API's (in Finnish): https://spot-hinta.fi/
  * Support API development and maintenance: https://www.buymeacoffee.com/spothintafi
  * 
- * With this script, it is possible to control up to three relays according temporature adjusted 'rank' */
+ * With this script, it is possible to control up to three relays according weather forecase adjusted 'rank' 
+ * If you want to test different parameters effect, go to Swagger tool and use "debug" parameter:
+ * https://api.spot-hinta.fi/swagger/ui
+ */
 
 
 // ***********************************
@@ -40,7 +43,7 @@ let SETTINGS_2 =
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
-    PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
@@ -64,7 +67,7 @@ let SETTINGS_3 =
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
-    PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
