@@ -1,4 +1,4 @@
-Shelly-Rank_and_Price_limit.js : Spot-price and Rank contolled heating
+Shelly-Rank_and_Price_limit.js : Spot-price and Rank controlled heating
 ===
 With this script it is possible to control 1-4 different relays by using price limit only or cheapest hours option. This script is suitable when a fixed price limit or fixed number of cheapest hours is enough. For example water boiler heating.
 
