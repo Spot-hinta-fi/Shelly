@@ -9,6 +9,7 @@
 // ***********************************
 let SETTINGS_1 =
 {
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
@@ -29,6 +30,7 @@ let SETTINGS_1 =
 // ***********************************
 let SETTINGS_2 =
 {
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
@@ -49,6 +51,7 @@ let SETTINGS_2 =
 // ***********************************
 let SETTINGS_3 =
 {
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
@@ -222,5 +225,6 @@ function GetDynamicUrl(settingsNow) {
     url += "&boosterHours=" + settingsNow.BoosterHours;
     url += "&priorityHours=" + settingsNow.PriorityHours;
     url += "&priceModifier=" + settingsNow.PriceModifier;
+    url += "&region=" + settingsNow.Region;
     return url;
 }
