@@ -15,7 +15,10 @@ let SETTINGS_1 =
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
+    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
+    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -36,7 +39,10 @@ let SETTINGS_2 =
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
     PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
+    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -57,7 +63,10 @@ let SETTINGS_3 =
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
     PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
+    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -221,7 +230,10 @@ function GetDynamicUrl(settingsNow) {
     url += "&rankAdjusterPercentage=" + settingsNow.RankAdjusterPercentage;
     url += "&minimumRank=" + settingsNow.MinimumRank;
     url += "&priceAlwaysAllowed=" + settingsNow.PriceAlwaysAllowed;
+    url += "&maxPrice=" + settingsNow.MaxPrice;
     url += "&postalCode=" + settingsNow.PostalCode;
+    url += "&latitude=" + settingsNow.Latitude;
+    url += "&longitude=" + settingsNow.Longitude;
     url += "&boosterHours=" + settingsNow.BoosterHours;
     url += "&priorityHours=" + settingsNow.PriorityHours;
     url += "&priceModifier=" + settingsNow.PriceModifier;
