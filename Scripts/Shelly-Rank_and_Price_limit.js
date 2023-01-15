@@ -110,7 +110,7 @@ Timer.set(50000, true, function (ud) {
         // First relay control is executed
         if (Relay_1_Executed === false) {
 
-            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_1.PriceAllowed + "&region=" + SETTINGS_PRICELIMIT_1.Region;
+            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_1.PriceAllowed + "?region=" + SETTINGS_PRICELIMIT_1.Region;
             print("URL to call: " + urlToCall);
 
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
@@ -124,7 +124,7 @@ Timer.set(50000, true, function (ud) {
         // Second relay control is executed
         if (Relay_2_Executed === false) {
 
-            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_2.PriceAllowed + "&region=" + SETTINGS_PRICELIMIT_2.Region;
+            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_2.PriceAllowed + "?region=" + SETTINGS_PRICELIMIT_2.Region;
             print("URL to call: " + urlToCall);
 
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
