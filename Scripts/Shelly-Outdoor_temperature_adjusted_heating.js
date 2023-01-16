@@ -1,7 +1,10 @@
 /* More information about the API's (in Finnish): https://spot-hinta.fi/
  * Support API development and maintenance: https://www.buymeacoffee.com/spothintafi
  * 
- * With this script, it is possible to control up to three relays according temporature adjusted 'rank' */
+ * With this script, it is possible to control up to three relays according weather forecase adjusted 'rank' 
+ * If you want to test different parameters effect, go to Swagger tool and use "debug" parameter:
+ * https://api.spot-hinta.fi/swagger/ui
+ */
 
 
 // ***********************************
@@ -9,12 +12,16 @@
 // ***********************************
 let SETTINGS_1 =
 {
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
+    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
+    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -29,12 +36,16 @@ let SETTINGS_1 =
 // ***********************************
 let SETTINGS_2 =
 {
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
+    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
+    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -49,12 +60,16 @@ let SETTINGS_2 =
 // ***********************************
 let SETTINGS_3 =
 {
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    PostalCode: "00100", // Postal code (Finnish), which area temperature is used in calculations
+    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
+    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
+    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -218,9 +233,13 @@ function GetDynamicUrl(settingsNow) {
     url += "&rankAdjusterPercentage=" + settingsNow.RankAdjusterPercentage;
     url += "&minimumRank=" + settingsNow.MinimumRank;
     url += "&priceAlwaysAllowed=" + settingsNow.PriceAlwaysAllowed;
+    url += "&maxPrice=" + settingsNow.MaxPrice;
     url += "&postalCode=" + settingsNow.PostalCode;
+    url += "&latitude=" + settingsNow.Latitude;
+    url += "&longitude=" + settingsNow.Longitude;
     url += "&boosterHours=" + settingsNow.BoosterHours;
     url += "&priorityHours=" + settingsNow.PriorityHours;
     url += "&priceModifier=" + settingsNow.PriceModifier;
+    url += "&region=" + settingsNow.Region;
     return url;
 }
