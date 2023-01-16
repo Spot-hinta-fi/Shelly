@@ -12,13 +12,14 @@
 // ***********************************
 let SETTINGS_1 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
@@ -36,13 +37,14 @@ let SETTINGS_1 =
 // ***********************************
 let SETTINGS_2 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
@@ -60,13 +62,14 @@ let SETTINGS_2 =
 // ***********************************
 let SETTINGS_3 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
@@ -234,6 +237,7 @@ function GetDynamicUrl(settingsNow) {
     url += "&minimumRank=" + settingsNow.MinimumRank;
     url += "&priceAlwaysAllowed=" + settingsNow.PriceAlwaysAllowed;
     url += "&maxPrice=" + settingsNow.MaxPrice;
+    url += "&allowedDays=" + settingsNow.AllowedDays;
     url += "&postalCode=" + settingsNow.PostalCode;
     url += "&latitude=" + settingsNow.Latitude;
     url += "&longitude=" + settingsNow.Longitude;
