@@ -12,9 +12,10 @@
 // ***********************************************
 let SETTINGS_PRICELIMIT_1 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     PriceAllowed: "30", // Price limit. If price NOW is below this relay is turned ON (or OFF if inverted check)
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "OilBoiler",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
@@ -25,9 +26,10 @@ let SETTINGS_PRICELIMIT_1 =
 // ***********************************************
 let SETTINGS_PRICELIMIT_2 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     PriceAllowed: "20", // Price limit. If price NOW is below this relay is turned ON (or OFF if inverted check)
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Charger",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
@@ -38,11 +40,12 @@ let SETTINGS_PRICELIMIT_2 =
 // ********************************************************
 let SETTINGS_RANK_PRICE_1 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     Rank: "5", // "Rank" limit (number of cheapest hours today)
     PriceAllowed: "0", // "Allow always cheap prices". Price when relay is always ON. Full Euro cents.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -57,11 +60,12 @@ let SETTINGS_RANK_PRICE_1 =
 // ********************************************************
 let SETTINGS_RANK_PRICE_2 =
 {
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
     Rank: "5", // "Rank" limit (number of cheapest hours today)
     PriceAllowed: "0", // "Allow always cheap prices". Price when relay is always ON. Full Euro cents.
     MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
@@ -110,7 +114,10 @@ Timer.set(50000, true, function (ud) {
         // First relay control is executed
         if (Relay_1_Executed === false) {
 
-            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_1.PriceAllowed + "?region=" + SETTINGS_PRICELIMIT_1.Region;
+            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_1.PriceAllowed +
+                "?region=" + SETTINGS_PRICELIMIT_1.Region +
+                "&allowedDays=" + SETTINGS_PRICELIMIT_1.AllowedDays;
+
             print("URL to call: " + urlToCall);
 
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
@@ -124,7 +131,10 @@ Timer.set(50000, true, function (ud) {
         // Second relay control is executed
         if (Relay_2_Executed === false) {
 
-            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_2.PriceAllowed + "?region=" + SETTINGS_PRICELIMIT_2.Region;
+            let urlToCall = "https://api.spot-hinta.fi/JustNow/" + SETTINGS_PRICELIMIT_2.PriceAllowed +
+                "?region=" + SETTINGS_PRICELIMIT_2.Region +
+                "&allowedDays=" + SETTINGS_PRICELIMIT_2.AllowedDays;
+
             print("URL to call: " + urlToCall);
 
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
@@ -236,6 +246,7 @@ function BuildUrl(settingsNow) {
 
     let url = "https://api.spot-hinta.fi/JustNowRank/" + settingsNow.Rank + "/" + settingsNow.PriceAllowed;
     url += "?maxPrice=" + settingsNow.MaxPrice;
+    url += "&allowedDays=" + settingsNow.AllowedDays;
     url += "&boosterHours=" + settingsNow.BoosterHours;
     url += "&priorityHours=" + settingsNow.PriorityHours;
     url += "&priceModifier=" + settingsNow.PriceModifier;
