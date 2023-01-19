@@ -9,7 +9,7 @@ let BoosterHours = "05,17"; // Run early morning one hour and afternoon one hour
 
 // SCRIPT, dont edit below
 let cHour = ""; let bhour = false; let Executed = false;
-let urlToCall = "https://api.spot-hinta.fi/JustNowRankk/" + Rank + "/" + PriceAllowed + "?boosterHours=" + BoosterHours + "&region=" + Region;
+let urlToCall = "https://api.spot-hinta.fi/JustNowRank/" + Rank + "/" + PriceAllowed + "?boosterHours=" + BoosterHours + "&region=" + Region;
 
 Timer.set(60000, true, function () {
     Shelly.call("Shelly.GetStatus", "", function (res) {
