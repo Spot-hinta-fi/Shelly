@@ -2,7 +2,7 @@
 
 /* Parameters */
 let Region = "FI"; // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-let Rank = "20"; // How many hours relay is on (cheapest hours) 
+let Rank = "4"; // How many hours relay is on (cheapest hours) 
 let PriceAllowed = "3"; // Heating is always on, when price is below this (Euro cents)
 let BackupHours = ["03", "04", "05", "06"]; // If API or Internet connection is down, heat these hours
 let BoosterHours = "05,17"; // Run early morning one hour and afternoon one hour. Use "99", if not wanted.
