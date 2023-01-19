@@ -1,4 +1,5 @@
-/* SUPPORT Spot.hinta.fi: https://www.buymeacoffee.com/spothintafi */
+/* Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
+ * https://www.buymeacoffee.com/spothintafi  -- Thank you! */
 
 /* Parameters */
 let Region = "FI"; // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
