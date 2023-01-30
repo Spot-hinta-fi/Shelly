@@ -46,7 +46,8 @@ function MonitorScriptExecution()
             {
                 print("Script 1 is not running. Starting the script.");
                 Shelly.call("Script.Start", { id: SETTINGS.MonitoredScript_1 }, null, null);
-            };
+                Shelly.call("Script.SetConfig", { id: SETTINGS.MonitoredScript_1, config: {enable:true}}, null, null);
+            }
         }, null);
     }
 
@@ -65,7 +66,8 @@ function MonitorScriptExecution()
             {
                 print("Script 2 is not running. Starting the script.");
                 Shelly.call("Script.Start", { id: SETTINGS.MonitoredScript_2 }, null, null);
-            };
+                Shelly.call("Script.SetConfig", { id: SETTINGS.MonitoredScript_2, config: {enable:true}}, null, null);
+            }
         }, null);
     }
 }
@@ -101,4 +103,3 @@ function MonitorInternetConnection()
         }
     }, null);
 }
-
