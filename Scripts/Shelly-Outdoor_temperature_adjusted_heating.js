@@ -26,6 +26,7 @@ let SETTINGS_1 =
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
+    PriorityHoursRank: "3",  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
     PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Bathroom floor",  // Whatever name for this relay. Used in debug logging mostly.
@@ -51,6 +52,7 @@ let SETTINGS_2 =
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
+    PriorityHoursRank: "3",  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
     PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Big boiler",  // Whatever name for this relay. Used in debug logging mostly.
@@ -76,6 +78,7 @@ let SETTINGS_3 =
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
     PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
+    PriorityHoursRank: "3",  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
     PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Livingroom",  // Whatever name for this relay. Used in debug logging mostly.
@@ -89,9 +92,9 @@ let SETTINGS_3 =
 
 // Variables needed to control execution
 let currentHour = "";
-let Relay_1_Executed = false;
-let Relay_2_Executed = false;
-let Relay_3_Executed = false;
+let Relay_1_Executed = false; let rclosed1 = false;
+let Relay_2_Executed = false; let rclosed2 = false;
+let Relay_3_Executed = false; let rclosed3 = false;
 
 // Main timer, which calls the API to decide actions on relays
 // Only one successful execution per hour per relay is done.
@@ -126,7 +129,7 @@ Timer.set(60000, true, function (ud) {
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_1.RelayName);
                 let result = RunResponse(error_code, error_msg, res.code,
-                    SETTINGS_1.Relay, SETTINGS_1.RelayName, SETTINGS_1.BackupHours, SETTINGS_1.Inverted);
+                    SETTINGS_1.Relay, SETTINGS_1.RelayName, SETTINGS_1.BackupHours, SETTINGS_1.Inverted, 1);
                 if (result === true) Relay_1_Executed = true;
             }, null);
         }
@@ -140,7 +143,7 @@ Timer.set(60000, true, function (ud) {
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_2.RelayName);
                 let result = RunResponse(error_code, error_msg, res.code,
-                    SETTINGS_2.Relay, SETTINGS_2.RelayName, SETTINGS_2.BackupHours, SETTINGS_2.Inverted);
+                    SETTINGS_2.Relay, SETTINGS_2.RelayName, SETTINGS_2.BackupHours, SETTINGS_2.Inverted, 2);
                 if (result === true) Relay_2_Executed = true;
             }, null);
         }
@@ -154,7 +157,7 @@ Timer.set(60000, true, function (ud) {
             Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_3.RelayName);
                 let result = RunResponse(error_code, error_msg, res.code,
-                    SETTINGS_3.Relay, SETTINGS_3.RelayName, SETTINGS_3.BackupHours, SETTINGS_3.Inverted);
+                    SETTINGS_3.Relay, SETTINGS_3.RelayName, SETTINGS_3.BackupHours, SETTINGS_3.Inverted, 3);
                 if (result === true) Relay_3_Executed = true;
             }, null);
         }
@@ -163,7 +166,7 @@ Timer.set(60000, true, function (ud) {
 
 
 // This controls the relay actions based on the result from the API call
-function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, backupHours, inverted) {
+function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, backupHours, inverted, relayNumber) {
     // Network errors
     if (errorCode !== 0) {
         print("Network error occurred: " + errorMessage);
@@ -173,6 +176,9 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
     }
 
     if (responseCode === 200) {
+
+        SetRelayClosedStatus(relayNumber, false);
+
         if (inverted === true) {
             print("Relay '" + relayName + "' OFF (INVERTED)");
             Shelly.call("Switch.Set", "{ id:" + relay + ", on:false}", null, null); // Relay OFF
@@ -183,7 +189,10 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
             return true;
         }
     }
-    else if (responseCode === 400) {
+    else if (responseCode === 400 && GetRelayClosedStatus(relayNumber) === false) {
+
+        SetRelayClosedStatus(relayNumber, true);
+
         if (inverted === true) {
             print("Relay '" + relayName + "' ON (INVERTED)");
             Shelly.call("Switch.Set", "{ id:" + relay + ", on:true}", null, null); // Relay ON
@@ -191,6 +200,16 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
         } else {
             print("Relay '" + relayName + "' OFF");
             Shelly.call("Switch.Set", "{ id:" + relay + ", on:false}", null, null); // Relay OFF
+            return true;
+        }
+    }
+    else if (responseCode === 400 && GetRelayClosedStatus(relayNumber) === true) {
+
+        if (inverted === true) {
+            print("Relay '" + relayName + "' already ON (INVERTED)");
+            return true;
+        } else {
+            print("Relay '" + relayName + "' already OFF");
             return true;
         }
     }
@@ -229,6 +248,21 @@ function RunBackupHourRule(backupHours, relay, relayName, inverted) {
     }
 }
 
+// Helper function to set relay closed status
+function SetRelayClosedStatus(relayNumber, status) {
+    if (relayNumber === 1) { rclosed1 = status; }
+    if (relayNumber === 2) { rclosed2 = status; }
+    if (relayNumber === 3) { rclosed3 = status; }
+}
+
+// Helper function to get relay closed status
+function GetRelayClosedStatus(relayNumber) {
+    if (relayNumber === 1) { return rclosed1; }
+    if (relayNumber === 2) { return rclosed2; }
+    if (relayNumber === 3) { return rclosed3; }
+    return false;
+}
+
 // Builds URL to call the API
 function GetDynamicUrl(settingsNow) {
     let url = "https://api.spot-hinta.fi/JustNowRankDynamic";
@@ -243,6 +277,7 @@ function GetDynamicUrl(settingsNow) {
     url += "&longitude=" + settingsNow.Longitude;
     url += "&boosterHours=" + settingsNow.BoosterHours;
     url += "&priorityHours=" + settingsNow.PriorityHours;
+    url += "&priorityHoursRank=" + settingsNow.PriorityHoursRank;
     url += "&priceModifier=" + settingsNow.PriceModifier;
     url += "&region=" + settingsNow.Region;
     return url;
