@@ -1,25 +1,25 @@
-/* More information about the API's (in Finnish): https://spot-hinta.fi/
+/* More information about the API (in Finnish): https://spot-hinta.fi/
  * Support API development and maintenance: https://www.buymeacoffee.com/spothintafi
  * 
- * This script ise used to monitor other script execution and when needed restarts the scripts.
- * Scripts that do HTTP requests can sometimes fail, but this script will notice it and restart.
+ * This script is used to monitor other script's execution. Restarts the scripts if needed.
+ * Scripts containing HTTP requests can fail so this script will notice it and restart.
  * Also Internet connection can be monitored and Shelly rebooted if connection is lost. */
 
 // *****************************
-// SETTINGS - Change when needed
+// SETTINGS
 // *****************************
 
 let SETTINGS = {
-    MonitorScript_1: true,  // Change value to true/false, depending if you want to monitor script 1
-    MonitoredScript_1: "1", // Define here the ID of the script to be monitored
-    MonitorScript_2: false,  // Change value to true/false, depending if you want to monitor script 2
-    MonitoredScript_2: "2", // Define here the ID of the script to be monitored
-    MonitorInternetConnection: false,  // Set this true, if you want to reboot shelly when Internet connection is lost
-    NumberOfFailedRoundsToRebootShelly: 5,  // How many timer rounds are waited before reboot happens.
+    MonitorScript_1: true,  // True/false, depending if you want to monitor script 1
+    MonitoredScript_1: "1", // ID of the script to be monitored
+    MonitorScript_2: false,  // True/false, depending if you want to monitor script 2
+    MonitoredScript_2: "2", // ID of the other script to be monitored
+    MonitorInternetConnection: false,  // True = reboot Shelly if internet connection is lost
+    NumberOfFailedRoundsToRebootShelly: 5,  // How many timer rounds will be waited before reboot. 
 };
 
 // **************************************
-// MAIN SCRIPT - NO NEED TO TOUCH USUALLY
+// MAIN SCRIPT - NO NEED TO TOUCH (USUALLY)
 // **************************************
 
 // Default timer round is 60 seconds
