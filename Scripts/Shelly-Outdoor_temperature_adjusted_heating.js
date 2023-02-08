@@ -2,14 +2,13 @@
  * Support API development and maintenance: https://www.buymeacoffee.com/spothintafi
  * 
  * With this script, it is possible to control up to three relays according weather forecase adjusted 'rank' 
- * If you want to test different parameters effect, go to Swagger tool and use "debug" parameter:
- * https://api.spot-hinta.fi/swagger/ui
+ * If you want to test different parameters effect, go to Swagger tool and use "debug" parameter: https://api.spot-hinta.fi/swagger/ui
  */
 
 
-// ***********************************
-// SETTINGS for RELAY 1 - change these
-// ***********************************
+// ********************
+// SETTINGS for RELAY 1
+// ********************
 let SETTINGS_1 =
 {
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
@@ -17,78 +16,78 @@ let SETTINGS_1 =
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
-    PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
+    PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). If price is now below less than this the relay is turned ON (or OFF if inverted - see below)
+    MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
-    PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
-    PriorityHoursRank: "3",  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
-    PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
+    BoosterHours: "99,99", // Relay is always ON during booster hours. If you don't want this use "99,99"
+    PriorityHours: "99,99", // Hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'
+    PriorityHoursRank: "3",  // How many priority hours are prioritized. i.e. "3" = 3 cheapest priority hours.
+    PriceModifier: "-2,50", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. 
     Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
     RelayName: "Bathroom floor",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
 };
 
-// ***********************************
-// SETTINGS for RELAY 2 - change these
-// ***********************************
+// ********************
+// SETTINGS for RELAY 2
+// ********************
 let SETTINGS_2 =
 {
-    RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-    RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
-    RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
-    MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
-    PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
-    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
-    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
-    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
-    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
-    BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
-    PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
-    PriorityHoursRank: "3",  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
-    PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
-    Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
-    RelayName: "Big boiler",  // Whatever name for this relay. Used in debug logging mostly.
-    Inverted: false, // If "true", relay logic is inverted
+    RelayIsInUse: false,
+    Region: "FI",
+    RankAtZeroDegrees: "5",
+    RankAdjusterPercentage: "15",
+    MinimumRank: "3",
+    PriceAlwaysAllowed: "3",
+    MaxPrice: "999",
+    AllowedDays: "1,2,3,4,5,6,7",
+    PostalCode: "00100",
+    Latitude: "", 
+    Longitude: "",
+    BackupHours: ["00", "01", "02", "03", "20", "21"],
+    BoosterHours: "99,99",
+    PriorityHours: "99,99",
+    PriorityHoursRank: "3",
+    PriceModifier: "-2,50",
+    Relay: "0",
+    RelayName: "Big boiler",
+    Inverted: false,
 };
 
-// ***********************************
-// SETTINGS for RELAY 3 - change these
-// ***********************************
+// ********************
+// SETTINGS for RELAY 3
+// ********************
 let SETTINGS_3 =
 {
-    RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
-    Region: "FI", // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-    RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
-    RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
-    MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
-    PriceAlwaysAllowed: "3", // "Allow always cheap prices". Price when relay is always ON.
-    MaxPrice: "999", // This is the maximum allowed price in Euro cents.
-    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
-    PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
-    Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
-    Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
-    BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "99,99", // During these hours relay is always ON. If you don't want this, use "99,99"
-    PriorityHours: "99,99", // List here hours you want to prioritize. With PriceModifier: "0", these hours always get the smallest 'rank'
-    PriorityHoursRank: "3",  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
-    PriceModifier: "-2,50", // Put here the difference in Euro cents if priority hours have lower price, like 'night electricity'
-    Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
-    RelayName: "Livingroom",  // Whatever name for this relay. Used in debug logging mostly.
-    Inverted: false, // If "true", relay logic is inverted
+    RelayIsInUse: false,
+    Region: "FI",
+    RankAtZeroDegrees: "5",
+    RankAdjusterPercentage: "15",
+    MinimumRank: "3",
+    PriceAlwaysAllowed: "3",
+    MaxPrice: "999",
+    AllowedDays: "1,2,3,4,5,6,7",
+    PostalCode: "00100",
+    Latitude: "",
+    Longitude: "",
+    BackupHours: ["00", "01", "02", "03", "20", "21"],
+    BoosterHours: "99,99",
+    PriorityHours: "99,99",
+    PriorityHoursRank: "3",
+    PriceModifier: "-2,50",
+    Relay: "0",
+    RelayName: "Livingroom",
+    Inverted: false,
 };
 
 
-// **************************************
-// MAIN SCRIPT - NO NEED TO TOUCH USUALLY
-// **************************************
+// ****************************************
+// MAIN SCRIPT - NO NEED TO TOUCH (USUALLY)
+// ****************************************
 
 // Variables needed to control execution
 let currentHour = "";
