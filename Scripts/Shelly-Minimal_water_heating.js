@@ -5,7 +5,7 @@
 let Region = "FI"; // See all supported regions from Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Rank = "4"; // How many hours relay is on (cheapest hours) 
 let PriceAllowed = "3"; // Heating is always on, when price is below this (Euro cents)
-let PriorityHours = "00,01,02,03,04,05,06"; // These hours are prioritized (smallest ranks to these hours, f.ex. if you want to heat boiler during night)
+let PriorityHours = "00,01,02,03,04,05,06"; // These hours are prioritized (smallest ranks to these hours, f.ex. if you want to heat boiler during night). Use "99", if not wanted.
 let PriorityHoursRank = "3";  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
 let BackupHours = ["03", "04", "05", "06"]; // If API or Internet connection is down, heat these hours
 let BoosterHours = "04,17"; // Run early morning one hour and afternoon one hour. Use "99", if not wanted.
