@@ -14,7 +14,7 @@ let SETTINGS_PRICELIMIT_1 =
 {
     RelayIsInUse: false, // True/false: If you want to use this relay or not
     Region: "FI", // See all supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-    PriceAllowed: "30", // Price limit (in euro cents, without decimals?). If price is now below less than this the relay is turned ON (or OFF if inverted - see below)
+    PriceAllowed: "30", // Price limit (in euro cents, without decimals). If price is now below less than this the relay is turned ON (or OFF if inverted - see below)
     AllowedDays: "1,2,3,4,5,6,7", // Execution days: 1=Monday to 7=Sunday, separated with comma. 
     Relay: "0",  // Shelly's relay number. Make sure this is correct!
     RelayName: "OilBoiler",  // Name this relay. Name is used in debug log mostly.
@@ -26,13 +26,13 @@ let SETTINGS_PRICELIMIT_1 =
 // ***********************************************
 let SETTINGS_PRICELIMIT_2 =
 {
-    RelayIsInUse: false, 
-    Region: "FI", 
-    PriceAllowed: "20", 
-    AllowedDays: "1,2,3,4,5,6,7", 
-    Relay: "0",  
-    RelayName: "Charger",  
-    Inverted: false, 
+    RelayIsInUse: false,
+    Region: "FI",
+    PriceAllowed: "20",
+    AllowedDays: "1,2,3,4,5,6,7",
+    Relay: "0",
+    RelayName: "Charger",
+    Inverted: false,
 };
 
 // ********************************************************
@@ -40,20 +40,20 @@ let SETTINGS_PRICELIMIT_2 =
 // ********************************************************
 let SETTINGS_RANK_PRICE_1 =
 {
-    RelayIsInUse: false, 
-    Region: "FI", 
+    RelayIsInUse: false,
+    Region: "FI",
     Rank: "5", // "Rank" limit (number of cheapest hours today)
-    PriceAllowed: "0", 
+    PriceAllowed: "0",
     MaxPrice: "999", // Maximum allowed price in euro cents.
-    AllowedDays: "1,2,3,4,5,6,7", 
+    AllowedDays: "1,2,3,4,5,6,7",
     BackupHours: ["00", "01", "02", "03", "20", "21"], // Backup hours; if API is not answering or internet connection is down.
     BoosterHours: "99,99", // Relay is always ON during booster hours. If you don't want this use "99,99"
     PriorityHours: "99,99", // Hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'
     PriorityHoursRank: "3",  // How many priority hours are prioritized. i.e. "3" = 3 cheapest priority hours.
     PriceModifier: "-2,50", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. 
-    Relay: "0",  
-    RelayName: "WaterHeater",  
-    Inverted: false, 
+    Relay: "0",
+    RelayName: "WaterHeater",
+    Inverted: false,
 };
 
 // ********************************************************
@@ -61,20 +61,20 @@ let SETTINGS_RANK_PRICE_1 =
 // ********************************************************
 let SETTINGS_RANK_PRICE_2 =
 {
-    RelayIsInUse: false, 
-    Region: "FI", 
-    Rank: "5", 
-    PriceAllowed: "0", 
-    MaxPrice: "999", 
-    AllowedDays: "1,2,3,4,5,6,7", 
-    BackupHours: ["00", "01", "02", "03", "20", "21"], 
-    BoosterHours: "99,99", 
-    PriorityHours: "99,99", 
-    PriorityHoursRank: "3",  
-    PriceModifier: "-2,50", 
-    Relay: "0", 
-    RelayName: "WaterHeater two", 
-    Inverted: false, 
+    RelayIsInUse: false,
+    Region: "FI",
+    Rank: "5",
+    PriceAllowed: "0",
+    MaxPrice: "999",
+    AllowedDays: "1,2,3,4,5,6,7",
+    BackupHours: ["00", "01", "02", "03", "20", "21"],
+    BoosterHours: "99,99",
+    PriorityHours: "99,99",
+    PriorityHoursRank: "3",
+    PriceModifier: "-2,50",
+    Relay: "0",
+    RelayName: "WaterHeater two",
+    Inverted: false,
 };
 
 
@@ -122,10 +122,10 @@ Timer.set(60000, true, function (ud) {
 
             print("URL to call: " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_PRICELIMIT_1.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code,
-                    SETTINGS_PRICELIMIT_1.Relay, SETTINGS_PRICELIMIT_1.RelayName, SETTINGS_PRICELIMIT_1.BackupHours, SETTINGS_PRICELIMIT_1.Inverted, 1);
+                let result = RunResponse(error_code, error_msg, response,
+                    SETTINGS_PRICELIMIT_1.Relay, SETTINGS_PRICELIMIT_1.RelayName, null, SETTINGS_PRICELIMIT_1.Inverted, 1);
                 if (result === true) Relay_1_Executed = true;
             }, null);
         }
@@ -139,10 +139,10 @@ Timer.set(60000, true, function (ud) {
 
             print("URL to call: " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_PRICELIMIT_2.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code,
-                    SETTINGS_PRICELIMIT_2.Relay, SETTINGS_PRICELIMIT_2.RelayName, SETTINGS_PRICELIMIT_2.BackupHours, SETTINGS_PRICELIMIT_2.Inverted, 2);
+                let result = RunResponse(error_code, error_msg, response,
+                    SETTINGS_PRICELIMIT_2.Relay, SETTINGS_PRICELIMIT_2.RelayName, null, SETTINGS_PRICELIMIT_2.Inverted, 2);
                 if (result === true) Relay_2_Executed = true;
             }, null);
         }
@@ -153,9 +153,9 @@ Timer.set(60000, true, function (ud) {
             let urlToCall = BuildUrl(SETTINGS_RANK_PRICE_1);
             print("URL to call: " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_RANK_PRICE_1.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code, SETTINGS_RANK_PRICE_1.Relay, SETTINGS_RANK_PRICE_1.RelayName, SETTINGS_RANK_PRICE_1.BackupHours, SETTINGS_RANK_PRICE_1.Inverted, 3);
+                let result = RunResponse(error_code, error_msg, response, SETTINGS_RANK_PRICE_1.Relay, SETTINGS_RANK_PRICE_1.RelayName, SETTINGS_RANK_PRICE_1.BackupHours, SETTINGS_RANK_PRICE_1.Inverted, 3);
                 if (result === true) Relay_3_Executed = true;
             }, null);
         }
@@ -166,9 +166,9 @@ Timer.set(60000, true, function (ud) {
             let urlToCall = BuildUrl(SETTINGS_RANK_PRICE_2);
             print("URL to call: " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_RANK_PRICE_2.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code, SETTINGS_RANK_PRICE_2.Relay, SETTINGS_RANK_PRICE_2.RelayName, SETTINGS_RANK_PRICE_2.BackupHours, SETTINGS_RANK_PRICE_2.Inverted, 4);
+                let result = RunResponse(error_code, error_msg, response, SETTINGS_RANK_PRICE_2.Relay, SETTINGS_RANK_PRICE_2.RelayName, SETTINGS_RANK_PRICE_2.BackupHours, SETTINGS_RANK_PRICE_2.Inverted, 4);
                 if (result === true) Relay_4_Executed = true;
             }, null);
         }
@@ -176,17 +176,16 @@ Timer.set(60000, true, function (ud) {
 }, null);
 
 // Control the relays based on the result from the API call
-function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, backupHours, inverted, relayNumber) {
+function RunResponse(errorCode, errorMessage, response, relay, relayName, backupHours, inverted, relayNumber) {
 
     // Check for network errors
-    if (errorCode !== 0) {
+    if (errorCode !== 0 || response === null) {
         print("Network error occurred: " + errorMessage);
-        print(errorCode);
-        RunBackupHourRule(backupHours, relay, relayName, inverted);
+        if (backupHours !== null) { RunBackupHourRule(backupHours, relay, relayName, inverted); }
         return false;
     }
 
-    if (responseCode === 200) { /* HTTP response code 200 = OK */
+    if (response.code === 200) { /* HTTP response code 200 = OK */
 
         SetRelayClosedStatus(relayNumber, false);
 
@@ -200,7 +199,7 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
             return true;
         }
     }
-    else if (responseCode === 400 && GetRelayClosedStatus(relayNumber) === false) {
+    else if (response.code === 400 && GetRelayClosedStatus(relayNumber) === false) {
 
         SetRelayClosedStatus(relayNumber, true);
 
@@ -214,7 +213,7 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
             return true;
         }
     }
-    else if (responseCode === 400 && GetRelayClosedStatus(relayNumber) === true) {
+    else if (response.code === 400 && GetRelayClosedStatus(relayNumber) === true) {
         if (inverted === true) {
             print("Relay '" + relayName + "' ON already (inverted)");
             return true;
