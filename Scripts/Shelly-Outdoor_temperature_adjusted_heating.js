@@ -46,7 +46,7 @@ let SETTINGS_2 =
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
     PostalCode: "00100",
-    Latitude: "", 
+    Latitude: "",
     Longitude: "",
     BackupHours: ["00", "01", "02", "03", "20", "21"],
     BoosterHours: "99,99",
@@ -125,9 +125,9 @@ Timer.set(60000, true, function (ud) {
             let urlToCall = GetDynamicUrl(SETTINGS_1);
             print("URL to call (dynamic 1): " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_1.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code,
+                let result = RunResponse(error_code, error_msg, response,
                     SETTINGS_1.Relay, SETTINGS_1.RelayName, SETTINGS_1.BackupHours, SETTINGS_1.Inverted, 1);
                 if (result === true) Relay_1_Executed = true;
             }, null);
@@ -139,9 +139,9 @@ Timer.set(60000, true, function (ud) {
             let urlToCall = GetDynamicUrl(SETTINGS_2);
             print("URL to call (dynamic 2): " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_2.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code,
+                let result = RunResponse(error_code, error_msg, response,
                     SETTINGS_2.Relay, SETTINGS_2.RelayName, SETTINGS_2.BackupHours, SETTINGS_2.Inverted, 2);
                 if (result === true) Relay_2_Executed = true;
             }, null);
@@ -153,9 +153,9 @@ Timer.set(60000, true, function (ud) {
             let urlToCall = GetDynamicUrl(SETTINGS_3);
             print("URL to call (dynamic 3): " + urlToCall);
 
-            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (res, error_code, error_msg, ud) {
+            Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, function (response, error_code, error_msg, ud) {
                 print("Performing control for relay: " + SETTINGS_3.RelayName);
-                let result = RunResponse(error_code, error_msg, res.code,
+                let result = RunResponse(error_code, error_msg, response,
                     SETTINGS_3.Relay, SETTINGS_3.RelayName, SETTINGS_3.BackupHours, SETTINGS_3.Inverted, 3);
                 if (result === true) Relay_3_Executed = true;
             }, null);
@@ -165,16 +165,15 @@ Timer.set(60000, true, function (ud) {
 
 
 // This controls the relay actions based on the result from the API call
-function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, backupHours, inverted, relayNumber) {
+function RunResponse(errorCode, errorMessage, response, relay, relayName, backupHours, inverted, relayNumber) {
     // Network errors
-    if (errorCode !== 0) {
+    if (errorCode !== 0 || response === null) {
         print("Network error occurred: " + errorMessage);
-        print(errorCode);
         RunBackupHourRule(backupHours, relay, relayName, inverted);
         return false;
     }
 
-    if (responseCode === 200) {
+    if (response.code === 200) {
 
         SetRelayClosedStatus(relayNumber, false);
 
@@ -188,7 +187,7 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
             return true;
         }
     }
-    else if (responseCode === 400 && GetRelayClosedStatus(relayNumber) === false) {
+    else if (response.code === 400 && GetRelayClosedStatus(relayNumber) === false) {
 
         SetRelayClosedStatus(relayNumber, true);
 
@@ -202,7 +201,7 @@ function RunResponse(errorCode, errorMessage, responseCode, relay, relayName, ba
             return true;
         }
     }
-    else if (responseCode === 400 && GetRelayClosedStatus(relayNumber) === true) {
+    else if (response.code === 400 && GetRelayClosedStatus(relayNumber) === true) {
 
         if (inverted === true) {
             print("Relay '" + relayName + "' already ON (INVERTED)");
