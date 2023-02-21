@@ -10,6 +10,7 @@ let Region = "FI";
 // Settings - Rule 1
 let SETTINGS_1 =
 {
+    // User settings
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
@@ -29,16 +30,18 @@ let SETTINGS_1 =
     RelayName: "Bathroom floor",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
 
-    // Technical fields. Do not edit!
+    // Script technical fields. Do not edit!!
     Url: 1,
     SettingsNumber: 1,
     RelayStatus: false,
+    RelayStatusSource: "",
     RelayExecuted: false,
 };
 
 // Settings - rule 2
 let SETTINGS_2 =
 {
+    // User settings
     RelayIsInUse: false,
     RankAtZeroDegrees: "5",
     RankAdjusterPercentage: "15",
@@ -58,16 +61,18 @@ let SETTINGS_2 =
     RelayName: "Big boiler",
     Inverted: false,
 
-    // Technical fields. Do not edit!
+    // Script technical fields. Do not edit!
     Url: 1,
     SettingsNumber: 2,
     RelayStatus: false,
+    RelayStatusSource: "",
     RelayExecuted: false,
 };
 
 // Settings - rule 3
 let SETTINGS_3 =
 {
+    // User settings
     RelayIsInUse: false,
     RankAtZeroDegrees: "5",
     RankAdjusterPercentage: "15",
@@ -87,10 +92,11 @@ let SETTINGS_3 =
     RelayName: "Livingroom",
     Inverted: false,
 
-    // Technical fields. Do not edit!
+    // Script technical fields. Do not edit!
     Url: 1,
     SettingsNumber: 3,
     RelayStatus: false,
+    RelayStatusSource: "",
     RelayExecuted: false,
 };
 
@@ -159,17 +165,13 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
     }
 
     if (response.code === 200) {
-        SetRelayStatusInShelly(Settings, true); // Relay is turned on.
+        SetRelayStatusInShelly(Settings, true, "api"); // Relay is turned on.
         return true;
     }
-    else if (response.code === 400 && Settings.RelayStatus === true) {
-        SetRelayStatusInShelly(Settings, false); // Relay is turned off.
+    else if (response.code === 400) {
+        SetRelayStatusInShelly(Settings, false, "api"); // Relay is turned off.
         return true;
-    }
-    else if (response.code === 400 && Settings.RelayStatus === false) {
-        print("Relay is already closed. Not closing again (this allows possible other script to act)");
-        return true;
-    }
+    } 
     else {
         print("HTTP status code does not indicate success. HTTP status code: " + JSON.stringify(response.code));
         RunBackupHourRule(Settings);
@@ -178,7 +180,7 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
 }
 
 // Change relay status in Shelly
-function SetRelayStatusInShelly(Settings, newStatus) {
+function SetRelayStatusInShelly(Settings, newStatus, relayStatusSource) {
 
     // Set status messages
     let statusMessage = "";
@@ -191,20 +193,27 @@ function SetRelayStatusInShelly(Settings, newStatus) {
     if (Settings.Inverted === true && newStatus === true) { newStatus = false; }
     else if (Settings.Inverted === true && newStatus === false) { newStatus = true; }
 
+    // Don't close relay if it is already registered as closed AND source in last control is 'api'
+    // When closing has been done by 'backupHour', relay can be closed again.
+    if (Settings.RelayStatus === false && newStatus === false && Settings.RelayStatusSource === "api") {
+        print("Relay is already closed. Not closing again (this allows possible other script to act)");
+        return;
+    }
+
     // Set relay in Shelly
     print(statusMessage);
     Shelly.call("Switch.Set", "{ id:" + Settings.Relay + ", on:" + JSON.stringify(newStatus) + "}", null, null);
 
     // Save status information into settings
-    SetRelayStatusInSettings(Settings, newStatus);
+    SetRelayStatusInSettings(Settings, newStatus, relayStatusSource);
 }
 
 // Set relay closed status for a given settings
-function SetRelayStatusInSettings(Settings, newStatus) {
+function SetRelayStatusInSettings(Settings, newStatus, relayStatusSource) {
 
-    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; }
-    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; }
-    if (Settings.SettingsNumber === 3) { SETTINGS_3.RelayStatus = newStatus; }
+    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; SETTINGS_1.RelayStatusSource = relayStatusSource; }
+    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; SETTINGS_2.RelayStatusSource = relayStatusSource; }
+    if (Settings.SettingsNumber === 3) { SETTINGS_3.RelayStatus = newStatus; SETTINGS_3.RelayStatusSource = relayStatusSource; }
 }
 
 // This is executed if API did not respond properly. This is NOT considered as successful execution
@@ -231,7 +240,7 @@ function RunBackupHourRule(Settings) {
 
     // Set Shelly relay according if hour is backup hour. 
     print("Executing backup rule for relay: " + Settings.RelayName + " - Current hour: " + currentHour + " - Current hour is backup hour: " + JSON.stringify(currentHourIsListed));
-    SetRelayStatusInShelly(Settings, currentHourIsListed);
+    SetRelayStatusInShelly(Settings, currentHourIsListed, "backupHour");
 }
 
 // Builds URL to call the API
@@ -267,6 +276,7 @@ function InitializeRelaysIfHourHasChanged() {
         if (SETTINGS_3.RelayIsInUse === true) { SETTINGS_3.RelayExecuted = false } else { SETTINGS_3.RelayExecuted = true; };
         return true;
     }
+
     return false;
 }
 
@@ -279,6 +289,7 @@ function HasCurrentHourBeenDone() {
         print("Current hour is already done.");
         return true;
     }
+
     return false;
 }
 
@@ -294,6 +305,7 @@ function UpdateCurrentHour() {
             currentHourUpdated = ""; // Time is null if Shelly does not have connection to time server
         }
     });
+
     return true;
 }
 
