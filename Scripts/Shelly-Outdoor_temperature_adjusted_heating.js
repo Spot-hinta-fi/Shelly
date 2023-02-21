@@ -106,16 +106,24 @@ let SETTINGS_3 =
 // ------------------------------------
 
 // Variables needed to control execution
-let currentHour = ""; let currentHourUpdated = ""; let firstRound = true;
+let currentHour = "";
+let currentHourUpdated = "";
+let rounds = 0;
 
 // This is triggered by the timer (see end of the script)
 function ExecuteRelayRules() {
 
+    // Counter of exeutution rounds. First round means mostly.
+    rounds = rounds + 1;
+
     // Update current hour in a global variable.
-    UpdateCurrentHour();
+    UpdateCurrentHour(rounds);
 
     // Reset relays if hour has changed
-    InitializeRelaysIfHourHasChanged();
+    InitializeRelaysIfHourHasChanged(rounds);
+
+    // This was initialization round. Next round is the first actual processing round.
+    if (rounds === 1) { print("Script initialization done."); return; }
 
     // Return if current hour is already done.
     if (HasCurrentHourBeenDone() === true) {
@@ -171,7 +179,7 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
     else if (response.code === 400) {
         SetRelayStatusInShelly(Settings, false, "api"); // Relay is turned off.
         return true;
-    } 
+    }
     else {
         print("HTTP status code does not indicate success. HTTP status code: " + JSON.stringify(response.code));
         RunBackupHourRule(Settings);
@@ -265,11 +273,12 @@ function BuildUrl(Settings) {
 }
 
 // Initialize relay statuses if hour has changed
-function InitializeRelaysIfHourHasChanged() {
+function InitializeRelaysIfHourHasChanged(rounds) {
 
-    if (currentHour !== currentHourUpdated || firstRound === true) {
+    if (currentHour !== currentHourUpdated || rounds === 1) {
+        // Update current hour
         currentHour = currentHourUpdated;
-        firstRound = false;
+
         // Skip relays which are not in use - set their "executed" state to true.
         if (SETTINGS_1.RelayIsInUse === true) { SETTINGS_1.RelayExecuted = false } else { SETTINGS_1.RelayExecuted = true; };
         if (SETTINGS_2.RelayIsInUse === true) { SETTINGS_2.RelayExecuted = false } else { SETTINGS_2.RelayExecuted = true; };
@@ -294,25 +303,20 @@ function HasCurrentHourBeenDone() {
 }
 
 // Get the current hour and put it in global variable
-function UpdateCurrentHour() {
+function UpdateCurrentHour(rounds) {
 
-    Shelly.call("Shelly.GetStatus", "", function (res) {
+    Shelly.call("Shelly.GetStatus", "", function (res, rounds) {
         if (res.sys.time !== null) {
             currentHourUpdated = res.sys.time.slice(0, 2);  // f.ex. "21:34"
-            if (firstRound === true) { currentHour = currentHourUpdated; }
+            if (rounds === 1) { currentHour = currentHourUpdated; }
         }
         else {
             currentHourUpdated = ""; // Time is null if Shelly does not have connection to time server
         }
-    });
+    }, rounds);
 
     return true;
 }
 
 // Main timer to execute rules
-let rounds = 0;
-Timer.set(60000, true, function () {
-    rounds = rounds + 1;
-    print("Starting new execution round... round number: " + JSON.stringify(rounds));
-    ExecuteRelayRules();
-});
+Timer.set(30000, true, ExecuteRelayRules);
