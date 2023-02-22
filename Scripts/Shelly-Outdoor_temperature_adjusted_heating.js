@@ -13,7 +13,7 @@ let SETTINGS_1 =
     // User settings
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
-    RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree
+    RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree. Allowed value between 0 and 50.
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). If price is now below less than this the relay is turned ON (or OFF if inverted - see below)
     MaxPrice: "999", // Maximum allowed price in euro cents.
