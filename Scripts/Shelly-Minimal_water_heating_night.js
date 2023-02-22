@@ -2,7 +2,7 @@
 // https://www.buymeacoffee.com/spothintafi  -- Thank you!
 
 // This script and API searches for cheapest hours during the night. Day change does not affect rank calculation.
-// Hours are fixed between 22:00 - 07:59:59. Time is in region local time.
+// Hours are fixed between 22:00 - 06:59. Time is in region local time.
 
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
