@@ -1,21 +1,18 @@
 // Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
 // https://www.buymeacoffee.com/spothintafi  -- Thank you!
 
+// This script and API searches for cheapest hours during the night. Day change does not affect rank calculation.
+// Hours are fixed between 22:00 - 06:59. Time is in region local time.
+
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Rank = "4"; // How many hours relay is on (cheapest hours) 
-let PriceAllowed = "3"; // Heating is always on, when price is below this (Euro cents)
-let PriorityHours = "00,01,02,03,04,05,06"; // These hours are prioritized (smallest ranks to these hours, f.ex. if you want to heat boiler during night). Use "99", if not wanted.
-let PriorityHoursRank = "3";  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
-let BackupHours = ["03", "04", "05", "06"]; // If API or Internet connection is down, heat these hours
-let BoosterHours = "04,17"; // Run early morning one hour and afternoon one hour. Use "99", if not wanted.
+let BackupHours = ["03", "04", "05", "06"]; // If API or Internet connection is down, relay is on these hours
 
 // Script
-// Create variables
+// Technical variables
 let cHour = ""; let bhour = false; let Executed = false; let rclosed = false;
-let urlToCall = "https://api.spot-hinta.fi/JustNowRank/" + Rank + "/" + PriceAllowed;
-urlToCall += "?boosterHours=" + BoosterHours + "&priorityHours=" + PriorityHours;
-urlToCall += "&priorityHoursRank=" + PriorityHoursRank + "&region=" + Region;
+let urlToCall = "https://api.spot-hinta.fi/JustNowRankNight?Rank=" + Rank + "&region=" + Region;
 
 // Create timer
 Timer.set(60000, true, function () {

@@ -1,6 +1,10 @@
-Shelly-Minimal_water_heating.js : Minimal water heating script for a single relay Shelly
+Shelly-Minimal_water_heating.js : Minimal water heating script
 ===
 With this minimal script, it is possible to control water heating based on spot-prices. Single relay only.
+
+Shelly-Minimal_water_heating_night.js : Night hours only! Minimal water heating script
+===
+With this minimal script, you can heat cheapest hours between 22:00 - 07:00. Cheapest hours are considered for all hours despite the day change.
 
 Shelly-Rank_and_Price_limit.js : Spot-price and Rank controlled relays
 ===
