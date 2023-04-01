@@ -8,7 +8,7 @@
 // Region to use. See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Region = "FI";
 
-// Settings - Price limit - rule 2
+// Settings - Price limit - rule 1
 let SETTINGS_PRICELIMIT_1 =
 {
     // User settings
