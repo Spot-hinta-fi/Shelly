@@ -13,7 +13,7 @@ let SETTINGS_PRICELIMIT_1 =
 {
     // User settings
     RelayIsInUse: false, // True/false: If you want to use this relay or not
-    PriceAllowed: "30", // Price limit (in euro cents, without decimals). If price is now below less than this the relay is turned ON (or OFF if inverted - see below)
+    PriceAllowed: "30", // Price limit (in euro cents, without decimals). Use "-99" if not wanted. If price is now less than this the relay is turned ON (or OFF if inverted - see below)
     AllowedDays: "1,2,3,4,5,6,7", // Execution days: 1=Monday to 7=Sunday, separated with comma. 
     Relay: "0",  // Shelly's relay number (Value is between 0-3 depending how many relays Shelly has). Make sure this is correct!
     RelayName: "OilBoiler",  // Name this relay. Name is used in debug log mostly.

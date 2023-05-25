@@ -4,7 +4,7 @@
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Rank = "4"; // How many hours relay is on (cheapest hours) 
-let PriceAllowed = "3"; // Heating is always on, when price is below this (Euro cents)
+let PriceAllowed = "3"; // Heating is always on, when price is below this (Euro cents). Use "-99" if not wanted.
 let PriorityHours = "00,01,02,03,04,05,06"; // These hours are prioritized (smallest ranks to these hours, f.ex. if you want to heat boiler during night). Use "99", if not wanted.
 let PriorityHoursRank = "3";  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
 let BackupHours = ["03", "04", "05", "06"]; // If API or Internet connection is down, heat these hours
@@ -38,6 +38,6 @@ function RunResponse(result) {
         if (result.code === 200) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON"); rclosed = false; Executed = true; return; }
     }
     // Backup hour execution because request response was not an expected result. 
-    if (bhour === true) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON (backup)"); Executed = false; return; }
-    Shelly.call("Switch.Set", "{ id:0, on:false}", null, null); print("Relay OFF (non-backup)"); Executed = false; return;
+    if (bhour === true) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON (backup)"); rclosed = false; Executed = false; return; }
+    Shelly.call("Switch.Set", "{ id:0, on:false}", null, null); print("Relay OFF (non-backup)"); rclosed = true; Executed = false; return;
 }
