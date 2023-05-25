@@ -15,7 +15,7 @@ let SETTINGS_1 =
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree. Allowed value between 0 and 50.
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
-    PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). If price is now below less than this the relay is turned ON (or OFF if inverted - see below)
+    PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). Use "-99" if not wanted. If price is now less than this the relay is turned ON (or OFF if inverted - see below)
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
