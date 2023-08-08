@@ -18,6 +18,7 @@ let SETTINGS_1 =
     PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). Use "-99" if not wanted. If price is now less than this the relay is turned ON (or OFF if inverted - see below)
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
@@ -49,6 +50,7 @@ let SETTINGS_2 =
     PriceAlwaysAllowed: "3",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", 
     PostalCode: "00100",
     Latitude: "",
     Longitude: "",
@@ -80,6 +82,7 @@ let SETTINGS_3 =
     PriceAlwaysAllowed: "3",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", 
     PostalCode: "00100",
     Latitude: "",
     Longitude: "",
@@ -261,6 +264,7 @@ function BuildUrl(Settings) {
     url += "&priceAlwaysAllowed=" + Settings.PriceAlwaysAllowed;
     url += "&maxPrice=" + Settings.MaxPrice;
     url += "&allowedDays=" + Settings.AllowedDays;
+    url += "&allowedMonths=" + Settings.AllowedMonths;
     url += "&postalCode=" + Settings.PostalCode;
     url += "&latitude=" + Settings.Latitude;
     url += "&longitude=" + Settings.Longitude;
