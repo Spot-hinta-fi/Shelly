@@ -14,7 +14,8 @@ let SETTINGS_PRICELIMIT_1 =
     // User settings
     RelayIsInUse: false, // True/false: If you want to use this relay or not
     PriceAllowed: "30", // Price limit (in euro cents, without decimals). Use "-99" if not wanted. If price is now less than this the relay is turned ON (or OFF if inverted - see below)
-    AllowedDays: "1,2,3,4,5,6,7", // Execution days: 1=Monday to 7=Sunday, separated with comma. 
+    AllowedDays: "1,2,3,4,5,6,7", // Execution days: 1=Monday to 7=Sunday, separated with a comma. 
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
     Relay: "0",  // Shelly's relay number (Value is between 0-3 depending how many relays Shelly has). Make sure this is correct!
     RelayName: "OilBoiler",  // Name this relay. Name is used in debug log mostly.
     Inverted: false, // True/false: Set to "true" to inverted the relay logic
@@ -34,6 +35,7 @@ let SETTINGS_PRICELIMIT_2 =
     RelayIsInUse: false,
     PriceAllowed: "20",
     AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
     Relay: "0",
     RelayName: "Charger",
     Inverted: false,
@@ -55,6 +57,7 @@ let SETTINGS_RANK_PRICE_1 =
     PriceAllowed: "0",
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
     BackupHours: ["00", "01", "02", "03", "20", "21"], // Backup hours; if API is not answering or internet connection is down.
     BoosterHours: "99,99", // Relay is always ON during booster hours. Use "99,99" to disable this.
     PriorityHours: "99,99", // Hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'. Use "99,99" to disable this.
@@ -81,6 +84,7 @@ let SETTINGS_RANK_PRICE_2 =
     PriceAllowed: "0",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
     BackupHours: ["00", "01", "02", "03", "20", "21"],
     BoosterHours: "99,99",
     PriorityHours: "99,99",
@@ -299,7 +303,7 @@ function BuildUrl(Settings) {
 
     // Price limit URL
     if (Settings.Url === 1) {
-        return "https://api.spot-hinta.fi/JustNow/" + Settings.PriceAllowed + "?region=" + Region + "&allowedDays=" + Settings.AllowedDays;
+        return "https://api.spot-hinta.fi/JustNow/" + Settings.PriceAllowed + "?region=" + Region + "&allowedDays=" + Settings.AllowedDays + "&allowedMonths=" + Settings.AllowedMonths;
     }
 
     // Price and Rank limit URL
@@ -307,6 +311,7 @@ function BuildUrl(Settings) {
         let url = "https://api.spot-hinta.fi/JustNowRank/" + Settings.Rank + "/" + Settings.PriceAllowed;
         url += "?maxPrice=" + Settings.MaxPrice;
         url += "&allowedDays=" + Settings.AllowedDays;
+        url += "&allowedMonths=" + Settings.AllowedMonths;
         url += "&boosterHours=" + Settings.BoosterHours;
         url += "&priorityHours=" + Settings.PriorityHours;
         url += "&priorityHoursRank=" + Settings.PriorityHoursRank;
