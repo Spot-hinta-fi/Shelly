@@ -4,17 +4,24 @@
 // With this script, it is possible to control up to three relays according weather forecase adjusted 'rank'
 // If you want to test different parameters effect, go to Swagger tool and use "debug" parameter: https://api.spot-hinta.fi/swagger/ui
 
+// NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
+
 // Region to use. See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Region = "FI";
 
 // Settings - Rule 1
 let SETTINGS_1 =
 {
-    // User settings
+    // Relay settings. Update these.
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
+    Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
+    RelayName: "Bathroom floor",  // Whatever name for this relay. Used in debug logging mostly.
+
+    // Settings for relay control logic. Update these.
     RankAtZeroDegrees: "5", // "Rank" (number of cheapest hours) when outdoor temperature is 0°C
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree. Allowed value between 0 and 50.
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
+    MaxTemperature: "25", // Temperature when heating is stopped. Heating is stopped despite the MinimumRank parameter.
     PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). Use "-99" if not wanted. If price is now less than this the relay is turned ON (or OFF if inverted - see below)
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
@@ -22,13 +29,11 @@ let SETTINGS_1 =
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
-    BackupHours: ["00", "01", "02", "03", "20", "21"],  // Backup hours if API is not answering or Internet connection is down.
+    BackupHours: [1, 2, 3, 4],  // Backup hours if API is not answering or Internet connection is down.
     BoosterHours: "99,99", // Relay is always ON during booster hours. If you don't want this use "99,99"
     PriorityHours: "99,99", // Hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'
     PriorityHoursRank: "3",  // How many priority hours are prioritized. i.e. "3" = 3 cheapest priority hours.
     PriceModifier: "-2,50", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. 
-    Relay: "0",  // Number of the relay within Shelly. Make sure this is correct
-    RelayName: "Bathroom floor",  // Whatever name for this relay. Used in debug logging mostly.
     Inverted: false, // If "true", relay logic is inverted
 
     // Script technical fields. Do not edit!!
@@ -42,11 +47,16 @@ let SETTINGS_1 =
 // Settings - rule 2
 let SETTINGS_2 =
 {
-    // User settings
+    // Relay settings. Update these.
     RelayIsInUse: false,
+    Relay: "0",
+    RelayName: "Big boiler",
+
+    // Settings for relay control logic. Update these.
     RankAtZeroDegrees: "5",
     RankAdjusterPercentage: "15",
     MinimumRank: "3",
+    MaxTemperature: "25",
     PriceAlwaysAllowed: "3",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
@@ -54,13 +64,11 @@ let SETTINGS_2 =
     PostalCode: "00100",
     Latitude: "",
     Longitude: "",
-    BackupHours: ["00", "01", "02", "03", "20", "21"],
+    BackupHours: [1, 2, 3, 4],
     BoosterHours: "99,99",
     PriorityHours: "99,99",
     PriorityHoursRank: "3",
     PriceModifier: "-2,50",
-    Relay: "0",
-    RelayName: "Big boiler",
     Inverted: false,
 
     // Script technical fields. Do not edit!
@@ -74,11 +82,16 @@ let SETTINGS_2 =
 // Settings - rule 3
 let SETTINGS_3 =
 {
-    // User settings
+    // Relay settings. Update these.
     RelayIsInUse: false,
+    Relay: "0",
+    RelayName: "Livingroom",
+
+    // Settings for relay control logic. Update these.
     RankAtZeroDegrees: "5",
     RankAdjusterPercentage: "15",
     MinimumRank: "3",
+    MaxTemperature: "25",
     PriceAlwaysAllowed: "3",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
@@ -86,13 +99,11 @@ let SETTINGS_3 =
     PostalCode: "00100",
     Latitude: "",
     Longitude: "",
-    BackupHours: ["00", "01", "02", "03", "20", "21"],
+    BackupHours: [1, 2, 3, 4],
     BoosterHours: "99,99",
     PriorityHours: "99,99",
     PriorityHoursRank: "3",
     PriceModifier: "-2,50",
-    Relay: "0",
-    RelayName: "Livingroom",
     Inverted: false,
 
     // Script technical fields. Do not edit!
@@ -118,9 +129,6 @@ function ExecuteRelayRules() {
 
     // Counter of exeutution rounds. First round means mostly.
     rounds = rounds + 1;
-
-    // Update current hour in a global variable.
-    UpdateCurrentHour(rounds);
 
     // Reset relays if hour has changed
     InitializeRelaysIfHourHasChanged(rounds);
@@ -263,6 +271,7 @@ function BuildUrl(Settings) {
     url += "&minimumRank=" + Settings.MinimumRank;
     url += "&priceAlwaysAllowed=" + Settings.PriceAlwaysAllowed;
     url += "&maxPrice=" + Settings.MaxPrice;
+    url += "&maxTemperature=" + Settings.MaxTemperature;
     url += "&allowedDays=" + Settings.AllowedDays;
     url += "&allowedMonths=" + Settings.AllowedMonths;
     url += "&postalCode=" + Settings.PostalCode;
@@ -278,6 +287,10 @@ function BuildUrl(Settings) {
 
 // Initialize relay statuses if hour has changed
 function InitializeRelaysIfHourHasChanged(rounds) {
+
+    // Update current hour in a global variable.
+    let date = new Date();
+    currentHourUpdated = date.getHours();
 
     if (currentHour !== currentHourUpdated || rounds === 1) {
         // Update current hour
@@ -304,22 +317,6 @@ function HasCurrentHourBeenDone() {
     }
 
     return false;
-}
-
-// Get the current hour and put it in global variable
-function UpdateCurrentHour(rounds) {
-
-    Shelly.call("Shelly.GetStatus", "", function (res, rounds) {
-        if (res.sys.time !== null) {
-            currentHourUpdated = res.sys.time.slice(0, 2);  // f.ex. "21:34"
-            if (rounds === 1) { currentHour = currentHourUpdated; }
-        }
-        else {
-            currentHourUpdated = ""; // Time is null if Shelly does not have connection to time server
-        }
-    }, rounds);
-
-    return true;
 }
 
 // Main timer to execute rules
