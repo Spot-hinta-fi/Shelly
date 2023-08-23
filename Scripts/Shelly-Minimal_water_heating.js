@@ -1,42 +1,55 @@
 // Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
 // https://www.buymeacoffee.com/spothintafi  -- Thank you!
 
+// NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
+
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-let Rank = "4"; // How many hours relay is on (cheapest hours) 
-let PriceAllowed = "3"; // Heating is always on, when price is below this (Euro cents). Use "-99" if not wanted.
-let PriorityHours = "00,01,02,03,04,05,06"; // These hours are prioritized (smallest ranks to these hours, f.ex. if you want to heat boiler during night). Use "99", if not wanted.
-let PriorityHoursRank = "3";  // This limits how many hours are prioritized (i.e. 3 cheapest hours from priority hours)
-let BackupHours = ["03", "04", "05", "06"]; // If API or Internet connection is down, heat these hours
-let BoosterHours = "04,17"; // Run early morning one hour and afternoon one hour. Use "99", if not wanted.
+let RanksAllowed = "1,2,3,4";  // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
+let PriceAlwaysAllowed = "0"; // Heating is always on, when price is below this (Euro cents). Use "-99" if not wanted.
+let PriorityHours = "99,99"; // List hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'. Use "99,99" to disable this.
+let PriorityHoursRank = "3";  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
+let BackupHours = [1, 2, 3, 20]; // Backup hours; if API is not answering or internet connection is down.
+let BoosterHours = "99,99"; // Relay is always ON during booster hours. Use "99,99" to disable this.
 
 // Script
 // Create variables
 let cHour = ""; let bhour = false; let Executed = false; let rclosed = false;
-let urlToCall = "https://api.spot-hinta.fi/JustNowRank/" + Rank + "/" + PriceAllowed;
-urlToCall += "?boosterHours=" + BoosterHours + "&priorityHours=" + PriorityHours;
-urlToCall += "&priorityHoursRank=" + PriorityHoursRank + "&region=" + Region;
+
+let urlToCall = "https://api.spot-hinta.fi/JustNowRanksAndPrice";
+urlToCall += "?ranksAllowed=" + RanksAllowed;
+urlToCall += "&priceAlwaysAllowed=" + PriceAlwaysAllowed;
+urlToCall += "&boosterHours=" + BoosterHours;
+urlToCall += "&priorityHours=" + PriorityHours;
+urlToCall += "&priorityHoursRank=" + PriorityHoursRank;
+urlToCall += "&region=" + Region;
 
 // Create timer
-Timer.set(60000, true, function () {
-    Shelly.call("Shelly.GetStatus", "", function (res) {
-        let hour = res.sys.time.slice(0, 2); // f.ex. "21:34"
-        if (cHour !== hour) { cHour = hour; Executed = false; }
-        if (Executed === true) { print("Current hour is already done."); return; }
-        bhour = false; for (let i = 0; i < BackupHours.length; i++) { if (BackupHours[i] === cHour) { bhour = true; } }
-        print("URL to call: " + urlToCall);
+Timer.set(60000, true, function () {   
+    
+    let date = new Date();
+    let hour = date.getHours();
 
-        // Send HTTP GET to API
-        Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, RunResponse);
-    });
+    if (cHour !== hour) { cHour = hour; Executed = false; }
+    if (Executed === true) { print("Current hour is already done."); return; }
+
+    bhour = false; for (let i = 0; i < BackupHours.length; i++) { if (BackupHours[i] === cHour) { bhour = true; } }
+    print("URL to call: " + urlToCall);
+
+    // Send HTTP GET to API
+    Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, RunResponse);
 });
 
-function RunResponse(result) {
-    if (result !== null) {
+function RunResponse(result, error_code, error_msg) {
+
+    if (error_code === 0 && result !== null) {
         if (result.code === 400 && rclosed === true) { print("Relay already turned OFF by this script."); Executed = true; return; } // Allows possible other script to control relay while this is closed
         if (result.code === 400 && rclosed === false) { Shelly.call("Switch.Set", "{ id:0, on:false}", null, null); print("Relay OFF"); rclosed = true; Executed = true; return; }
         if (result.code === 200) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON"); rclosed = false; Executed = true; return; }
     }
+    
+    print("Error occurred while making a request. Running backup rule. Error message was: " + error_msg);
+
     // Backup hour execution because request response was not an expected result. 
     if (bhour === true) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON (backup)"); rclosed = false; Executed = false; return; }
     Shelly.call("Switch.Set", "{ id:0, on:false}", null, null); print("Relay OFF (non-backup)"); rclosed = true; Executed = false; return;
