@@ -1,5 +1,5 @@
-// More information about the API's (in Finnish): https://spot-hinta.fi/
-// Support API development and maintenance: https://www.buymeacoffee.com/spothintafi
+// Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
+// https://www.buymeacoffee.com/spothintafi  -- Thank you!
 
 // With this script, it is possible to control up to three relays according weather forecase adjusted 'rank'
 // If you want to test different parameters effect, go to Swagger tool and use "debug" parameter: https://api.spot-hinta.fi/swagger/ui

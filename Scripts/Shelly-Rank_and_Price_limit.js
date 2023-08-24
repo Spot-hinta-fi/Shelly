@@ -1,7 +1,7 @@
-// More information about the API (in Finnish): https://spot-hinta.fi/
-// Support Shelly script and Spot-hinta.fi API development and maintenance: https://www.buymeacoffee.com/spothintafi
+// Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
+// https://www.buymeacoffee.com/spothintafi  -- Thank you!
 
-// This script can control two relays with hourly rank and price limit
+// This script can control two relays with 'ranks' and/or price limit
 // NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
 
 // Region to use. See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
@@ -11,7 +11,7 @@ let Region = "FI";
 let SETTINGS_1 =
 {
     // Relay settings. Update these.
-    RelayIsInUse: true, // Change this to true/false depending if you want to use this relay or not
+    RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
     Relay: "0",  // Number of the relay within Shelly. First relay is always "0", next "1", etc.
     RelayName: "Waterboiler",  // Name for this relay which can be given freely. Used in debug logging mostly.
 
