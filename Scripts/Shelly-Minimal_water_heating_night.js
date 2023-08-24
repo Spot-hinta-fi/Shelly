@@ -9,7 +9,7 @@
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Rank = "4"; // How many hours relay is on (cheapest hours) 
-let BackupHours = [3, 4, 5, 6, 21]; // If API or Internet connection is down, relay is on these hours
+let BackupHours = [3, 4, 5, 6, 21]; // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
 
 // Script
 // Technical variables

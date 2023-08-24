@@ -22,22 +22,21 @@ let SETTINGS_1 =
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree. Allowed value between 0 and 50.
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     MaxTemperature: "25", // Temperature when heating is stopped. Heating is stopped despite the MinimumRank parameter.
-    PriceAlwaysAllowed: "3", // // Price limit (in full euro cents). Use "-99" if not wanted. If price is now less than this the relay is turned ON (or OFF if inverted - see below)
+    PriceAlwaysAllowed: "0", // Heating is always on, when price is below this (Euro cents). Use "-999" if not wanted.
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
     PostalCode: "00100", // Postal code (Finland only!), which area temperature is used in calculations
     Latitude: "", // Latitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
     Longitude: "", // Longitude. Overrides PostalCode. Simple service to check the coordinates: https://www.latlong.net/
-    BackupHours: [1, 2, 3, 4],  // Backup hours if API is not answering or Internet connection is down.
-    BoosterHours: "99,99", // Relay is always ON during booster hours. If you don't want this use "99,99"
-    PriorityHours: "99,99", // Hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'
+    BackupHours: [1, 2, 3, 4],  // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
+    BoosterHours: "99", // Comma separated list of booster hours. Relay is always ON during booster hours. Use "99" to disable this.
+    PriorityHours: "99", // Comma separated list of hours you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
     PriorityHoursRank: "3",  // How many priority hours are prioritized. i.e. "3" = 3 cheapest priority hours.
     PriceModifier: "-2,50", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. 
     Inverted: false, // If "true", relay logic is inverted
 
     // Script technical fields. Do not edit!!
-    Url: 1,
     SettingsNumber: 1,
     RelayStatus: false,
     RelayStatusSource: "",
@@ -57,7 +56,7 @@ let SETTINGS_2 =
     RankAdjusterPercentage: "15",
     MinimumRank: "3",
     MaxTemperature: "25",
-    PriceAlwaysAllowed: "3",
+    PriceAlwaysAllowed: "0",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", 
@@ -65,14 +64,13 @@ let SETTINGS_2 =
     Latitude: "",
     Longitude: "",
     BackupHours: [1, 2, 3, 4],
-    BoosterHours: "99,99",
-    PriorityHours: "99,99",
+    BoosterHours: "99",
+    PriorityHours: "99",
     PriorityHoursRank: "3",
     PriceModifier: "-2,50",
     Inverted: false,
 
     // Script technical fields. Do not edit!
-    Url: 1,
     SettingsNumber: 2,
     RelayStatus: false,
     RelayStatusSource: "",
@@ -92,7 +90,7 @@ let SETTINGS_3 =
     RankAdjusterPercentage: "15",
     MinimumRank: "3",
     MaxTemperature: "25",
-    PriceAlwaysAllowed: "3",
+    PriceAlwaysAllowed: "0",
     MaxPrice: "999",
     AllowedDays: "1,2,3,4,5,6,7",
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", 
@@ -100,14 +98,13 @@ let SETTINGS_3 =
     Latitude: "",
     Longitude: "",
     BackupHours: [1, 2, 3, 4],
-    BoosterHours: "99,99",
-    PriorityHours: "99,99",
+    BoosterHours: "99",
+    PriorityHours: "99",
     PriorityHoursRank: "3",
     PriceModifier: "-2,50",
     Inverted: false,
 
     // Script technical fields. Do not edit!
-    Url: 1,
     SettingsNumber: 3,
     RelayStatus: false,
     RelayStatusSource: "",

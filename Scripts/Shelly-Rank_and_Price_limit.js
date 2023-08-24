@@ -17,19 +17,18 @@ let SETTINGS_1 =
 
     // Settings for relay control logic. Update these.
     RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
-    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "-99" if not wanted. If price is less than this the relay is turned ON.
+    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "-999" if not wanted. If price is less than this the relay is turned ON.
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
-    BackupHours: [1, 2, 3, 21], // Backup hours; if API is not answering or internet connection is down.
-    BoosterHours: "99,99", // Relay is always ON during booster hours. Use "99,99" to disable this.
-    PriorityHours: "99,99", // List hours you want to prioritize. If PriceModifier: is "0" these hours always get the smallest 'rank'. Use "99,99" to disable this.
+    BackupHours: [1, 2, 3, 21], // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
+    BoosterHours: "99", // Comma separated list of booster hours. Relay is always ON during booster hours. Use "99" to disable this.
+    PriorityHours: "99", // Comma separated list of hours you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
     PriorityHoursRank: "3",  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
     PriceModifier: "0", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. F.ex. "-2.50"
     Inverted: false, // If "true", relay logic is inverted
 
     // Script technical fields. Do not edit!
-    Url: 2,
     SettingsNumber: 1,
     RelayStatus: true,
     RelayStatusSource: "",
@@ -58,7 +57,6 @@ let SETTINGS_2 =
     Inverted: false,
 
     // Script technical fields. Do not edit!
-    Url: 2,
     SettingsNumber: 2,
     RelayStatus: true,
     RelayStatusSource: "",

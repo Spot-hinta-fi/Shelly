@@ -6,11 +6,11 @@
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let RanksAllowed = "1,2,3,4";  // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
-let PriceAlwaysAllowed = "0"; // Heating is always on, when price is below this (Euro cents). Use "-99" if not wanted.
-let PriorityHours = "99,99"; // List hours you want to prioritize. Use "99,99" to disable this.
+let PriceAlwaysAllowed = "0"; // Heating is always on, when price is below this (Euro cents). Use "-999" if not wanted.
+let PriorityHours = "99"; // Comma separated list of priority hours. List hours you want to prioritize. Use "99" to disable this.
 let PriorityHoursRank = "3";  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
-let BackupHours = [1, 2, 3, 20]; // Backup hours; if API is not answering or internet connection is down.
-let BoosterHours = "99,99"; // Relay is always ON during booster hours. Use "99,99" to disable this.
+let BackupHours = [1, 2, 3, 20]; // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
+let BoosterHours = "99"; // Comma separated list of booster hours. Relay is always ON during booster hours. Use "99" to disable this.
 
 // Script
 // Create variables
