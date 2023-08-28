@@ -17,7 +17,7 @@ let SETTINGS_1 =
 
     // Settings for relay control logic. Update these.
     RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
-    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "-999" if not wanted. If price is less than this the relay is turned ON.
+    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 

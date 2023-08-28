@@ -22,7 +22,7 @@ let SETTINGS_1 =
     RankAdjusterPercentage: "15", // Percentage how much "Rank" is adjusted when outdoor temperature changes by one degree. Allowed value between 0 and 50.
     MinimumRank: "3", // Minimum 'Rank' when temperature goes above zero and Rank is getting smaller
     MaxTemperature: "25", // Temperature when heating is stopped. Heating is stopped despite the MinimumRank parameter.
-    PriceAlwaysAllowed: "0", // Heating is always on, when price is below this (Euro cents). Use "-999" if not wanted.
+    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
     MaxPrice: "999", // Maximum allowed price in euro cents.
     AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
