@@ -10,8 +10,7 @@ Script works only with Shelly firmware version 1.0.0 or later.
 
 Shelly-Rank_and_Price_limit.js : Spot-price and Rank controlled relays
 ===
-With this script it is possible to control 1-4 different relays by using price limit only or cheapest hours option. This script is suitable when a fixed price limit or fixed number of cheapest hours is enough. For example water boiler heating.
-Script works only with Shelly firmware version 1.0.0 or later.
+With this script it is possible to control two different relays by using price limit and cheapest hours option. This script is suitable when a fixed price limit, daily average price limit or fixed number of cheapest hours is enough. For example water boiler heating. Script works only with Shelly firmware version 1.0.0 or later.
 
 Shelly-Outdoor_temperature_adjusted_heating.js : Weather forecast adjusted Rank and Spot-price controlled relays
 ===
