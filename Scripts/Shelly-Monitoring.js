@@ -1,9 +1,9 @@
-/* More information about the API (in Finnish): https://spot-hinta.fi/
- * Support API development and maintenance: https://www.buymeacoffee.com/spothintafi
- * 
- * This script is used to monitor other script's execution. Restarts the scripts if needed.
- * Scripts containing HTTP requests can fail so this script will notice it and restart.
- * Also Internet connection can be monitored and Shelly rebooted if connection is lost. */
+// Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
+// https://www.buymeacoffee.com/spothintafi  -- Thank you!
+  
+// This script is used to monitor other script's execution. Restarts the scripts if needed.
+// Scripts containing HTTP requests can fail so this script will notice it and restart.
+// Also Internet connection can be monitored and Shelly rebooted if connection is lost.
 
 // *****************************
 // SETTINGS
