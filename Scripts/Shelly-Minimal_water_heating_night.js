@@ -8,8 +8,9 @@
 
 // Settings
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
+let Relay = "0"; // Number of the relay within Shelly. First relay is always "0", next "1", etc.
 let Rank = "4"; // How many hours relay is on (cheapest hours) 
-let BackupHours = [3, 4, 5, 6, 21]; // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
+let BackupHours = [3,4,5,6]; // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
 
 // Script
 // Technical variables
@@ -36,13 +37,13 @@ function RunResponse(result, error_code, error_msg) {
 
     if (error_code === 0 && result !== null) {
         if (result.code === 400 && rclosed === true) { print("Relay already turned OFF by this script."); Executed = true; return; } // Allows possible other script to control relay while this is closed
-        if (result.code === 400 && rclosed === false) { Shelly.call("Switch.Set", "{ id:0, on:false}", null, null); print("Relay OFF"); rclosed = true; Executed = true; return; }
-        if (result.code === 200) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON"); rclosed = false; Executed = true; return; }
+        if (result.code === 400 && rclosed === false) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:false}", null, null); print("Relay OFF"); rclosed = true; Executed = true; return; }
+        if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:true}", null, null); print("Relay ON"); rclosed = false; Executed = true; return; }
     }
     
     print("Error occurred while making a request. Running backup rule. Error message was: " + error_msg);
 
     // Backup hour execution because request response was not an expected result. 
-    if (bhour === true) { Shelly.call("Switch.Set", "{ id:0, on:true}", null, null); print("Relay ON (backup)"); rclosed = false; Executed = false; return; }
-    Shelly.call("Switch.Set", "{ id:0, on:false}", null, null); print("Relay OFF (non-backup)"); rclosed = true; Executed = false; return;
+    if (bhour === true) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:true}", null, null); print("Relay ON (backup)"); rclosed = false; Executed = false; return; }
+    Shelly.call("Switch.Set", "{ id:" + Relay + ", on:false}", null, null); print("Relay OFF (non-backup)"); rclosed = true; Executed = false; return;
 }
