@@ -18,6 +18,6 @@ Enjoy automatic control of your relays when electricity price is cheap (or.. may
 
 1. "Minimal water heating" - this script is, as the name indicates, minimal script targeted to a water heating with a single relay Shelly.
 2. "Minimal water heating - night" - this script is the simplest script if you want to heat water during the cheapest night hours.
-3. "Rank and Price limit" - this script can control up to four relays (2 + 2) according to the fixed price and "rank"
+3. "Rank and Price limit" - this script can control two relays according to the fixed price, average price and also using the cheapest hours
 4. "Outdoor temperature adjusted heating" - this script can control up to 3 relays according to the adjusted "rank" based on weather forecast
 5. "Monitoring" - this script keeps other scripts running and optionally restarts Shelly, if Internet connection is lost
