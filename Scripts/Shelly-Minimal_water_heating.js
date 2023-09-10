@@ -1,4 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
+// NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
 
 // Change these settings as you like
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
