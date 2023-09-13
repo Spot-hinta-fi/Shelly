@@ -26,7 +26,7 @@ Timer.set(30000, true, function () {
 
 function RunResponse(result, error_code) {
     if (error_code === 0 && result !== null) {
-        if ((result.code === 400 || result.code === 200) && previousAction === result.code) { print("No action is done. The relay status remains the same as during previous hour."); return; }
+        if ((result.code === 400 || result.code === 200) && previousAction === result.code) { print("No action is done. The relay status remains the same as during previous hour."); Executed = true; return; }
         if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); previousAction = result.code; print("Turning relay OFF (ON - if inverted). Hour is too expensive."); Executed = true; return; }
         if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); previousAction = result.code; print("Turning relay ON (OFF - if inverted). Hour is cheap enough."); Executed = true; return; }
     }
