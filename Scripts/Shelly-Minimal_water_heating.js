@@ -1,57 +1,36 @@
-// Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
-// https://www.buymeacoffee.com/spothintafi  -- Thank you!
-
+// You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
 // NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
 
-// Settings
+// Change these settings as you like
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-let Relay = "0"; // Number of the relay within Shelly. First relay is always "0", next "1", etc.
-let RanksAllowed = "1,2,3,4";  // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
-let PriceAlwaysAllowed = "0"; // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
-let PriorityHours = "99"; // Comma separated list of priority hours. List hours you want to prioritize. Use "99" to disable this.
-let PriorityHoursRank = "3";  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
-let BackupHours = [3,4,5,6]; // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
-let BoosterHours = "99"; // Comma separated list of booster hours. Relay is always ON during booster hours. Use "99" to disable this.
+let Relay = "0"; // Number of the relay within Shelly. The first relay is always "0", next "1", etc.
+let CheapestHours = "4";  // How many cheapest hours relay will be turned on?
+let OnlyNightHours = false; // false == cheapest hours can be any during day. true == cheapest hours are only searched from the night hours (22:00 - 07:00)
+let PriceAlwaysAllowed = "0"; // At what price the relay can ALWAYS be on? Use "-999" if you don't want to use this.
+let BackupHours = [3, 4, 5, 6]; // If Internet connection is down, turn relay ON during these hours.
+let Inverted = false; // If "true", relay logic is inverted
 
-// Script
-// Create variables
-let cHour = ""; let bhour = false; let Executed = false; let rclosed = false;
+// Don't touch below!
+print("Script has started succesfully. The first relay action happens in 30 seconds.");
+let cHour = ""; let Executed = false; let urlToCall = ""; let previousAction = ""; let invertedOn = "true"; let invertedOff = "false;"
+if (Inverted === true) { invertedOn = "false"; invertedOff = "true"; }
+if (OnlyNightHours == false) { urlToCall = "https://api.spot-hinta.fi/JustNowRank/" + CheapestHours + "/" + PriceAlwaysAllowed + "?region=" + Region; print("Url to be used: " + urlToCall); }
+else { urlToCall = "https://api.spot-hinta.fi/JustNowRankNight?rank=" + CheapestHours + "&priceAlwaysAllowed=" + PriceAlwaysAllowed + "&region=" + Region; print("Url to be used: " + urlToCall); }
 
-let urlToCall = "https://api.spot-hinta.fi/JustNowRanksAndPrice";
-urlToCall += "?ranksAllowed=" + RanksAllowed;
-urlToCall += "&priceAlwaysAllowed=" + PriceAlwaysAllowed;
-urlToCall += "&boosterHours=" + BoosterHours;
-urlToCall += "&priorityHours=" + PriorityHours;
-urlToCall += "&priorityHoursRank=" + PriorityHoursRank;
-urlToCall += "&region=" + Region;
-
-// Create timer
-Timer.set(60000, true, function () {   
-    
-    let date = new Date();
-    let hour = date.getHours();
-
-    if (cHour !== hour) { cHour = hour; Executed = false; }
-    if (Executed === true) { print("Current hour is already done."); return; }
-
-    bhour = false; for (let i = 0; i < BackupHours.length; i++) { if (BackupHours[i] === cHour) { bhour = true; } }
-    print("URL to call: " + urlToCall);
-
-    // Send HTTP GET to API
+Timer.set(30000, true, function () {
+    let hour = new Date().getHours();
+    if (cHour !== hour) { cHour = hour; Executed = false; print("The hour has now changed and a new relay action is going to be performed.") }
+    if (cHour == hour && Executed == true) { print("This hour has already been executed. Waiting for an hour change."); return; }
     Shelly.call("HTTP.GET", { url: urlToCall, timeout: 15, ssl_ca: "*" }, RunResponse);
 });
 
-function RunResponse(result, error_code, error_msg) {
-
+function RunResponse(result, error_code) {
     if (error_code === 0 && result !== null) {
-        if (result.code === 400 && rclosed === true) { print("Relay already turned OFF by this script."); Executed = true; return; } // Allows possible other script to control relay while this is closed
-        if (result.code === 400 && rclosed === false) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:false}", null, null); print("Relay OFF"); rclosed = true; Executed = true; return; }
-        if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:true}", null, null); print("Relay ON"); rclosed = false; Executed = true; return; }
+        if ((result.code === 400 || result.code === 200) && previousAction === result.code) { print("No action is done. The relay status remains the same as during previous hour."); return; }
+        if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); previousAction = result.code; print("Turning relay OFF (ON - if inverted). Hour is too expensive."); Executed = true; return; }
+        if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); previousAction = result.code; print("Turning relay ON (OFF - if inverted). Hour is cheap enough."); Executed = true; return; }
     }
-    
-    print("Error occurred while making a request. Running backup rule. Error message was: " + error_msg);
-
-    // Backup hour execution because request response was not an expected result. 
-    if (bhour === true) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:true}", null, null); print("Relay ON (backup)"); rclosed = false; Executed = false; return; }
-    Shelly.call("Switch.Set", "{ id:" + Relay + ", on:false}", null, null); print("Relay OFF (non-backup)"); rclosed = true; Executed = false; return;
+    previousAction = "";
+    if (BackupHours.indexOf(cHour) > -1) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); print("Error while fetching control information. Relay is turned ON (OFF - if inverted), because it is a backup hour."); Executed = false; return; }
+    Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); print("Error while fetching control information. Relay is turned OFF (ON - if inverted), because it is not a backup hour."); Executed = false;
 }
