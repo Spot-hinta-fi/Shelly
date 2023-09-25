@@ -23,7 +23,7 @@ let SETTINGS_1 =
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
     BackupHours: [1, 2, 3, 21], // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
     BoosterHours: "99", // Comma separated list of booster hours. Relay is always ON during booster hours. Use "99" to disable this.
-    PriorityHours: "99", // Comma separated list of hours you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
+    PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
     PriorityHoursRank: "3",  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
     PriceModifier: "0", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. F.ex. "-2.50"
     Inverted: false, // If "true", relay logic is inverted
