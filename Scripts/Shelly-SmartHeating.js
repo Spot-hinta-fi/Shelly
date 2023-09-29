@@ -72,7 +72,7 @@ function RunResponse(result, error_code) {
         }
         if (result.code === 400) {
             print("Response JSON: " + result.body);
-            print("Turning relays OFF. Hour is too expensive.");
+            print("Changing relay status. Hour is too expensive. New relay status (true/false): " + invertedOff);
             for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
                 Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOff + "}", null, null);
             }
@@ -82,7 +82,7 @@ function RunResponse(result, error_code) {
         }
         if (result.code === 200) {
             print("Response JSON: " + result.body);
-            print("Turning relays ON. Hour is cheap enough.");
+            print("Changing relay status. Hour is cheap enough. New relay status (true/false): " + invertedOn);
             for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
                 Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOn + "}", null, null);
             }
@@ -100,7 +100,7 @@ function RunResponse(result, error_code) {
     // Backup hour functionality
     previousAction = "";
     if (SETTINGS.BackupHours.indexOf(cHour) > -1) {
-        print("Error while fetching control information. Relays are turned ON, because it is a backup hour.");
+        print("Error while fetching control information. It is a backup hour now. New relay status (true/false): " + invertedOn);
         for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
             Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOn + "}", null, null);
         }
@@ -108,7 +108,7 @@ function RunResponse(result, error_code) {
         return;
     }
     else {
-        print("Error while fetching control information. Relays are turned OFF, because it is not a backup hour.");
+        print("Error while fetching control information. It is not a backup hour now. New relay status (true/false): " + invertedOff);
         for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
             Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOff + "}", null, null);
         }
