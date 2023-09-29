@@ -41,6 +41,7 @@ let SETTINGS =
     AllowedMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],  // Execution months: 1=January to 12=December.
     BackupHours: [1, 2, 3, 4, 12, 13, 16, 17, 21, 22],  // Backup hours if internet connection is down or spot-hinta.fi server is not responding
     MaximumPrice: 999, // Maximum allowed price in Euro cents. This can be used to f.ex. stop heating with electricity and switch to wood/oil/gas.
+    PriceAlwaysAllowed: 0, // At what price the relay can ALWAYS be on (or off, if inverted)? Use "-999" if you don't want to use this.
 
     // Price modification (f.ex. electricity transfer cost difference between night/day or seasonal price differences)
     PriceModifier_IsActive: false,  // Change to true if price modification is wanted
