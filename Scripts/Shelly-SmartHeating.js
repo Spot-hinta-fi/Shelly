@@ -29,6 +29,7 @@ let SETTINGS =
     HeatingHours_Minus10: 10, 	// Number of heating hours at -10C
     HeatingHours_Minus20: 18, 	// Number of heating hours at -20C
     HeatingHours_Minus30: 24, 	// Number of heating hours at -30C
+    HeatingHours_MinTemperature: -25, // Temperature where heating is always on (24 hours in all degrees below this)
 
     // Minimum hours period (mainly for a daytime to avoid too long heating pauses)
     MinimumHoursPeriod_IsActive: false, // Set to true, if you want to define minimum hours period
