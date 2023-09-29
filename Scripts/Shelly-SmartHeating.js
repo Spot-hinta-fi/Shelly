@@ -53,10 +53,10 @@ let SETTINGS =
 // Don't touch below!
 print("Script has started succesfully. The first relay action happens in 30 seconds.");
 let cHour = ""; let Executed = ""; let previousAction = ""; let invertedOn = "true"; let invertedOff = "false;"
-let urlToCall = "http://192.168.1.165:7071/SmartHeating";
+let urlToCall = "https://api.spot-hinta.fi/SmartHeating";
 if (SETTINGS.Inverted === true) { invertedOn = "false"; invertedOff = "true"; }
 
-Timer.set(10000, true, function () {
+Timer.set(30000, true, function () {
     let hour = new Date().getHours();
     if (cHour !== hour) { cHour = hour; Executed = false; print("The hour has now changed and a new relay action is going to be performed.") }
     if (cHour == hour && Executed == true) { print("This hour has already been executed. Waiting for an hour change."); return; }
