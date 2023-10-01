@@ -5,8 +5,8 @@ Study scripts and read comments to select which script works best for your own n
 
 ## Installation instructions
 
-1. Open Shelly internal UI with a web-browser. Update Shelly firmware to the latest version (firmware 1.0.2 or later)
-2. Install scripts simply with Shelly Library functionality, use this library URL: http://api.spot-hinta.fi/Shelly/scripts (firmware 1.0.2 onwards)
+1. Open Shelly internal UI with a web-browser. Update Shelly firmware to the latest version (firmware 1.0.3 or later)
+2. Install scripts simply with Shelly Library functionality, use this library URL: http://api.spot-hinta.fi/Shelly/scripts (firmware 1.0.3 onwards)
 3. Configure scripts according to your needs, scripts have many comments in English.
 4. Use Monitoring script to secure script execution. Test that Monitoring script works by manually stopping monitored scripts.
 5. Test scripts by changing the parameters to see that relay is doing expected job.
