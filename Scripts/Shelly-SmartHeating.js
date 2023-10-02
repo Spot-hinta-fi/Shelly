@@ -34,8 +34,9 @@ let SETTINGS =
     // Minimum hours period (mainly for a daytime to avoid too long heating pauses)
     MinimumHoursPeriod_IsActive: false, // Set to true, if you want to define minimum hours period
     MinimumHoursPeriod_TemperatureStart: -10,  // Minimum hours are active only below this temperature
+    MinimumHoursPeriod_PriceAllowed: 50, // Minimum hour price limit. Skip hours that more expensive than this. Note! This can reduce minimum period hours.
     MinimumHoursPeriod_Hours: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],  // List hours for minimum hours period.
-    MinimumHoursPeriod_NumberOfHours: 3,  // How many hours at minimum must be put to this period
+    MinimumHoursPeriod_NumberOfHours: 3,  // How many hours at minimum must be put to this period. Note! Price limit can reduce this number.
 
     // Limitations and backup hours
     AllowedDays: [1, 2, 3, 4, 5, 6, 7],  // Execution days: 1=Monday to 7=Sunday.
