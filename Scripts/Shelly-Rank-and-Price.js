@@ -1,8 +1,4 @@
-// Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
-// https://www.buymeacoffee.com/spothintafi  -- Thank you!
-
-// This script can control two relays with 'ranks' and/or price limit
-// NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
+// You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
 
 // Region to use. See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Region = "FI";
@@ -19,10 +15,10 @@ let SETTINGS_1 =
     RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
     PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
     MaxPrice: "999", // Maximum allowed price in euro cents.
-    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from Monday to Sunday. Modify only if you don't want everyday execution.
+    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from 1=Monday to 7=Sunday. Modify only if you don't want everyday execution.
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
-    BackupHours: [1, 2, 3, 21], // Backup hours; if API is not answering or internet connection is down. Use [99], if you don't want any backup hours.
-    BoosterHours: "99", // Comma separated list of booster hours. Relay is always ON during booster hours. Use "99" to disable this.
+    BackupHours: [1, 2, 3, 21], // Backup hours (0...23). If Internet connection is down. Use [99], if you don't want any backup hours.
+    BoosterHours: "99", // Comma separated list of booster hours (0...23). Relay is always ON during booster hours. Use "99" to disable this.
     PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
     PriorityHoursRank: "3",  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
     PriceModifier: "0", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. F.ex. "-2.50"

@@ -1,13 +1,12 @@
-// Spot-hinta.fi service is a privately funded service. If you want to support it, you can do it here:
-// https://www.buymeacoffee.com/spothintafi  -- Thank you!
+// You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
   
 // This script is used to monitor other script's execution. Restarts the scripts if needed.
 // Scripts containing HTTP requests can fail so this script will notice it and restart.
 // Also Internet connection can be monitored and Shelly rebooted if connection is lost.
 
-// *****************************
+// ********
 // SETTINGS
-// *****************************
+// ********
 
 let SETTINGS = {
     MonitorScript_1: true,  // True/false, depending if you want to monitor script 1
@@ -18,9 +17,9 @@ let SETTINGS = {
     NumberOfFailedRoundsToRebootShelly: 5,  // How many timer rounds will be waited before reboot. 
 };
 
-// **************************************
-// MAIN SCRIPT - NO NEED TO TOUCH (USUALLY)
-// **************************************
+// ******************************
+// MAIN SCRIPT - NO NEED TO TOUCH
+// ******************************
 
 // Default timer round is 60 seconds
 Timer.set(60000, true, function (ud) {

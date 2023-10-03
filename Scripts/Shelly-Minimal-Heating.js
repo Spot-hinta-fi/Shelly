@@ -1,5 +1,4 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// NOTE! Shelly firmware must be updated to version 1.0.0 (or later) before using this script!
 
 // Change these settings as you like
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
@@ -7,7 +6,7 @@ let Relay = "0"; // Number of the relay within Shelly. The first relay is always
 let CheapestHours = "4";  // How many cheapest hours relay will be turned on?
 let OnlyNightHours = false; // false == cheapest hours can be any during day. true == cheapest hours are only searched from the night hours (22:00 - 07:00)
 let PriceAlwaysAllowed = "0"; // At what price the relay can ALWAYS be on? Use "-999" if you don't want to use this.
-let BackupHours = [3, 4, 5, 6]; // If Internet connection is down, turn relay ON during these hours.
+let BackupHours = [3, 4, 5, 6]; // If Internet connection is down, turn relay ON during these hours (0...23).
 let Inverted = false; // If "true", relay logic is inverted
 
 // Don't touch below!
