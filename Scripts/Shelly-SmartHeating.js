@@ -11,7 +11,7 @@ let SETTINGS =
 
     // Relay settings
     RelayName: "Sleeping rooms and livingroom",  // Whatever name for this relay(s). Used in debug logging mostly.
-    RelayNumbers: [0, 1],  // List here relays that are controlled with this script. Shelly relay numbering starts from 0.    
+    RelayNumbers: [0, 1],  // List here relays that are controlled with this script. Shelly relay numbering starts from 0.
     Inverted: false,  // If this is set to 'true', the relay logic is inverted.
 
     // Location for a temperature forecast. Temperature in use is 24h moving forecasted average temperature.
@@ -55,7 +55,7 @@ let SETTINGS =
 
 // Don't touch below!
 print("Script has started succesfully. The first relay action happens in 30 seconds.");
-let cHour = ""; let Executed = ""; let previousAction = ""; let invertedOn = "true"; let invertedOff = "false;"
+let cHour = 0; let Executed = false; let previousAction = ""; let invertedOn = "true"; let invertedOff = "false;"
 let urlToCall = "https://api.spot-hinta.fi/SmartHeating";
 if (SETTINGS.Inverted === true) { invertedOn = "false"; invertedOff = "true"; }
 
@@ -71,6 +71,7 @@ function RunResponse(result, error_code) {
         if ((result.code === 400 || result.code === 200) && previousAction === result.code) {
             print("Response JSON: " + result.body);
             print("No action is done. The relay statuses remains the same as during previous hour.");
+            Executed = true;
             return;
         }
         if (result.code === 400) {
