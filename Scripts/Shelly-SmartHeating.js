@@ -1,7 +1,7 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules
-// It is possible to configure the heating curve with seven temperature points.
+// It is possible to configure the heating curve with a seven temperature points.
 
 // Modify these settings
 let SETTINGS =
@@ -10,7 +10,7 @@ let SETTINGS =
     Region: "FI",
 
     // Relay settings
-    RelayName: "Sleeping rooms and livingroom",  // Whatever name for this relay(s). Used in debug logging mostly.
+    RelayName: "Sleeping rooms and livingroom",  // Name for this configuration. Used in debug logging mostly.
     RelayNumbers: [0, 1],  // List here relays that are controlled with this script. Shelly relay numbering starts from 0.
     Inverted: false,  // If this is set to 'true', the relay logic is inverted.
 
@@ -35,13 +35,13 @@ let SETTINGS =
     MinimumHoursPeriod_IsActive: false, // Set to true, if you want to define minimum hours period
     MinimumHoursPeriod_TemperatureStart: -10,  // Minimum hours are active only below this temperature
     MinimumHoursPeriod_PriceAllowed: 50, // Minimum hour price limit. Skip hours that more expensive than this. Note! This can reduce minimum period hours.
-    MinimumHoursPeriod_Hours: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],  // List hours for minimum hours period.
+    MinimumHoursPeriod_Hours: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],  // List hours (0...23) for minimum hours period.
     MinimumHoursPeriod_NumberOfHours: 3,  // How many hours at minimum must be put to this period. Note! Price limit can reduce this number.
 
     // Limitations and backup hours
     AllowedDays: [1, 2, 3, 4, 5, 6, 7],  // Execution days: 1=Monday to 7=Sunday.
     AllowedMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],  // Execution months: 1=January to 12=December.
-    BackupHours: [1, 2, 3, 4, 12, 13, 16, 17, 21, 22],  // Backup hours if internet connection is down or spot-hinta.fi server is not responding
+    BackupHours: [1, 2, 3, 4, 12, 13, 16, 17, 21, 22],  // Backup hours (0...23) if internet connection is not working.
     MaximumPrice: 999, // Maximum allowed price in Euro cents. This can be used to f.ex. stop heating with electricity and switch to wood/oil/gas.
     PriceAlwaysAllowed: 0, // At what price the relay can ALWAYS be on (or off, if inverted)? Use "-999" if you don't want to use this.
 
@@ -50,7 +50,7 @@ let SETTINGS =
     PriceModifier_Sum: -2.30, // How much the price is modified in euro cents? Can be positive or negative amount.
     PriceModifier_Months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],  // Modify if price modification is valid only during certain months
     PriceModifier_Days: [1, 2, 3, 4, 5, 6, 7], // Modify if the price modification is valid only during certain days
-    PriceModifier_Hours: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7], // List here the hours which price is modified for rank calculation
+    PriceModifier_Hours: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7], // List here the hours (0...23) which price is modified for rank calculation
 };
 
 // Don't touch below!
