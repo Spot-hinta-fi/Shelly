@@ -1,6 +1,6 @@
 [
   {
-    "fname": "Shelly-Minimal_Heating.js",
+    "fname": "Shelly-Minimal-Heating.js",
     "title": "Minimal heating script",
     "description": "With this minimal and extremely simple script, it is possible to control heating based on spot-prices."
   },
@@ -10,7 +10,7 @@
     "description": "With this script, it is possible to control one or more relays according to the weather forecast adjusted hours and it has plenty of other features too."
   },
   {
-    "fname": "Shelly-Rank_and_Price.js",
+    "fname": "Shelly-Rank-and-Price.js",
     "title": "Cheapest hours and price limitations",
     "description": "With this script it is possible to control two different relays by using price limit and cheapest hours option."
   },
