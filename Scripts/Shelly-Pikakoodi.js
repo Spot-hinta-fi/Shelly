@@ -3,8 +3,7 @@
 let Pikakoodi = 103;  // Hae sopiva pikakoodi täältä: https://spot-hinta.fi/pikakoodit
 let Rele = 0; // Releen numero. Älä vaihda jos Shellyssäsi on vain yksi rele
 
-
-// Älä muuta allaolevaa koodia. Se suorittaa kyselyn rajapintaan ja ohjaa releen toimintaa
+// Älä muuta allaolevaa koodia. Se suorittaa kyselyn rajapintaan ja ohjaa releen toimintaa.
 // Ohjaus tapahtuu kerran tunnissa ensimmäisen puolen minuutin aikana. Virheen tapahtuessa
 // rele kytketään päälle.
 let cHour = -1; let Executed = false; let pAction = ""; let url = "https://api.spot-hinta.fi/QuickCode/" + Pikakoodi;
