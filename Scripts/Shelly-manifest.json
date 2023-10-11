@@ -1,5 +1,10 @@
 [
   {
+    "fname": "Shelly-Pikakoodi.js",
+    "title": "Suomenkielinen pikakoodi-skripti",
+    "description": "Lisää haluamasi Spot-hinta.fi pikakoodi skriptiin ja siinä on kaikki tarvittava älykkääseen ohjaukseen. (Finnish region only)"
+  },
+  {
     "fname": "Shelly-Minimal-Heating.js",
     "title": "Minimal heating script",
     "description": "With this minimal and extremely simple script, it is possible to control heating based on spot-prices."
