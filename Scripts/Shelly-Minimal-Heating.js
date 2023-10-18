@@ -3,11 +3,11 @@
 // Change these settings as you like
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
 let Relay = "0"; // Number of the relay within Shelly. The first relay is always "0", next "1", etc.
-let CheapestHours = "4";  // How many cheapest hours relay will be turned on?
+let CheapestHours = "4";  // How many cheapest hours relay will be turned on? To ONLY use a price limit, put CheapestHours to "0".
 let OnlyNightHours = false; // false == cheapest hours can be any during day. true == cheapest hours are only searched from the night hours (22:00 - 07:00)
 let PriceAlwaysAllowed = "0"; // Below what hour price the relay can be always on (or off, if inverted)? Value is in full euro cents. Use "-999" to disable.
 let BackupHours = [3, 4, 5, 6]; // If Internet connection is down, turn relay ON during these hours (0...23).
-let Inverted = false; // If "true", relay logic is inverted
+let Inverted = false; // If "true", relay logic is inverted (= relay is turned ON when price is too exepensive and OFF when cheap)
 
 // Don't touch below!
 print("Script has started succesfully. The first relay action happens in 30 seconds.");
