@@ -6,7 +6,7 @@ let Relay = "0"; // Number of the relay within Shelly. The first relay is always
 let CheapestHours = "4";  // How many cheapest hours relay will be turned on? To ONLY use a price limit, put CheapestHours to "0".
 let OnlyNightHours = false; // false == cheapest hours can be any during day. true == cheapest hours are only searched from the night hours (22:00 - 07:00)
 let PriceAlwaysAllowed = "0"; // Below what hour price the relay can be always on (or off, if inverted)? Value is in full euro cents. Use "-999" to disable.
-let BackupHours = [3, 4, 5, 6]; // If Internet connection is down, turn relay ON during these hours (0...23).
+let BackupHours = [3, 4, 5, 6]; // If Internet connection is down, turn relay ON during these hours (0...23). Use [99], if you don't want any backup hours.
 let Inverted = false; // If "true", relay logic is inverted (= relay is turned ON when price is too exepensive and OFF when cheap)
 
 // Don't touch below!
