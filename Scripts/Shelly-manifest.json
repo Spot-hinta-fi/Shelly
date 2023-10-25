@@ -20,8 +20,8 @@
     "description": "With this script it is possible to control two different relays by using price limit and cheapest hours option."
   },
   {
-    "fname": "Shelly-Monitoring.js",
+    "fname": "Shelly-SmartMonitoring.js",
     "title": "Monitoring script",
-    "description": "This script monitors other script statuses and Internet connection. Scripts are restarted and Shelly rebooted when needed."
+    "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud."
   }
 ]
