@@ -14,17 +14,15 @@ Timer.set(30000, true, function () {
     Shelly.call("HTTP.GET", { url: url, timeout: 15, ssl_ca: "*" }, function (result, error_code) {
         if (error_code === 0 && result !== null) {
             if (result.code === 400 || result.code === 200) { print("Onnistunut vastaus palvelimelta: " + result.body); }
-            if ((result.code === 400 || result.code === 200) && pAction === result.code) { print("Releen tila pysyy samana kuin aiemmalla tunnilla. Releen tila ei muutu."); Executed = true; return; }
+            if ((result.code === 400 || result.code === 200) && pAction === result.code) { print("Releiden tila pysyy samana kuin aiemmalla tunnilla."); Executed = true; return; }
             for (let i = 0; i < Releet.length; i++) {
-                if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:false}", null, null); pAction = result.code; print("Tunti on liian kallis. Rele avataan."); Executed = true; return; }
-                if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:true}", null, null); pAction = result.code; print("Tunti on tarpeeksi halpa. Rele suljetaan."); Executed = true; return; }
+                if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:false}", null, null); pAction = result.code; print("Tunti on liian kallis. Rele " + Releet[i] + " avataan."); Executed = true; return; }
+                if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:true}", null, null); pAction = result.code; print("Tunti on tarpeeksi halpa. Rele " + Releet[i] + " suljetaan."); Executed = true; return; }
             }
-            if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Rele + ", on:false}", null, null); pAction = result.code; print("Tunti on liian kallis. Rele avataan."); Executed = true; return; }
-            if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Rele + ", on:true}", null, null); pAction = result.code; print("Tunti on tarpeeksi halpa. Rele suljetaan."); Executed = true; return; }
         }
         print("Virheellinen vastaus palvelimelta. Koodi: " + result.code + " - Vastaus: " + result.body);
         for (let i = 0; i < Releet.length; i++) {
-            Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:true}", null, null); print("Virhe ohjauksessa, rele suljetaan."); pAction = ""; Executed = false;
+            Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:true}", null, null); print("Virhe ohjauksessa, rele " + Releet[i] + " suljetaan."); pAction = ""; Executed = false;
         }
     })
 });
