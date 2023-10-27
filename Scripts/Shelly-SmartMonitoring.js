@@ -7,7 +7,7 @@ const DebugLogs = true; // Set this to true, if you want to see also positive me
 // Activate relay status change history. Note! You get a valid key when you get this script through Shelly library (Library url: https://api.spot-hinta.fi/Shelly/scripts)
 const UploadRelayChangesToCloud = true;  // Set this to false, if you don't want to save history of relay changes to spot-hinta.fi cloud
 const PrivateKey = "<SHF-PrivateKey>";  // Your private monitoring URL is: https://api.spot-hinta.fi/SmartMonitoring?PrivateKey=<SHF-PrivateKey>
-const RelayNames = ["Relay A", "Relay B", "Relay C", "Relay D"]; // Names of the relays. I  
+const RelayNames = ["Relay A", "Relay B", "Relay C", "Relay D"]; // Names of the relays. Sorry, automatic loading of relay names is not possible yet in script.
 
 // Activate Internet connection monitoring if required.
 const MonitorInternetConnection = true; // Set this to false, if you don't want to monitor Internet connection.
