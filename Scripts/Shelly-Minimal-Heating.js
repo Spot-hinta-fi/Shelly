@@ -2,7 +2,7 @@
 
 // Change these settings as you like
 let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-let Relay = "0"; // Number of the relay within Shelly. The first relay is always "0", next "1", etc.
+let Relays = [0]; // Relays to control with this script. List relays as comma separated. For example: [0,1,2]
 let CheapestHours = "4";  // How many cheapest hours relay will be turned on? To ONLY use a price limit, put CheapestHours to "0".
 let OnlyNightHours = false; // false == cheapest hours can be any during day. true == cheapest hours are only searched from the night hours (22:00 - 07:00)
 let PriceAlwaysAllowed = "0"; // Below what hour price the relay can be always on (or off, if inverted)? Value is in full euro cents. Use "-999" to disable.
@@ -26,10 +26,26 @@ Timer.set(30000, true, function () {
 function RunResponse(result, error_code) {
     if (error_code === 0 && result !== null) {
         if ((result.code === 400 || result.code === 200) && previousAction === result.code) { print("No action is done. The relay status remains the same as during previous hour."); Executed = true; return; }
-        if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); previousAction = result.code; print("Turning relay OFF (ON - if inverted). Hour is too expensive."); Executed = true; return; }
-        if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); previousAction = result.code; print("Turning relay ON (OFF - if inverted). Hour is cheap enough."); Executed = true; return; }
+        
+        for (let i = 0; i < Relays.length; i++) {
+            if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOff + "}", null, null); previousAction = result.code; print("Turning relay " + Relays[i] + " OFF (ON - if inverted). Hour is too expensive."); Executed = true; }
+            if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOn + "}", null, null); previousAction = result.code; print("Turning relay " + Relays[i] + " ON (OFF - if inverted). Hour is cheap enough."); Executed = true; }
+        }
+        return;
     }
+
     previousAction = "";
-    if (BackupHours.indexOf(cHour) > -1) { Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); print("Error while fetching control information. Relay is turned ON (OFF - if inverted), because it is a backup hour."); Executed = false; return; }
-    Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); print("Error while fetching control information. Relay is turned OFF (ON - if inverted), because it is not a backup hour."); Executed = false;
+    if (BackupHours.indexOf(cHour) > -1) 
+    {
+        for (let i = 0; i < Relays.length; i++) {
+            Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); print("Error while fetching control information. Relay " + Relays[i] + " is turned ON (OFF - if inverted), because it is a backup hour."); Executed = false;
+        }
+        return;
+    }
+    else
+    {
+        for (let i = 0; i < Relays.length; i++) {
+            Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); print("Error while fetching control information. Relay " + Relays[i] + " is turned OFF (ON - if inverted), because it is not a backup hour."); Executed = false;
+        }
+    }
 }
