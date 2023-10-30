@@ -26,26 +26,26 @@ Timer.set(30000, true, function () {
 function RunResponse(result, error_code) {
     if (error_code === 0 && result !== null) {
         if ((result.code === 400 || result.code === 200) && previousAction === result.code) { print("No action is done. The relay status remains the same as during previous hour."); Executed = true; return; }
-        
-        for (let i = 0; i < Relays.length; i++) {
-            if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOff + "}", null, null); previousAction = result.code; print("Turning relay " + Relays[i] + " OFF (ON - if inverted). Hour is too expensive."); Executed = true; }
-            if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOn + "}", null, null); previousAction = result.code; print("Turning relay " + Relays[i] + " ON (OFF - if inverted). Hour is cheap enough."); Executed = true; }
+
+        if (result.code === 400 || result.code == 200) {
+            for (let i = 0; i < Relays.length; i++) {
+                if (result.code === 400) { Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOff + "}", null, null); previousAction = result.code; print("Turning relay " + Relays[i] + " OFF (ON - if inverted). Hour is too expensive."); Executed = true; }
+                if (result.code === 200) { Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOn + "}", null, null); previousAction = result.code; print("Turning relay " + Relays[i] + " ON (OFF - if inverted). Hour is cheap enough."); Executed = true; }
+            }
+            return;
         }
-        return;
     }
 
     previousAction = "";
-    if (BackupHours.indexOf(cHour) > -1) 
-    {
+    if (BackupHours.indexOf(cHour) > -1) {
         for (let i = 0; i < Relays.length; i++) {
-            Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOn + "}", null, null); print("Error while fetching control information. Relay " + Relays[i] + " is turned ON (OFF - if inverted), because it is a backup hour."); Executed = false;
+            Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOn + "}", null, null); print("Error while fetching control information. Relay " + Relays[i] + " is turned ON (OFF - if inverted), because it is a backup hour."); Executed = false;
         }
         return;
     }
-    else
-    {
+    else {
         for (let i = 0; i < Relays.length; i++) {
-            Shelly.call("Switch.Set", "{ id:" + Relay + ", on:" + invertedOff + "}", null, null); print("Error while fetching control information. Relay " + Relays[i] + " is turned OFF (ON - if inverted), because it is not a backup hour."); Executed = false;
+            Shelly.call("Switch.Set", "{ id:" + Relays[i] + ", on:" + invertedOff + "}", null, null); print("Error while fetching control information. Relay " + Relays[i] + " is turned OFF (ON - if inverted), because it is not a backup hour."); Executed = false;
         }
     }
 }
