@@ -16,7 +16,7 @@ const RebootShellyInMinutes = 60; // If Internet connection is not working, rebo
 
 // Activate script monitoring if required
 const MonitorScripts = true; // Set this to false, if you don't want to monitor script executions
-const MonitoredScripts = [1]; // List here script ID's which you want to monitor. For example [1,2]
+const MonitoredScripts = [1]; // List here script ID's which you want to monitor. For example [1,2]. Script numbering starts from 1.
 
 
 // Script starts here. Do not edit this until you really know what you are doing!
