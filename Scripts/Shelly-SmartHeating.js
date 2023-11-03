@@ -8,7 +8,7 @@
 let SETTINGS =
 {
     // Region
-    Region: "FI",
+    Region: "FI", // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 
     // Relay settings
     RelayName: "Sleeping rooms and livingroom",  // Name for this configuration. Used in debug logging mostly.
