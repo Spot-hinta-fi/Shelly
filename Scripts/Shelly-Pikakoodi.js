@@ -1,4 +1,6 @@
-﻿
+﻿// Voit halutessasi tukea palvelun ylläpitoa täällä: https://www.buymeacoffee.com/spothintafi
+// Tuetut Shelly laiteohjelmistoversiot: 1.0.3, 1.0.7
+
 // Asetukset
 let Pikakoodi = 103;  // Hae sopiva pikakoodi: https://spot-hinta.fi/pikakoodit
 let Releet = [0]; // Releen tai releiden numero. Arvoa ei tarvitse vaihtaa, jos Shelly on yksireleinen. Useampi rele määritellään pilkulla eroteltuna. Esim. [0,1,2]
