@@ -1,4 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
+// Supported Shelly firmwares: 1.0.3, 1.0.7
 
 // Common settings
 const ShellyName = "My Shelly";  // Name of this Shelly
