@@ -2,7 +2,7 @@
 // Supported Shelly firmwares: 1.0.3, 1.0.7
 
 // Change these settings as you like
-let Region = "FI"; // See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
+let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 let Relays = [0]; // Relays to control with this script. List relays as comma separated. For example: [0,1,2]
 let CheapestHours = "4";  // How many cheapest hours relay will be turned on? To ONLY use a price limit, put CheapestHours to "0".
 let OnlyNightHours = false; // false == cheapest hours can be any during day. true == cheapest hours are only searched from the night hours (22:00 - 07:00)

@@ -1,15 +1,15 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
 // Supported Shelly firmwares: 1.0.3, 1.0.7
 
-// Region to use. See supported regions in Swagger documentation: https://api.spot-hinta.fi/swagger/ui
-let Region = "FI";
+// Region to use
+let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 
 // First settings to control relay
 let SETTINGS_1 =
 {
     // Relay settings. Update these.
     RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
-    Relay: "0",  // Number of the relay within Shelly. First relay is always "0", next "1", etc.
+    Relay: "0", // Number of the relay within Shelly. First relay is always "0", next "1", etc.
     RelayName: "Waterboiler",  // Name for this relay which can be given freely. Used in debug logging mostly.
 
     // Settings for relay control logic. Update these.
