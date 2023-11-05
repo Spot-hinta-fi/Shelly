@@ -89,7 +89,7 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
         if (response.code === 400) { SetRelayStatusInShelly(Settings, false, "api"); return true; }
     }
 
-    print("HTTP status code does not indicate success. Error_code: " + JSON.stringify(error_code));
+    print("HTTP status code does not indicate success. Error_code: " + JSON.stringify(error_code) + " - Response: " + JSON.stringify(response));
     if (Settings.BackupHours.indexOf(cHour) > -1) {
         print("Executing backup rule for relay: " + Settings.RelayName + " - Current hour is a backup hour");
         SetRelayStatusInShelly(Settings, true, "backupHour");
@@ -106,8 +106,8 @@ function SetRelayStatusInShelly(Settings, newStatus, relayStatusSource) {
     else if (Settings.Inverted === true && newStatus === false) { newStatus = true; }
 
     // Don't close relay if it is already registered as closed AND source in last control is 'api'
-    if (Settings.RelayStatus === false && newStatus === false && Settings.RelayStatusSource === "api") {
-        print("Relay is already closed. Not closing again."); return;
+    if (Settings.RelayStatus === newStatus && Settings.RelayStatusSource === "api") {
+        print("No action is done. The relay status remains the same as during previous hour."); return;
     }
 
     // Set relay in Shelly
