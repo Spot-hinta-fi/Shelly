@@ -7,48 +7,60 @@ let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3
 // First settings to control relay
 let SETTINGS_1 =
 {
-    // Relay settings. Update these.
-    RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
-    Relay: "0", // Number of the relay within Shelly. First relay is always "0", next "1", etc.
-    RelayName: "Waterboiler",  // Name for this relay which can be given freely. Used in debug logging mostly.
+    // Relay settings
+    RelayIsInUse: false, // To activate this rule, change this to: true
+    Relay: "0", // Shelly relay number. The first relay is always "0". Next relay is "1", etc.
+    RelayName: "Waterboiler",  // Name for this relay/rule
+    Inverted: false, // If "true", relay logic is inverted
 
-    // Settings for relay control logic. Update these.
-    RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
+    // Conditions when heating should happen
+    RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
     PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
     MaxPrice: "999", // Maximum allowed price in euro cents.
-    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from 1=Monday to 7=Sunday. Modify only if you don't want everyday execution.
-    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
     BackupHours: [1, 2, 3, 21], // Backup hours (0...23). If Internet connection is down. Use [99], if you don't want any backup hours.
     BoosterHours: "99", // Comma separated list of booster hours (0...23). Relay is always ON during booster hours. Use "99" to disable this.
-    PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
-    PriorityHoursRank: "3",  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
-    PriceModifier: "0", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. F.ex. "-2.50"
-    Inverted: false, // If "true", relay logic is inverted
+
+    // When is this rule active?
+    AllowedDays: "1,2,3,4,5,6,7", // 1 = Monday and 7 = Sunday. Modify only if you don't want everyday execution.
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma.
+
+    // PriorityHours have two alternative use cases:
+    // A) Number of cheapest PriorityHours ("PriorityHoursRank") are given the lowest rank
+    // B) Priorityhours price is modified before Rank calculation (this does not guarantee lowest ranks)
+    PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. Use "99" to disable this.
+    PriorityHoursRank: "3", // How many PriorityHours are given the lowest rank?
+    PriceModifier: "0", // Íf PriorityHours have a lower price, you can compensate that with this parameter. F.ex. "-1.27" (euro cents)
 
     // Script technical fields. Do not edit!
     SettingsNumber: 1, RelayStatus: true, RelayStatusSource: "", RelayExecuted: false, Url: ""
 };
 
-// Second settings for the same or another relay
+// Second settings to control relay
 let SETTINGS_2 =
 {
-    // Relay settings. Update these.
+    // Relay settings
     RelayIsInUse: false,
     Relay: "0",
     RelayName: "Floor heater",
+    Inverted: false,
 
-    // Settings for relay control logic. Update these.
+    // Conditions when heating should happen
     RanksAllowed: "1,2,3,4,5",
     PriceAlwaysAllowed: "0",
     MaxPrice: "999",
-    AllowedDays: "1,2,3,4,5,6,7",
-    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
     BackupHours: [1, 2, 3, 21],
     BoosterHours: "99,99",
+
+     // When is this rule active?
+    AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
+
+    // PriorityHours have two alternative use cases:
+    // A) Number of cheapest PriorityHours ("PriorityHoursRank") are given the lowest rank
+    // B) Priorityhours price is modified before Rank calculation (this does not guarantee lowest ranks)
     PriorityHours: "99,99",
     PriorityHoursRank: "3",
     PriceModifier: "0",
-    Inverted: false,
 
     // Script technical fields. Do not edit!
     SettingsNumber: 2, RelayStatus: true, RelayStatusSource: "", RelayExecuted: false, Url: ""
