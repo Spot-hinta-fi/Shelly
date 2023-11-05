@@ -55,29 +55,29 @@ let SETTINGS =
 };
 
 // Don't touch below!
-print("Script has started succesfully. The first relay action happens in 30 seconds.");
+print("SmartHeating: Script has started succesfully. The first relay action happens in 30 seconds.");
 let cHour = 0; let Executed = false; let previousAction = ""; let invertedOn = "true"; let invertedOff = "false;"
 let urlToCall = "https://api.spot-hinta.fi/SmartHeating";
 if (SETTINGS.Inverted === true) { invertedOn = "false"; invertedOff = "true"; }
 
 Timer.set(30000, true, function () {
     let hour = new Date().getHours();
-    if (cHour !== hour) { cHour = hour; Executed = false; print("The hour has now changed and a new relay action is going to be performed.") }
-    if (cHour == hour && Executed == true) { print("This hour has already been executed. Waiting for an hour change."); return; }
+    if (cHour !== hour) { cHour = hour; Executed = false; print("SmartHeating: The hour has now changed and a new relay action is going to be performed.") }
+    if (cHour == hour && Executed == true) { print("SmartHeating: This hour has already been executed. Waiting for an hour change."); return; }
     Shelly.call("HTTP.POST", { url: urlToCall, body: SETTINGS, timeout: 15, ssl_ca: "*" }, RunResponse);
 });
 
 function RunResponse(result, error_code) {
     if (error_code === 0 && result !== null) {
         if ((result.code === 400 || result.code === 200) && previousAction === result.code) {
-            print("Response JSON: " + result.body);
-            print("No action is done. The relay statuses remains the same as during previous hour.");
+            print("SmartHeating: Response JSON: " + result.body);
+            print("SmartHeating: No action is done. The relay statuses remains the same as during previous hour.");
             Executed = true;
             return;
         }
         if (result.code === 400) {
-            print("Response JSON: " + result.body);
-            print("Changing relay status. Hour is too expensive. New relay status (true/false): " + invertedOff);
+            print("SmartHeating: Response JSON: " + result.body);
+            print("SmartHeating: Changing relay status. Hour is too expensive. New relay status (true/false): " + invertedOff);
             for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
                 Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOff + "}", null, null);
             }
@@ -86,8 +86,8 @@ function RunResponse(result, error_code) {
             return;
         }
         if (result.code === 200) {
-            print("Response JSON: " + result.body);
-            print("Changing relay status. Hour is cheap enough. New relay status (true/false): " + invertedOn);
+            print("SmartHeating: Response JSON: " + result.body);
+            print("SmartHeating: Changing relay status. Hour is cheap enough. New relay status (true/false): " + invertedOn);
             for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
                 Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOn + "}", null, null);
             }
@@ -96,7 +96,7 @@ function RunResponse(result, error_code) {
             return;
         }
         if (result.code === 422) {
-            print("Configuration error: " + JSON.stringify(result));
+            print("SmartHeating: Configuration error: " + JSON.stringify(result));
             Executed = false;
             return;
         }
@@ -105,7 +105,7 @@ function RunResponse(result, error_code) {
     // Backup hour functionality
     previousAction = "";
     if (SETTINGS.BackupHours.indexOf(cHour) > -1) {
-        print("Error while fetching control information. It is a backup hour now. New relay status (true/false): " + invertedOn);
+        print("SmartHeating: Error while fetching control information. It is a backup hour now. New relay status (true/false): " + invertedOn);
         for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
             Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOn + "}", null, null);
         }
@@ -113,7 +113,7 @@ function RunResponse(result, error_code) {
         return;
     }
     else {
-        print("Error while fetching control information. It is not a backup hour now. New relay status (true/false): " + invertedOff);
+        print("SmartHeating: Error while fetching control information. It is not a backup hour now. New relay status (true/false): " + invertedOff);
         for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
             Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOff + "}", null, null);
         }

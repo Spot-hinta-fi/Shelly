@@ -34,7 +34,7 @@ Timer.set(10000, true, function () {
 let relayLastStatus = []; let relayStatusUpdates = []; let RelayNumbersToMonitor = [0, 1, 2, 3, 100];
 function CollectRelayStatusChanges() {
     if (UploadRelayChangesToCloud === false) { return; }
-    if (DebugLogs === true) { print("Checking for changes in relay statuses...") };
+    if (DebugLogs === true) { print("SmartMonitoring: Checking for changes in relay statuses...") };
 
     for (i in RelayNumbersToMonitor) {
         if (RelayNumbersToMonitor[i] === null) { continue; }
@@ -56,20 +56,20 @@ function CheckRelayStatus(i, relayNumber, relayName) {
 }
 
 function UploadRelayStatusChanges() {
-    if (relayStatusUpdates.length == 0) { if (DebugLogs === true) { print("No relay status changes to upload."); } return; }
-    if (DebugLogs === true) { print("Upload relay status changes."); }
+    if (relayStatusUpdates.length == 0) { if (DebugLogs === true) { print("SmartMonitoring: No relay status changes to upload."); } return; }
+    if (DebugLogs === true) { print("SmartMonitoring: Upload relay status changes."); }
     Shelly.call("HTTP.POST", { url: "https://api.spot-hinta.fi/SmartMonitoring", body: relayStatusUpdates, timeout: 5, ssl_ca: "*" }, RunRelayStatusUpdateResponse);
 }
 
 function RunRelayStatusUpdateResponse(result, error_code) {
 
     if (error_code === 0 && result !== null) {
-        if (result.code === 200) { relayStatusUpdates = []; if (DebugLogs === true) { print("Relay updates were uploaded succesfully."); } return; }
-        else if (result.code === 401) { print("PrivateKey is not accepted. Download this script using Shelly library (library url: https://api.spot-hinta.fi/shelly/scripts)"); return; }
-        else if (result.code === 400) { print("Problem with uploading the data. Please update the script."); }
-        else { print("Error while uploading relay status changes to server. HTTP error code: " + result.code + " - Number of changes not uploaded: " + relayStatusUpdates.length); }
+        if (result.code === 200) { relayStatusUpdates = []; if (DebugLogs === true) { print("SmartMonitoring: Relay updates were uploaded succesfully."); } return; }
+        else if (result.code === 401) { print("SmartMonitoring: PrivateKey is not accepted. Download this script using Shelly library (library url: https://api.spot-hinta.fi/shelly/scripts)"); return; }
+        else if (result.code === 400) { print("SmartMonitoring: Problem with uploading the data. Please update the script."); }
+        else { print("SmartMonitoring: Error while uploading relay status changes to server. HTTP error code: " + result.code + " - Number of changes not uploaded: " + relayStatusUpdates.length); }
     }
-    else { print("Failed to upload status changes. Number of status changes to be uploaded: " + relayStatusUpdates.length); }
+    else { print("SmartMonitoring: Failed to upload status changes. Number of status changes to be uploaded: " + relayStatusUpdates.length); }
 }
 
 // Check script executions
@@ -84,13 +84,13 @@ function CheckScriptsExecution() {
 
 function VerifyScriptStatus(script) {
     Shelly.call("Script.GetStatus", { id: script }, function (res) {
-        if (res === undefined) { print("Script number is invalid/script not found: " + script); return; }
+        if (res === undefined) { print("SmartMonitoring: Script number is invalid/script not found: " + script); return; }
         else if (res.running === true) {
-            if (DebugLogs === true) { print("Monitored script " + script + " is running. All good."); }
+            if (DebugLogs === true) { print("SmartMonitoring: Monitored script " + script + " is running. All good."); }
             return;
         }
         else {
-            print("Monitored script " + script + " is NOT running. Starting the script.");
+            print("SmartMonitoring: Monitored script " + script + " is NOT running. Starting the script.");
             Shelly.call("Script.Start", { id: script }, null, null);
             Shelly.call("Script.SetConfig", { id: script, config: { enable: true } }, null, null);
         }
