@@ -32,7 +32,7 @@ let SETTINGS_1 =
     PriceModifier: "0", // Íf PriorityHours have a lower price, you can compensate that with this parameter. F.ex. "-1.27" (euro cents)
 
     // Script technical fields. Do not edit!
-    SettingsNumber: 1, RelayStatus: true, RelayStatusSource: "", RelayExecuted: false, Url: ""
+    SettingsNumber: 1, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: ""
 };
 
 // Second settings to control relay
@@ -63,16 +63,14 @@ let SETTINGS_2 =
     PriceModifier: "0",
 
     // Script technical fields. Do not edit!
-    SettingsNumber: 2, RelayStatus: true, RelayStatusSource: "", RelayExecuted: false, Url: ""
+    SettingsNumber: 2, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: ""
 };
 
 // Script starts here - Do not edit anything below
-// Variables needed to control the execution
 print("Rank-and-Price: the script is starting...");
 let currentHour = -1; let roundRobin = 0;
 
 Timer.set(20000, true, function () {
-
     if (currentHour !== new Date().getHours()) {
         currentHour = new Date().getHours();
         if (SETTINGS_1.RelayIsInUse === true) { SETTINGS_1.RelayExecuted = false } else { SETTINGS_1.RelayExecuted = true; };
@@ -97,38 +95,19 @@ function ProcessHttpRequestResponse(response, error_code, error_msg, Settings) {
 
 function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg, Settings) {
     if (error_code === 0 && response !== null) {
-        if (response.code === 200) { SetRelayStatusInShelly(Settings, true, "api"); return true; }
-        if (response.code === 400) { SetRelayStatusInShelly(Settings, false, "api"); return true; }
+        if (response.code === 200) { SetRelayStatusInShelly(Settings, Settings.InvertedOn); return true; }
+        if (response.code === 400) { SetRelayStatusInShelly(Settings, Settings.InvertedOff); return true; }
     }
-
-    print("Rank-and-Price: HTTP status code does not indicate success. Error_code: " + JSON.stringify(error_code) + " - Response: " + JSON.stringify(response));
-    if (Settings.BackupHours.indexOf(cHour) > -1) {
-        print("Rank-and-Price: Executing backup rule for relay: " + Settings.RelayName + " - Current hour is a backup hour");
-        SetRelayStatusInShelly(Settings, true, "backupHour");
-    } else {
-        print("Rank-and-Price: Current hour is not a backup hour. Relay name: " + Settings.RelayName);
-        SetRelayStatusInShelly(Settings, false, "backupHour");
-    }
-
-    return false;
+    if (Settings.BackupHours.indexOf(cHour) > -1) { SetRelayStatusInShelly(Settings, Settings.InvertedOn); return false; }
+    else { SetRelayStatusInShelly(Settings, Settings.InvertedOff); return false; }
 }
 
-function SetRelayStatusInShelly(Settings, newStatus, relayStatusSource) {
-    if (Settings.Inverted === true && newStatus === true) { newStatus = false; }
-    else if (Settings.Inverted === true && newStatus === false) { newStatus = true; }
-
-    // Don't close relay if it is already registered as closed AND source in last control is 'api'
-    if (Settings.RelayStatus === newStatus && Settings.RelayStatusSource === "api") {
-        print("Rank-and-Price: No action is done. The relay status remains the same as during previous hour."); return;
-    }
-
-    // Set relay in Shelly
+function SetRelayStatusInShelly(Settings, newStatus) {
+    if (Settings.RelayStatus === newStatus) { print("Rank-and-Price: No action is done. The relay status remains the same as during previous execution."); return; }
     print("Rank-and-Price: Changing relay status. Id: " + Settings.Relay + " - New relay status: " + newStatus);
     Shelly.call("Switch.Set", "{ id:" + Settings.Relay + ", on:" + JSON.stringify(newStatus) + "}", null, null);
-
-    // Save status information into settings
-    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; SETTINGS_1.RelayStatusSource = relayStatusSource; }
-    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; SETTINGS_2.RelayStatusSource = relayStatusSource; }
+    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; }
+    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; }
 }
 
 function BuildUrl(Settings) {
@@ -147,3 +126,5 @@ function BuildUrl(Settings) {
 }
 SETTINGS_1.Url = BuildUrl(SETTINGS_1);
 SETTINGS_2.Url = BuildUrl(SETTINGS_2);
+if (SETTINGS_1.Inverted === true) { SETTINGS_1.InvertedOn = false; SETTINGS_1.InvertedOff = true; }
+if (SETTINGS_2.Inverted === true) { SETTINGS_2.InvertedOn = false; SETTINGS_2.InvertedOff = true; }

@@ -21,7 +21,7 @@ const MonitoredScripts = [1]; // List here script ID's which you want to monitor
 
 
 // Script starts here. Do not edit this until you really know what you are doing!
-print("Spot-hinta.fi - SmartMonitoring is starting....");
+print("SmartMonitoring: Script is starting....");
 let roundRobin = 0;
 Timer.set(10000, true, function () {
     if (roundRobin == 0) { CollectRelayStatusChanges(); roundRobin = 1; return; }
@@ -77,7 +77,7 @@ let lastScriptCheck = Date();
 function CheckScriptsExecution() {
     if (MonitorScripts === false || Date().getMinutes() === lastScriptCheck.getMinutes()) { return; }
     else {
-        lastScriptCheck = Date(); if (DebugLogs === true) { print("Script monitoring started..."); }
+        lastScriptCheck = Date(); if (DebugLogs === true) { print("SmartMonitoring: Script monitoring started..."); }
         for (let i = 0; i < MonitoredScripts.length; i++) { VerifyScriptStatus(MonitoredScripts[i]); }
     }
 }
@@ -103,7 +103,7 @@ function TestInternetConnection() {
     if (MonitorInternetConnection === false || Date().getMinutes() === lastInternetCheck.getMinutes()) { return; }
 
     lastInternetCheck = Date();
-    if (DebugLogs === true) { print("Testing Internet connection..."); }
+    if (DebugLogs === true) { print("SmartMonitoring: Testing Internet connection..."); }
 
     // This is hosted in Azure Functions (Ireland) with 99,95% SLA promise
     Shelly.call("HTTP.GET", { url: "https://api.spot-hinta.fi/ping", timeout: 5, ssl_ca: "*" }, function (result, error_code) {
@@ -114,9 +114,9 @@ function TestInternetConnection() {
 
 let minutesFailed = 0;
 function TestInternetConnectionResult(result) {
-    if (result === true) { if (DebugLogs === true) { print("Internet connection is OK"); } minutesFailed = 0; return; }
+    if (result === true) { if (DebugLogs === true) { print("SmartMonitoring: Internet connection is OK"); } minutesFailed = 0; return; }
 
     minutesFailed = minutesFailed + 1;
-    print("Internet connection has failed now " + minutesFailed + " minutes. Reboot will happen after " + RebootShellyInMinutes + " minutes.");
+    print("SmartMonitoring: Internet connection has failed now " + minutesFailed + " minutes. Reboot will happen after " + RebootShellyInMinutes + " minutes.");
     if (minutesFailed > RebootShellyInMinutes) { Shelly.call("Shelly.Reboot"); }
 }
