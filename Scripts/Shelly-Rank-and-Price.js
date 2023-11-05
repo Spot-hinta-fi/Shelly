@@ -9,7 +9,7 @@ let SETTINGS_1 =
 {
     // Relay settings
     RelayIsInUse: false, // To activate this rule, change this to: true
-    Relay: "0", // Shelly relay number. The first relay is always "0". Next relay is "1", etc.
+    Relays: [0], // Relays to control with this rule. List relays as comma separated. For example: [0,1,2]
     RelayName: "Waterboiler",  // Name for this relay/rule
     Inverted: false, // If "true", relay logic is inverted
 
@@ -40,7 +40,7 @@ let SETTINGS_2 =
 {
     // Relay settings
     RelayIsInUse: false,
-    Relay: "0",
+    Relays: [1],
     RelayName: "Floor heater",
     Inverted: false,
 
@@ -104,8 +104,12 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
 
 function SetRelayStatusInShelly(Settings, newStatus) {
     if (Settings.RelayStatus === newStatus) { print("Rank-and-Price: No action is done. The relay status remains the same as during previous execution."); return; }
-    print("Rank-and-Price: Changing relay status. Id: " + Settings.Relay + " - New relay status: " + newStatus);
-    Shelly.call("Switch.Set", "{ id:" + Settings.Relay + ", on:" + JSON.stringify(newStatus) + "}", null, null);
+
+    for (let i = 0; i < Settings.Relays.length; i++) {
+        print("Rank-and-Price: Changing relay status. Id: " + Settings.Relays[i] + " - New relay status: " + newStatus);
+        Shelly.call("Switch.Set", "{ id:" + Settings.Relays[i] + ", on:" + newStatus + "}", null, null);
+    }
+   
     if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; }
     if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; }
 }
