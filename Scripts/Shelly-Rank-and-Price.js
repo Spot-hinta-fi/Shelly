@@ -68,7 +68,7 @@ let SETTINGS_2 =
 
 // Script starts here - Do not edit anything below
 // Variables needed to control the execution
-print("Rank and Price script is starting...");
+print("Rank-and-Price: the script is starting...");
 let currentHour = -1; let roundRobin = 0;
 
 Timer.set(20000, true, function () {
@@ -78,14 +78,14 @@ Timer.set(20000, true, function () {
         if (SETTINGS_1.RelayIsInUse === true) { SETTINGS_1.RelayExecuted = false } else { SETTINGS_1.RelayExecuted = true; };
         if (SETTINGS_2.RelayIsInUse === true) { SETTINGS_2.RelayExecuted = false } else { SETTINGS_2.RelayExecuted = true; };
     }
-    if (SETTINGS_1.RelayExecuted === true && SETTINGS_2.RelayExecuted === true) { print("Current hour is already done."); return; }
+    if (SETTINGS_1.RelayExecuted === true && SETTINGS_2.RelayExecuted === true) { print("Rank-and-Price: Current hour is already done."); return; }
     if (roundRobin === 0) { ExecuteRelayRule(SETTINGS_1); roundRobin = 1; return; }
     if (roundRobin === 1) { ExecuteRelayRule(SETTINGS_2); roundRobin = 0; return; }
 });
 
 function ExecuteRelayRule(Settings) {
     if (Settings.RelayIsInUse === false || Settings.RelayExecuted === true) { return; }
-    print("Execute HTTP GET. Relay name: " + Settings.RelayName + " - URL: " + Settings.Url);
+    print("Rank-and-Price: running rule for a relay: " + Settings.RelayName);
     Shelly.call("HTTP.Request", { method: "GET", url: Settings.Url, timeout: 10, ssl_ca: "*" }, ProcessHttpRequestResponse, Settings);
 }
 
@@ -101,12 +101,12 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
         if (response.code === 400) { SetRelayStatusInShelly(Settings, false, "api"); return true; }
     }
 
-    print("HTTP status code does not indicate success. Error_code: " + JSON.stringify(error_code) + " - Response: " + JSON.stringify(response));
+    print("Rank-and-Price: HTTP status code does not indicate success. Error_code: " + JSON.stringify(error_code) + " - Response: " + JSON.stringify(response));
     if (Settings.BackupHours.indexOf(cHour) > -1) {
-        print("Executing backup rule for relay: " + Settings.RelayName + " - Current hour is a backup hour");
+        print("Rank-and-Price: Executing backup rule for relay: " + Settings.RelayName + " - Current hour is a backup hour");
         SetRelayStatusInShelly(Settings, true, "backupHour");
     } else {
-        print("Current hour is not a backup hour. Relay name: " + Settings.RelayName);
+        print("Rank-and-Price: Current hour is not a backup hour. Relay name: " + Settings.RelayName);
         SetRelayStatusInShelly(Settings, false, "backupHour");
     }
 
@@ -119,11 +119,11 @@ function SetRelayStatusInShelly(Settings, newStatus, relayStatusSource) {
 
     // Don't close relay if it is already registered as closed AND source in last control is 'api'
     if (Settings.RelayStatus === newStatus && Settings.RelayStatusSource === "api") {
-        print("No action is done. The relay status remains the same as during previous hour."); return;
+        print("Rank-and-Price: No action is done. The relay status remains the same as during previous hour."); return;
     }
 
     // Set relay in Shelly
-    print("Changing relay status. Id: " + Settings.Relay + " -- New relay status: " + newStatus);
+    print("Rank-and-Price: Changing relay status. Id: " + Settings.Relay + " - New relay status: " + newStatus);
     Shelly.call("Switch.Set", "{ id:" + Settings.Relay + ", on:" + JSON.stringify(newStatus) + "}", null, null);
 
     // Save status information into settings
