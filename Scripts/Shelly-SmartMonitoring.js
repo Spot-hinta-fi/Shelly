@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3, 1.0.7. Script version: 2023-11-06
+// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-06
 
 // Common settings
 const ShellyName = "My Shelly";  // Name of this Shelly
