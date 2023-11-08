@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3, 1.0.7
+// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-08
 
 // Common settings
 const ShellyName = "My Shelly";  // Name of this Shelly
@@ -21,9 +21,9 @@ const MonitoredScripts = [1]; // List here script ID's which you want to monitor
 
 
 // Script starts here. Do not edit this until you really know what you are doing!
-print("Spot-hinta.fi - SmartMonitoring is starting....");
+print("SmartMonitoring: Script is starting....");
 let roundRobin = 0;
-Timer.set(10000, true, function () {
+Timer.set(30000, true, function () {
     if (roundRobin == 0) { CollectRelayStatusChanges(); roundRobin = 1; return; }
     if (roundRobin == 1) { UploadRelayStatusChanges(); roundRobin = 2; return; }
     if (roundRobin == 2) { CheckScriptsExecution(); roundRobin = 3; return; }
@@ -34,7 +34,7 @@ Timer.set(10000, true, function () {
 let relayLastStatus = []; let relayStatusUpdates = []; let RelayNumbersToMonitor = [0, 1, 2, 3, 100];
 function CollectRelayStatusChanges() {
     if (UploadRelayChangesToCloud === false) { return; }
-    if (DebugLogs === true) { print("Checking for changes in relay statuses...") };
+    if (DebugLogs === true) { print("SmartMonitoring: Checking for changes in relay statuses...") };
 
     for (i in RelayNumbersToMonitor) {
         if (RelayNumbersToMonitor[i] === null) { continue; }
@@ -56,41 +56,41 @@ function CheckRelayStatus(i, relayNumber, relayName) {
 }
 
 function UploadRelayStatusChanges() {
-    if (relayStatusUpdates.length == 0) { if (DebugLogs === true) { print("No relay status changes to upload."); } return; }
-    if (DebugLogs === true) { print("Upload relay status changes."); }
+    if (relayStatusUpdates.length == 0) { if (DebugLogs === true) { print("SmartMonitoring: No relay status changes to upload."); } return; }
+    if (DebugLogs === true) { print("SmartMonitoring: Upload relay status changes."); }
     Shelly.call("HTTP.POST", { url: "https://api.spot-hinta.fi/SmartMonitoring", body: relayStatusUpdates, timeout: 5, ssl_ca: "*" }, RunRelayStatusUpdateResponse);
 }
 
 function RunRelayStatusUpdateResponse(result, error_code) {
 
     if (error_code === 0 && result !== null) {
-        if (result.code === 200) { relayStatusUpdates = []; if (DebugLogs === true) { print("Relay updates were uploaded succesfully."); } return; }
-        else if (result.code === 401) { print("PrivateKey is not accepted. Download this script using Shelly library (library url: https://api.spot-hinta.fi/shelly/scripts)"); return; }
-        else if (result.code === 400) { print("Problem with uploading the data. Please update the script."); }
-        else { print("Error while uploading relay status changes to server. HTTP error code: " + result.code + " - Number of changes not uploaded: " + relayStatusUpdates.length); }
+        if (result.code === 200) { relayStatusUpdates = []; if (DebugLogs === true) { print("SmartMonitoring: Relay updates were uploaded succesfully."); } return; }
+        else if (result.code === 401) { print("SmartMonitoring: PrivateKey is not accepted. Download this script using Shelly library (library url: https://api.spot-hinta.fi/shelly/scripts)"); return; }
+        else if (result.code === 400) { print("SmartMonitoring: Problem with uploading the data. Please update the script."); }
+        else { print("SmartMonitoring: Error while uploading relay status changes to server. HTTP error code: " + result.code + " - Number of changes not uploaded: " + relayStatusUpdates.length); }
     }
-    else { print("Failed to upload status changes. Number of status changes to be uploaded: " + relayStatusUpdates.length); }
+    else { print("SmartMonitoring: Failed to upload status changes. Number of status changes to be uploaded: " + relayStatusUpdates.length); }
 }
 
 // Check script executions
-let lastScriptCheck = Date();
+let lastScriptCheck = new Date();
 function CheckScriptsExecution() {
-    if (MonitorScripts === false || Date().getMinutes() === lastScriptCheck.getMinutes()) { return; }
+    if (MonitorScripts === false || new Date().getMinutes() === lastScriptCheck.getMinutes()) { return; }
     else {
-        lastScriptCheck = Date(); if (DebugLogs === true) { print("Script monitoring started..."); }
+        lastScriptCheck = new Date(); if (DebugLogs === true) { print("SmartMonitoring: Script monitoring started..."); }
         for (let i = 0; i < MonitoredScripts.length; i++) { VerifyScriptStatus(MonitoredScripts[i]); }
     }
 }
 
 function VerifyScriptStatus(script) {
     Shelly.call("Script.GetStatus", { id: script }, function (res) {
-        if (res === undefined) { print("Script number is invalid/script not found: " + script); return; }
+        if (res === undefined) { print("SmartMonitoring: Script number is invalid/script not found: " + script); return; }
         else if (res.running === true) {
-            if (DebugLogs === true) { print("Monitored script " + script + " is running. All good."); }
+            if (DebugLogs === true) { print("SmartMonitoring: Monitored script " + script + " is running. All good."); }
             return;
         }
         else {
-            print("Monitored script " + script + " is NOT running. Starting the script.");
+            print("SmartMonitoring: Monitored script " + script + " is NOT running. Starting the script.");
             Shelly.call("Script.Start", { id: script }, null, null);
             Shelly.call("Script.SetConfig", { id: script, config: { enable: true } }, null, null);
         }
@@ -98,12 +98,12 @@ function VerifyScriptStatus(script) {
 }
 
 // Internet connection test
-let lastInternetCheck = Date();
+let lastInternetCheck = new Date();
 function TestInternetConnection() {
-    if (MonitorInternetConnection === false || Date().getMinutes() === lastInternetCheck.getMinutes()) { return; }
+    if (MonitorInternetConnection === false || new Date().getMinutes() === lastInternetCheck.getMinutes()) { return; }
 
-    lastInternetCheck = Date();
-    if (DebugLogs === true) { print("Testing Internet connection..."); }
+    lastInternetCheck = new Date();
+    if (DebugLogs === true) { print("SmartMonitoring: Testing Internet connection..."); }
 
     // This is hosted in Azure Functions (Ireland) with 99,95% SLA promise
     Shelly.call("HTTP.GET", { url: "https://api.spot-hinta.fi/ping", timeout: 5, ssl_ca: "*" }, function (result, error_code) {
@@ -114,9 +114,9 @@ function TestInternetConnection() {
 
 let minutesFailed = 0;
 function TestInternetConnectionResult(result) {
-    if (result === true) { if (DebugLogs === true) { print("Internet connection is OK"); } minutesFailed = 0; return; }
+    if (result === true) { if (DebugLogs === true) { print("SmartMonitoring: Internet connection is OK"); } minutesFailed = 0; return; }
 
     minutesFailed = minutesFailed + 1;
-    print("Internet connection has failed now " + minutesFailed + " minutes. Reboot will happen after " + RebootShellyInMinutes + " minutes.");
+    print("SmartMonitoring: Internet connection has failed now " + minutesFailed + " minutes. Reboot will happen after " + RebootShellyInMinutes + " minutes.");
     if (minutesFailed > RebootShellyInMinutes) { Shelly.call("Shelly.Reboot"); }
 }

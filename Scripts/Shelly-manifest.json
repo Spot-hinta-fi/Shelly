@@ -6,8 +6,8 @@
   },
   {
     "fname": "Shelly-Minimal-Heating.js",
-    "title": "Minimal heating script",
-    "description": "With this minimal and extremely simple script, it is possible to control heating based on spot-prices."
+    "title": "Minimal heating script - Simple script especially for a water boiler",
+    "description": "With this minimal and simple script, you can heat your water boiler based on cheapest hours and always allowed price. The script also has night-hours option."
   },
   {
     "fname": "Shelly-SmartHeating.js",
@@ -16,12 +16,17 @@
   },
   {
     "fname": "Shelly-Rank-and-Price.js",
-    "title": "Cheapest hours and price limitations",
-    "description": "With this script it is possible to control two different relays by using price limit and cheapest hours option."
+    "title": "Rank and Price - Advanced script with a price and rank rules.",
+    "description": "With this script it is possible to control two different relays with advanced price and rank rules."
   },
   {
     "fname": "Shelly-SmartMonitoring.js",
-    "title": "Monitoring script",
-    "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud."
+    "title": "SmartMonitoring script",
+    "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud where you can see the history of changes."
+  },
+  {
+    "fname": "Shelly-PlusPlugS-StreetLight.js",
+    "title": "Shelly Plus Plug S - Street Light script",
+    "description": "This script changes Shelly Plus Plug S -device led-light color (green, yellow, red) based on the electricity price."
   }
 ]

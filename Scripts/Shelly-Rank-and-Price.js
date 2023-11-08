@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3, 1.0.7
+// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-08
 
 // Region to use
 let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
@@ -7,248 +7,128 @@ let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3
 // First settings to control relay
 let SETTINGS_1 =
 {
-    // Relay settings. Update these.
-    RelayIsInUse: false, // Change this to true/false depending if you want to use this relay or not
-    Relay: "0", // Number of the relay within Shelly. First relay is always "0", next "1", etc.
-    RelayName: "Waterboiler",  // Name for this relay which can be given freely. Used in debug logging mostly.
-
-    // Settings for relay control logic. Update these.
-    RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. 'Rank' tells how cheap the hour is relatively to other hours. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
-    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
-    MaxPrice: "999", // Maximum allowed price in euro cents.
-    AllowedDays: "1,2,3,4,5,6,7", // Allowed days from 1=Monday to 7=Sunday. Modify only if you don't want everyday execution.
-    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma. 
-    BackupHours: [1, 2, 3, 21], // Backup hours (0...23). If Internet connection is down. Use [99], if you don't want any backup hours.
-    BoosterHours: "99", // Comma separated list of booster hours (0...23). Relay is always ON during booster hours. Use "99" to disable this.
-    PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. If 'PriceModifier' is "0" these hours always get the smallest 'rank'. Use "99" to disable this.
-    PriorityHoursRank: "3",  // This limits how many hours are prioritized (for example 3 cheapest hours from the list of priority hours)
-    PriceModifier: "0", // If priority hours have lower price - such as 'night electricity' - the difference in Euro cents. F.ex. "-2.50"
+    // Relay settings
+    RelayIsInUse: false, // To activate this rule, change this to: true
+    Relays: [0], // Relays to control with this rule. List relays as comma separated. For example: [0,1,2]
+    RelayName: "Waterboiler",  // Name for this relay/rule
     Inverted: false, // If "true", relay logic is inverted
 
+    // Conditions when heating should happen
+    RanksAllowed: "1,2,3,4,5", // List allowed 'ranks' in this rule. Cheapest hour is 1, the most expensive is 24. Use RanksAllowed: "0", if only price limit is wanted.
+    PriceAlwaysAllowed: "0", // Allowed price (in euro cents, without decimals). Use "average" for a daily average price. Use "-999" if not wanted.
+    MaxPrice: "999", // Maximum allowed price in euro cents.
+    BackupHours: [1, 2, 3, 21], // Backup hours (0...23). If Internet connection is down. Use [99], if you don't want any backup hours.
+    BoosterHours: "99", // Comma separated list of booster hours (0...23). Relay is always ON during booster hours. Use "99" to disable this.
+
+    // When is this rule active?
+    AllowedDays: "1,2,3,4,5,6,7", // 1 = Monday and 7 = Sunday. Modify only if you don't want everyday execution.
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12", // Execution months: 1=January to 12=December, separated with a comma.
+
+    // PriorityHours have two alternative use cases:
+    // A) Number of cheapest PriorityHours ("PriorityHoursRank") are given the lowest rank
+    // B) Priorityhours price is modified before Rank calculation (this does not guarantee lowest ranks)
+    PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. Use "99" to disable this.
+    PriorityHoursRank: "3", // How many PriorityHours are given the lowest rank?
+    PriceModifier: "0", // Íf PriorityHours have a lower price, you can compensate that with this parameter. F.ex. "-1.27" (euro cents)
+
     // Script technical fields. Do not edit!
-    SettingsNumber: 1,
-    RelayStatus: true,
-    RelayStatusSource: "",
-    RelayExecuted: false,
+    SettingsNumber: 1, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: ""
 };
 
-// Second settings for the same or another relay
+// Second settings to control relay
 let SETTINGS_2 =
 {
-    // Relay settings. Update these.
+    // Relay settings
     RelayIsInUse: false,
-    Relay: "0",
+    Relays: [1],
     RelayName: "Floor heater",
+    Inverted: false,
 
-    // Settings for relay control logic. Update these.
-    RanksAllowed: "1,2,3,4,5", 
+    // Conditions when heating should happen
+    RanksAllowed: "1,2,3,4,5",
     PriceAlwaysAllowed: "0",
     MaxPrice: "999",
-    AllowedDays: "1,2,3,4,5,6,7",
-    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
     BackupHours: [1, 2, 3, 21],
     BoosterHours: "99,99",
+
+     // When is this rule active?
+    AllowedDays: "1,2,3,4,5,6,7",
+    AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
+
+    // PriorityHours have two alternative use cases:
+    // A) Number of cheapest PriorityHours ("PriorityHoursRank") are given the lowest rank
+    // B) Priorityhours price is modified before Rank calculation (this does not guarantee lowest ranks)
     PriorityHours: "99,99",
     PriorityHoursRank: "3",
     PriceModifier: "0",
-    Inverted: false,
 
     // Script technical fields. Do not edit!
-    SettingsNumber: 2,
-    RelayStatus: true,
-    RelayStatusSource: "",
-    RelayExecuted: false,
+    SettingsNumber: 2, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: ""
 };
 
-// --------------------------
-// Script - no need to modify
-// --------------------------
+// Script starts here - Do not edit anything below
+print("Rank-and-Price: the script is starting...");
+let currentHour = -1; let roundRobin = 0;
 
-// Variables needed to control the execution
-let currentHour = "";
-let currentHourUpdated = "";
-let rounds = 0;
-
-// This is triggered by the timer (see end of the script)
-function ExecuteRelayRules() {
-
-    // Counter of exeutution rounds. First round means mostly.
-    rounds = rounds + 1;
-
-    // Reset relays if hour has changed
-    InitializeRelaysIfHourHasChanged(rounds);
-
-    // This was initialization round. Next round is the first actual processing round.
-    if (rounds === 1) { print("Script initialization done."); return; }
-
-    // Return if current hour is already done.
-    if (HasCurrentHourBeenDone() === true) {
-        return;
-    }
-
-    // Execute Relays which are in use and not executed yet.
-    ExecuteRelayRule(SETTINGS_1);
-    ExecuteRelayRule(SETTINGS_2);
-}
-
-// Executes HTTP GET query for a given settings
-function ExecuteRelayRule(Settings) {
-
-    // Do nothing if relay is not in use or it is already executed for this hour
-    if (Settings.RelayIsInUse === false || Settings.RelayExecuted === true) { return; }
-
-    // Get URL
-    let urlToCall = BuildUrl(Settings);
-
-    // HTTP Get Request to API
-    print("Execute HTTP GET. Relay name: " + Settings.RelayName + " - URL: " + urlToCall);
-    Shelly.call("HTTP.Request", { method: "GET", url: urlToCall, timeout: 10, ssl_ca: "*" }, ProcessHttpRequestResponse, Settings);
-}
-
-// Process response for HTTP GET
-function ProcessHttpRequestResponse(response, error_code, error_msg, Settings) {
-
-    // Process response and get status if processing was done successfully.
-    let response = SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg, Settings);
-
-    // Update relay executed status
-    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayExecuted = response; }
-    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayExecuted = response; }
-}
-
-// Control the relays based on the result from the API call
-function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg, Settings) {
-
-    // Check for network errors
-    if (error_code !== 0 || response === null) {
-        print("Network error occurred: " + error_msg);
-        RunBackupHourRule(Settings);
-        return false;
-    }
-
-    if (response.code === 200) {
-        SetRelayStatusInShelly(Settings, true, "api"); // Relay is turned on.
-        return true;
-    }
-    else if (response.code === 400) {
-        SetRelayStatusInShelly(Settings, false, "api"); // Relay is turned off.
-        return true;
-    }
-    else {
-        print("HTTP status code does not indicate success. HTTP status code: " + JSON.stringify(response.code));
-        RunBackupHourRule(Settings);
-        return false;
-    }
-}
-
-// Change relay status in Shelly
-function SetRelayStatusInShelly(Settings, newStatus, relayStatusSource) {
-
-    // Set status messages
-    let statusMessage = "";
-    if (newStatus === true && Settings.Inverted === true) { statusMessage = "Turn relay off (inverted). Relay name: " + Settings.RelayName; }
-    if (newStatus === false && Settings.Inverted === true) { statusMessage = "Turn relay on (inverted). Relay name: " + Settings.RelayName; }
-    if (newStatus === true && Settings.Inverted === false) { statusMessage = "Turn relay on. Relay name: " + Settings.RelayName; }
-    if (newStatus === false && Settings.Inverted === false) { statusMessage = "Turn relay off. Relay name: " + Settings.RelayName; }
-
-    // Switch behavior based on Inverted-setting
-    if (Settings.Inverted === true && newStatus === true) { newStatus = false; }
-    else if (Settings.Inverted === true && newStatus === false) { newStatus = true; }
-
-    // Don't close relay if it is already registered as closed AND source in last control is 'api'
-    // When closing has been done by 'backupHour', relay can be closed again.
-    if (Settings.RelayStatus === false && newStatus === false && Settings.RelayStatusSource === "api") {
-        print("Relay is already closed. Not closing again (this allows possible other script to work with same relay)");
-        return;
-    }
-
-    // Set relay in Shelly
-    print(statusMessage);
-    Shelly.call("Switch.Set", "{ id:" + Settings.Relay + ", on:" + JSON.stringify(newStatus) + "}", null, null);
-
-    // Save status information into settings
-    SetRelayStatusInSettings(Settings, newStatus, relayStatusSource);
-}
-
-// Set relay status for a given settings
-function SetRelayStatusInSettings(Settings, newStatus, relayStatusSource) {
-    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; SETTINGS_1.RelayStatusSource = relayStatusSource; }
-    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; SETTINGS_2.RelayStatusSource = relayStatusSource; }
-}
-
-// This is executed if API did not respond properly. This is NOT considered as successful execution
-function RunBackupHourRule(Settings) {
-
-    // Check if settings has BackupHours property
-    let hasBackupRules = false;
-    for (let property in Settings) {
-        if (property === "BackupHours") { hasBackupRules = true; }
-    }
-
-    // Return if not configured
-    if (hasBackupRules === false) { print("This setting does not have BackupHours property. Relay name: " + Settings.RelayName); return; }
-
-    // Check if current hour is listed in backup hours
-    let currentHourIsListed = false;
-    for (let i = 0; i < Settings.BackupHours.length; i++) {
-        print("Backup hour: " + Settings.BackupHours[i]);
-        if (Settings.BackupHours[i] === currentHour) { currentHourIsListed = true; }
-    }
-
-    // When current hour has not been updated for some reason, it might be better to consider this as backup hour
-    // Comment this line, if you don't like the behavior.
-    if (currentHour === null || currentHour === "") { currentHourIsListed = true; }
-
-    // Set Shelly relay according if hour is backup hour. 
-    print("Executing backup rule for relay: " + Settings.RelayName + " - Current hour: " + currentHour + " - Current hour is backup hour: " + JSON.stringify(currentHourIsListed));
-    SetRelayStatusInShelly(Settings, currentHourIsListed, "backupHour");
-}
-
-// Initialize relay statuses if hour has changed
-function InitializeRelaysIfHourHasChanged(rounds) {
-
-    // Update current hour in a global variable.
-    let date = new Date();
-    currentHourUpdated = date.getHours();
-
-    if (currentHour !== currentHourUpdated || rounds === 1) {
-        
-        // Update current hour
-        currentHour = currentHourUpdated;
-
-        // Skip relays which are not in use - set their "RelayExecuted" state to true.
+Timer.set(30000, true, function () {
+    if (currentHour !== new Date().getHours()) {
+        currentHour = new Date().getHours();
         if (SETTINGS_1.RelayIsInUse === true) { SETTINGS_1.RelayExecuted = false } else { SETTINGS_1.RelayExecuted = true; };
         if (SETTINGS_2.RelayIsInUse === true) { SETTINGS_2.RelayExecuted = false } else { SETTINGS_2.RelayExecuted = true; };
     }
+    if (SETTINGS_1.RelayExecuted === true && SETTINGS_2.RelayExecuted === true) { print("Rank-and-Price: Current hour is already done."); return; }
+    if (roundRobin === 0) { ExecuteRelayRule(SETTINGS_1); roundRobin = 1; return; }
+    if (roundRobin === 1) { ExecuteRelayRule(SETTINGS_2); roundRobin = 0; return; }
+});
+
+function ExecuteRelayRule(Settings) {
+    if (Settings.RelayIsInUse === false || Settings.RelayExecuted === true) { return; }
+    print("Rank-and-Price: running rule for a relay: " + Settings.RelayName);
+    Shelly.call("HTTP.Request", { method: "GET", url: Settings.Url, timeout: 10, ssl_ca: "*" }, ProcessHttpRequestResponse, Settings);
 }
 
-// Check if all relays are done for this hour.
-function HasCurrentHourBeenDone() {
+function ProcessHttpRequestResponse(response, error_code, error_msg, Settings) {
+    let relayExecuted = SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg, Settings);
+    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayExecuted = relayExecuted; }
+    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayExecuted = relayExecuted; }
+}
 
-    if (SETTINGS_1.RelayExecuted === true && SETTINGS_2.RelayExecuted === true) {
-        print("Current hour is already done.");
-        return true;
+function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg, Settings) {
+    if (error_code === 0 && response !== null) {
+        if (response.code === 200) { SetRelayStatusInShelly(Settings, Settings.InvertedOn); return true; }
+        if (response.code === 400) { SetRelayStatusInShelly(Settings, Settings.InvertedOff); return true; }
     }
-
-    return false;
+    if (Settings.BackupHours.indexOf(cHour) > -1) { SetRelayStatusInShelly(Settings, Settings.InvertedOn); return false; }
+    else { SetRelayStatusInShelly(Settings, Settings.InvertedOff); return false; }
 }
 
-// Builds URL to call the API
+function SetRelayStatusInShelly(Settings, newStatus) {
+    if (Settings.RelayStatus === newStatus) { print("Rank-and-Price: No action is done. The relay status remains the same as during previous execution."); return; }
+
+    for (let i = 0; i < Settings.Relays.length; i++) {
+        print("Rank-and-Price: Changing relay status. Id: " + Settings.Relays[i] + " - New relay status: " + newStatus);
+        Shelly.call("Switch.Set", "{ id:" + Settings.Relays[i] + ", on:" + newStatus + "}", null, null);
+    }
+   
+    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; }
+    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; }
+}
+
 function BuildUrl(Settings) {
-
     let url = "https://api.spot-hinta.fi/JustNowRanksAndPrice";
-        url += "?ranksAllowed=" + Settings.RanksAllowed;
-        url += "&priceAlwaysAllowed=" + Settings.PriceAlwaysAllowed;
-        url += "&maxPrice=" + Settings.MaxPrice;
-        url += "&allowedDays=" + Settings.AllowedDays;
-        url += "&allowedMonths=" + Settings.AllowedMonths;
-        url += "&boosterHours=" + Settings.BoosterHours;
-        url += "&priorityHours=" + Settings.PriorityHours;
-        url += "&priorityHoursRank=" + Settings.PriorityHoursRank;
-        url += "&priceModifier=" + Settings.PriceModifier;
-        url += "&region=" + Region;
-        return url;
+    url += "?ranksAllowed=" + Settings.RanksAllowed;
+    url += "&priceAlwaysAllowed=" + Settings.PriceAlwaysAllowed;
+    url += "&maxPrice=" + Settings.MaxPrice;
+    url += "&allowedDays=" + Settings.AllowedDays;
+    url += "&allowedMonths=" + Settings.AllowedMonths;
+    url += "&boosterHours=" + Settings.BoosterHours;
+    url += "&priorityHours=" + Settings.PriorityHours;
+    url += "&priorityHoursRank=" + Settings.PriorityHoursRank;
+    url += "&priceModifier=" + Settings.PriceModifier;
+    url += "&region=" + Region;
+    return url;
 }
-
-// Main timer to execute rules
-Timer.set(30000, true, ExecuteRelayRules);
+SETTINGS_1.Url = BuildUrl(SETTINGS_1);
+SETTINGS_2.Url = BuildUrl(SETTINGS_2);
+if (SETTINGS_1.Inverted === true) { SETTINGS_1.InvertedOn = false; SETTINGS_1.InvertedOff = true; }
+if (SETTINGS_2.Inverted === true) { SETTINGS_2.InvertedOn = false; SETTINGS_2.InvertedOff = true; }
