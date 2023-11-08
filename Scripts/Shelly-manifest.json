@@ -23,5 +23,10 @@
     "fname": "Shelly-SmartMonitoring.js",
     "title": "SmartMonitoring script",
     "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud where you can see the history of changes."
+  },
+  {
+    "fname": "Shelly-PlusPlugS-StreetLight.js",
+    "title": "Shelly Plus Plug S - Street Light script",
+    "description": "This script changes Shelly Plus Plug S -device led-light color (green, yellow, red) based on the electricity price."
   }
 ]

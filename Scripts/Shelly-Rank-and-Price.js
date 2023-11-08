@@ -70,7 +70,7 @@ let SETTINGS_2 =
 print("Rank-and-Price: the script is starting...");
 let currentHour = -1; let roundRobin = 0;
 
-Timer.set(20000, true, function () {
+Timer.set(30000, true, function () {
     if (currentHour !== new Date().getHours()) {
         currentHour = new Date().getHours();
         if (SETTINGS_1.RelayIsInUse === true) { SETTINGS_1.RelayExecuted = false } else { SETTINGS_1.RelayExecuted = true; };

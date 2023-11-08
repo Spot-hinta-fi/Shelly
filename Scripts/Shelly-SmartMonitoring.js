@@ -23,7 +23,7 @@ const MonitoredScripts = [1]; // List here script ID's which you want to monitor
 // Script starts here. Do not edit this until you really know what you are doing!
 print("SmartMonitoring: Script is starting....");
 let roundRobin = 0;
-Timer.set(10000, true, function () {
+Timer.set(15000, true, function () {
     if (roundRobin == 0) { CollectRelayStatusChanges(); roundRobin = 1; return; }
     if (roundRobin == 1) { UploadRelayStatusChanges(); roundRobin = 2; return; }
     if (roundRobin == 2) { CheckScriptsExecution(); roundRobin = 3; return; }
@@ -73,11 +73,11 @@ function RunRelayStatusUpdateResponse(result, error_code) {
 }
 
 // Check script executions
-let lastScriptCheck = Date();
+let lastScriptCheck = new Date();
 function CheckScriptsExecution() {
-    if (MonitorScripts === false || Date().getMinutes() === lastScriptCheck.getMinutes()) { return; }
+    if (MonitorScripts === false || new Date().getMinutes() === lastScriptCheck.getMinutes()) { return; }
     else {
-        lastScriptCheck = Date(); if (DebugLogs === true) { print("SmartMonitoring: Script monitoring started..."); }
+        lastScriptCheck = new Date(); if (DebugLogs === true) { print("SmartMonitoring: Script monitoring started..."); }
         for (let i = 0; i < MonitoredScripts.length; i++) { VerifyScriptStatus(MonitoredScripts[i]); }
     }
 }
@@ -98,11 +98,11 @@ function VerifyScriptStatus(script) {
 }
 
 // Internet connection test
-let lastInternetCheck = Date();
+let lastInternetCheck = new Date();
 function TestInternetConnection() {
-    if (MonitorInternetConnection === false || Date().getMinutes() === lastInternetCheck.getMinutes()) { return; }
+    if (MonitorInternetConnection === false || new Date().getMinutes() === lastInternetCheck.getMinutes()) { return; }
 
-    lastInternetCheck = Date();
+    lastInternetCheck = new Date();
     if (DebugLogs === true) { print("SmartMonitoring: Testing Internet connection..."); }
 
     // This is hosted in Azure Functions (Ireland) with 99,95% SLA promise
