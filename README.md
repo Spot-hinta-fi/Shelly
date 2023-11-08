@@ -21,3 +21,4 @@ Enjoy automatic control of your relays when the electricity price is cheap (or..
 3. "SmartHeating" - this script is Smart! It can control heating based on outdoor temperature plus much more!
 4. "Rank and Price limit" - this script can control two relays according to the fixed price, average price and also using the cheapest hours 
 5. "SmartMonitoring" - Stores history of relay status changes in spot-hinta.fi cloud. Monitors Internet connection and script executions.
+6. "Street light" - Shows Green/Yellow/Red color led depending on electricity price. Only for Shelly Plus Plug S -device!
