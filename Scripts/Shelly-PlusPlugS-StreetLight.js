@@ -14,7 +14,7 @@ const UnknownPriceColor = [100, 100, 100]; // Could not find price information =
 // Script starts here, do not edit.
 print("ShellyPlusPlugS-StreetLight script is starting...");
 let config; let currentHour = -1; let currentHourColor = UnknownPriceColor;
-Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response; ChangeColor(UnknownPriceColor); });
+Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response; });
 
 // Timer to  change color each hour
 Timer.set(30000, true, function () {
@@ -41,5 +41,15 @@ function ChangeColor(color) {
     config.leds.colors["switch:0"].on.rgb = color;
     config.leds.colors["switch:0"].off.rgb = color;
     let urlToCall = "http://localhost/rpc/PLUGS_UI.SetConfig?config=" + JSON.stringify(config);
-    Shelly.call("HTTP.Request", { method: "GET", url: urlToCall, timeout: 10, ssl_ca: "*" }, null);
+    Shelly.call("HTTP.Request", { method: "GET", url: urlToCall, timeout: 15, ssl_ca: "*" }, ProcessColorChangeResponse);
+}
+
+function ProcessColorChangeResponse(response, error_code, error_msg) {
+
+    if (error_code === 0 && response !== null) {
+        print("Successfully changed the color of the led. Response: " + JSON.stringify(response));
+        return;
+    }
+
+    print("Color change was not successful. Error code: " + error_code + " - Error message: " + error_msg);
 }
