@@ -18,7 +18,7 @@ Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response;
 
 // Timer to  change color each hour
 Timer.set(30000, true, function () {
-    if (currentHour === new Date().getHours()) { ChangeColor(currentHourColor); }
+    if (currentHour === new Date().getHours()) { return; }
     else {
         currentHour = new Date().getHours();
         print("Hour has changed, getting what color the LED light should be...");
