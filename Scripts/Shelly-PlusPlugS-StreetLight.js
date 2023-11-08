@@ -12,12 +12,14 @@ const ExpensivePriceColor = [100, 0, 0]; // Most expensive hours == Red
 const UnknownPriceColor = [100, 100, 100]; // Could not find price information == White
 
 // Script starts here, do not edit.
-print("ShellyPlusPlugS-StreetLight script is starting...");
+print("PlusPlugS-StreetLight script is starting... (color will be set in 60 seconds)");
 let config; let currentHour = -1; let currentHourColor = UnknownPriceColor;
+
+// Get current configuration. Only color is modified, other settings remain.
 Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response; });
 
-// Timer to  change color each hour
-Timer.set(30000, true, function () {
+// Timer to  change color each hour. Color changes during the first minute of an hour
+Timer.set(60000, true, function () {
     if (currentHour === new Date().getHours()) { return; }
     else {
         currentHour = new Date().getHours();
@@ -40,8 +42,8 @@ function ProcessResponse(response, error_code) {
 function ChangeColor(color) {
     config.leds.colors["switch:0"].on.rgb = color;
     config.leds.colors["switch:0"].off.rgb = color;
-    let urlToCall = "http://localhost/rpc/PLUGS_UI.SetConfig?config=" + JSON.stringify(config);
-    Shelly.call("HTTP.Request", { method: "GET", url: urlToCall, timeout: 15, ssl_ca: "*" }, ProcessColorChangeResponse);
+    let urlToUpdateColor = "http://localhost/rpc/PLUGS_UI.SetConfig?config=" + JSON.stringify(config);
+    Shelly.call("HTTP.Request", { method: "GET", url: urlToUpdateColor, timeout: 15, ssl_ca: "*" }, ProcessColorChangeResponse);
 }
 
 function ProcessColorChangeResponse(response, error_code, error_msg) {
