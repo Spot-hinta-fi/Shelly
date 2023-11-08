@@ -23,7 +23,7 @@ const MonitoredScripts = [1]; // List here script ID's which you want to monitor
 // Script starts here. Do not edit this until you really know what you are doing!
 print("SmartMonitoring: Script is starting....");
 let roundRobin = 0;
-Timer.set(15000, true, function () {
+Timer.set(30000, true, function () {
     if (roundRobin == 0) { CollectRelayStatusChanges(); roundRobin = 1; return; }
     if (roundRobin == 1) { UploadRelayStatusChanges(); roundRobin = 2; return; }
     if (roundRobin == 2) { CheckScriptsExecution(); roundRobin = 3; return; }
