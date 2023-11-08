@@ -17,7 +17,7 @@ let config; let currentHour = -1; let currentHourColor = UnknownPriceColor;
 Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response; ChangeColor(UnknownPriceColor); });
 
 // Timer to  change color each hour
-Timer.set(10000, true, function () {
+Timer.set(30000, true, function () {
     if (currentHour === new Date().getHours()) { ChangeColor(currentHourColor); }
     else {
         currentHour = new Date().getHours();
