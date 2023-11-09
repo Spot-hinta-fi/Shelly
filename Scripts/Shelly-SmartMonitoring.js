@@ -1,7 +1,8 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-08
+// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-09
 
 // Common settings
+const Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 const ShellyName = "My Shelly";  // Name of this Shelly
 const DebugLogs = true; // Set this to true, if you want to see also positive messages (not only errors) in the Shelly log.
 
@@ -58,7 +59,7 @@ function CheckRelayStatus(i, relayNumber, relayName) {
 function UploadRelayStatusChanges() {
     if (relayStatusUpdates.length == 0) { if (DebugLogs === true) { print("SmartMonitoring: No relay status changes to upload."); } return; }
     if (DebugLogs === true) { print("SmartMonitoring: Upload relay status changes."); }
-    Shelly.call("HTTP.POST", { url: "https://api.spot-hinta.fi/SmartMonitoring", body: relayStatusUpdates, timeout: 5, ssl_ca: "*" }, RunRelayStatusUpdateResponse);
+    Shelly.call("HTTP.POST", { url: "https://api.spot-hinta.fi/SmartMonitoring?region=" + Region, body: relayStatusUpdates, timeout: 10, ssl_ca: "*" }, RunRelayStatusUpdateResponse);
 }
 
 function RunRelayStatusUpdateResponse(result, error_code) {
