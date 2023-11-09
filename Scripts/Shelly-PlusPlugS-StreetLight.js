@@ -6,21 +6,20 @@
 // Region to use
 let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 
+// You have the option to set precise price limits or disable them, adjusting LED color based on relative prices:
+// The 8 cheapest hours will be displayed in green, the 8 most expensive in red, and the remaining 8 hours in yellow.
+const UsePriceLimits = true; // When set to "false," utilize relative prices instead of fixed price limits.
+const CheapPriceLimit = 5;  // Sets the price limit in euro cents. When the price falls below this limit, the color is "Green"
+const ExpensivePriceLimit = 12; // Establishes the expensive price limit in euro cents. When the price exceeds this limit, the color is set to "Red"
+
 // Configure colors
 const CheapPriceColor = [0, 100, 0]; // Green
 const MiddlePriceColor = [100, 60, 0]; // Yellow
 const ExpensivePriceColor = [100, 0, 0]; // Red
 const UnknownPriceColor = [100, 100, 100]; // White
 
-// Customized price limits. Overrides the standard functionality of 8 hours relative blocks.
-// Define cheap price limit (green) and expensive price limit (red). What is left between is middle price (yellow).
-const UsePriceLimits = false; // Change to 'true' if you want to define price limits for colors
-const CheapPriceLimit = 5;  // Cheap price limit in euro cents
-const ExpensivePriceLimit = 12; // Expensive price limit in euro cents
-
-
 // Script starts here, do not edit
-print("PlusPlugS-StreetLight script is starting... (color will be set in 60 seconds)");
+print("PlusPlugS-StreetLight: script is starting... (color will be set in 60 seconds)");
 let config; let currentHour = -1; let currentHourColor = UnknownPriceColor; let urlToCall = "";
 
 if (UsePriceLimits === true) {
@@ -37,28 +36,29 @@ Timer.set(60000, true, function () {
     if (currentHour === new Date().getHours()) { return; }
     else {
         currentHour = new Date().getHours();
-        print("Hour has changed, getting what color the LED light should be...");
+        print("PlusPlugS-StreetLight: Hour has changed, getting what color the LED light should be...");
         Shelly.call("HTTP.Request", { method: "GET", url: urlToCall, timeout: 10, ssl_ca: "*" }, ProcessResponse);
     }
 });
 
 function ProcessResponse(response, error_code) {
     if (error_code === 0 && response !== null && response.code === 200) {
+        let responseCode = response.body * 1;
         if (UsePriceLimits === true) {
-            if (response.body === 0) { print("Hour is cheap"); currentHourColor = CheapPriceColor; }
-            if (response.body === 1) { print("Hour is middle price"); currentHourColor = MiddlePriceColor; }
-            if (response.body === 2) { print("Hour is expensive"); currentHourColor = ExpensivePriceColor; }
+            if (responseCode === 0) { print("PlusPlugS-StreetLight: Hour is cheap"); currentHourColor = CheapPriceColor; }
+            if (responseCode === 1) { print("PlusPlugS-StreetLight: Hour is middle price"); currentHourColor = MiddlePriceColor; }
+            if (responseCode === 2) { print("PlusPlugS-StreetLight: Hour is expensive"); currentHourColor = ExpensivePriceColor; }
             ChangeColor(currentHourColor);
         }
         else {
-            if (response.body <= 8) { print("Hour is cheap. Rank: " + response.body); currentHourColor = CheapPriceColor; }
-            else if (response.body >= 17) { print("Hour is expensive. Rank: " + response.body); currentHourColor = ExpensivePriceColor; }
-            else { print("Hour is middle price. Rank: " + response.body); currentHourColor = MiddlePriceColor; }
+            if (responseCode <= 8) { print("PlusPlugS-StreetLight: Hour is cheap. Rank: " + responseCode); currentHourColor = CheapPriceColor; }
+            else if (responseCode >= 17) { print("PlusPlugS-StreetLight: Hour is expensive. Rank: " + responseCode); currentHourColor = ExpensivePriceColor; }
+            else { print("PlusPlugS-StreetLight: Hour is middle price. Rank: " + responseCode); currentHourColor = MiddlePriceColor; }
             ChangeColor(currentHourColor);
         }
     }
     else {
-        print("An error occurred while fetching rank data"); ChangeColor(UnknownPriceColor); currentHour = -1;
+        print("PlusPlugS-StreetLight: An error occurred while fetching rank data"); ChangeColor(UnknownPriceColor); currentHour = -1;
     }
 }
 
@@ -72,10 +72,10 @@ function ChangeColor(color) {
 function ProcessColorChangeResponse(response, error_code, error_msg) {
 
     if (error_code === 0 && response !== null) {
-        print("Successfully changed the color of the led. Response: " + JSON.stringify(response));
+        print("PlusPlugS-StreetLight: Successfully changed the color of the led.");
         return;
     }
 
-    print("Color change was not successful. Error code: " + error_code + " - Error message: " + error_msg);
+    print("PlusPlugS-StreetLight: Color change was not successful. Error code: " + error_code + " - Error message: " + error_msg);
     currentHour = -1;
 }
