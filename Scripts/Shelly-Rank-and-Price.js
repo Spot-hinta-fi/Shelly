@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-08
+// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-11
 
 // Region to use
 let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
@@ -29,10 +29,10 @@ let SETTINGS_1 =
     // B) Priorityhours price is modified before Rank calculation (this does not guarantee lowest ranks)
     PriorityHours: "99", // Comma separated list of hours (0...23) you want to prioritize. Use "99" to disable this.
     PriorityHoursRank: "3", // How many PriorityHours are given the lowest rank?
-    PriceModifier: "0", // Íf PriorityHours have a lower price, you can compensate that with this parameter. F.ex. "-1.27" (euro cents)
+    PriceModifier: "0", // If PriorityHours have a lower price, you can compensate that with this parameter. F.ex. "-1.27" (euro cents)
 
     // Script technical fields. Do not edit!
-    SettingsNumber: 1, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: ""
+    SettingsNumber: 1, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: "", IsFirstRound: true
 };
 
 // Second settings to control relay
@@ -51,7 +51,7 @@ let SETTINGS_2 =
     BackupHours: [1, 2, 3, 21],
     BoosterHours: "99,99",
 
-     // When is this rule active?
+    // When is this rule active?
     AllowedDays: "1,2,3,4,5,6,7",
     AllowedMonths: "1,2,3,4,5,6,7,8,9,10,11,12",
 
@@ -63,11 +63,12 @@ let SETTINGS_2 =
     PriceModifier: "0",
 
     // Script technical fields. Do not edit!
-    SettingsNumber: 2, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: ""
+    SettingsNumber: 2, RelayStatus: true, InvertedOn: true, InvertedOff: false, RelayExecuted: false, Url: "", IsFirstRound: true
 };
 
 // Script starts here - Do not edit anything below
-print("Rank-and-Price: the script is starting...");
+print("Rank-and-Price: Script is starting...");
+if (SETTINGS_1.RelayIsInUse === false && SETTINGS_2.RelayIsInUse === false) { print("Rank-and-Price: Both rules are disabled, script does nothing!"); }
 let currentHour = -1; let roundRobin = 0;
 
 Timer.set(30000, true, function () {
@@ -103,15 +104,15 @@ function SetRelayStatusInShellyBasedOnHttpStatus(response, error_code, error_msg
 }
 
 function SetRelayStatusInShelly(Settings, newStatus) {
-    if (Settings.RelayStatus === newStatus) { print("Rank-and-Price: No action is done. The relay status remains the same as during previous execution."); return; }
+    if (Settings.RelayStatus === newStatus && Settings.IsFirstRound === false) { print("Rank-and-Price: No action is done. The relay status remains the same as during previous execution."); return; }
 
     for (let i = 0; i < Settings.Relays.length; i++) {
         print("Rank-and-Price: Changing relay status. Id: " + Settings.Relays[i] + " - New relay status: " + newStatus);
         Shelly.call("Switch.Set", "{ id:" + Settings.Relays[i] + ", on:" + newStatus + "}", null, null);
     }
-   
-    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; }
-    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; }
+
+    if (Settings.SettingsNumber === 1) { SETTINGS_1.RelayStatus = newStatus; SETTINGS_1.IsFirstRound = false; }
+    if (Settings.SettingsNumber === 2) { SETTINGS_2.RelayStatus = newStatus; SETTINGS_2.IsFirstRound = false; }
 }
 
 function BuildUrl(Settings) {
