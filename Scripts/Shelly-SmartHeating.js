@@ -51,7 +51,7 @@ let SETTINGS =
     PriceModifier_Sum: -2.30, // How much the price is modified in euro cents? Can be positive or negative amount.
     PriceModifier_Months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // Modify if price modification is valid only during certain months
     PriceModifier_Days: [1, 2, 3, 4, 5, 6, 7], // Modify if the price modification is valid only during certain days
-    PriceModifier_Hours: [22, 23, 0, 1, 2, 3, 4, 5, 6, 7], // List here the hours (0...23) which price is modified for rank calculation
+    PriceModifier_Hours: [22, 23, 0, 1, 2, 3, 4, 5, 6], // List here the hours (0...23) which price is modified for rank calculation
 };
 
 // Don't touch below!
