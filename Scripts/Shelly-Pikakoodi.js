@@ -1,5 +1,5 @@
 ﻿// Voit halutessasi tukea palvelun ylläpitoa täällä: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly laiteohjelmistoversiot: 1.0.3 - 1.0.8. Skriptin versio: 2023-11-08
+// Tuetut Shelly laiteohjelmistoversiot: 1.0.3 - 1.1.0. Skriptin versio: 2023-12-22
 
 // Asetukset
 let Pikakoodi = 103;  // Hae sopiva pikakoodi: https://spot-hinta.fi/pikakoodit
