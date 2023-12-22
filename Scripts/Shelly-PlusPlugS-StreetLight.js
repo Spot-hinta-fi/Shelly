@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.0.8. Script version: 2023-11-09
+// Supported Shelly firmwares: 1.0.3 - 1.1.0. Script version: 2023-11-09
 
 // NOTE! This script works only with "Shelly Plus Plug S" -smart plug
 
@@ -14,9 +14,9 @@ const ExpensivePriceLimit = 12; // Establishes the expensive price limit in euro
 
 // Configure colors
 const CheapPriceColor = [0, 100, 0]; // Green
-const MiddlePriceColor = [100, 60, 0]; // Yellow
+const MiddlePriceColor = [100, 30, 0]; // Orange
 const ExpensivePriceColor = [100, 0, 0]; // Red
-const UnknownPriceColor = [100, 100, 100]; // White
+const UnknownPriceColor = [0, 0, 100]; // Blue
 
 // Script starts here, do not edit
 print("PlusPlugS-StreetLight: script is starting... (color will be set in 60 seconds)");
@@ -63,8 +63,12 @@ function ProcessResponse(response, error_code) {
 }
 
 function ChangeColor(color) {
+    //Set plug to power mode to ensure that price level lights works.
+    config.leds.mode = "switch";
     config.leds.colors["switch:0"].on.rgb = color;
+    config.leds.colors["switch:0"].on.brightness = 100;
     config.leds.colors["switch:0"].off.rgb = color;
+    config.leds.colors["switch:0"].off.brightness = 10;
     let urlToUpdateColor = "http://localhost/rpc/PLUGS_UI.SetConfig?config=" + JSON.stringify(config);
     Shelly.call("HTTP.Request", { method: "GET", url: urlToUpdateColor, timeout: 15, ssl_ca: "*" }, ProcessColorChangeResponse);
 }
