@@ -7,7 +7,7 @@ let Lammitystunnit_iltapaiva = 0;  // Kuinka monta halvinta tuntia lämmitetää
 let Rele = 0; // Mitä relettä ohjataan? (0 on ensimmmäinen rele Shellyssä. "Switch Add-on" moduulin rele on 100)
 
 // Koodi - älä koske
-let hour = -1; let executed = false; let url = "https://spot-hinta-testi.azurewebsites.net/WaterBoiler/" + Lammitystunnit_yo + "/" + Lammitystunnit_iltapaiva;
+let hour = -1; let executed = false; let url = "https://api.spot-hinta.fi/WaterBoiler/" + Lammitystunnit_yo + "/" + Lammitystunnit_iltapaiva;
 print("WaterBoiler: Ohjaus käynnistyy. Ensimmäinen ohjaus tapahtuu 30 sekunnin kuluttua.");
 Timer.set(30000, true, function () {
     if (hour != new Date().getHours()) { executed = false; hour = new Date().getHours(); }
