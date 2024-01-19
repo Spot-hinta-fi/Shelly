@@ -2,8 +2,8 @@
 // Tuetut Shelly laiteohjelmistoversiot: 1.0.3 - 1.1.0. Skriptin versio: 2024-01-19
 
 // Asetukset lämminvesivaraajan ohjaukseen
-let Lammitystunnit_yo = 3; // Kuinka monta halvinta tuntia lämmitetään 22:00 - 07:00?
-let Lammitystunnit_iltapaiva = 0;  // Kuinka monta halvinta tuntia lämmitetään 12:00 - 19:00?
+let Lammitystunnit_yo = 3; // Kuinka monta halvinta tuntia lämmitetään 22:00 - 06:59?
+let Lammitystunnit_iltapaiva = 0;  // Kuinka monta halvinta tuntia lämmitetään 12:00 - 19:59?
 let Rele = 0; // Mitä relettä ohjataan? (0 on ensimmmäinen rele Shellyssä. "Switch Add-on" moduulin rele on 100)
 
 // Koodi - älä koske
