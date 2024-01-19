@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.1.0. Script version: 2023-12-22
+// Supported Shelly firmwares: 1.0.3 - 1.1.0. Script version: 2024-01-19
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules
 // It is possible to configure the heating curve with a seven temperature points.

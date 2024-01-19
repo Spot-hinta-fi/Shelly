@@ -1,5 +1,5 @@
 // You can support spot-hinta.fi service here: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.1.0. Script version: 2023-12-22
+// Supported Shelly firmwares: 1.0.3 - 1.1.0. Script version: 2024-01-19
 
 // NOTE! This script works only with "Shelly Plus Plug S" -smart plug
 
