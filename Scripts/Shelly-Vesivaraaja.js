@@ -3,7 +3,7 @@
 
 // Asetukset lämminvesivaraajan ohjaukseen
 let Lammitystunnit_yo = 3; // Kuinka monta halvinta tuntia lämmitetään 22:00 - 06:59?
-let Lammitystunnit_iltapaiva = 10;  // Kuinka monta halvinta tuntia lämmitetään 12:00 - 19:59?
+let Lammitystunnit_iltapaiva = 0;  // Kuinka monta halvinta tuntia lämmitetään 12:00 - 19:59?
 let Rele = 0; // Mitä relettä ohjataan? (0 on ensimmmäinen rele Shellyssä. "Switch Add-on" rele on 100)
 
 // Koodi - älä koske
