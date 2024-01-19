@@ -11,7 +11,7 @@ let hour = -1; let executed = false; let url = "https://api.spot-hinta.fi/WaterB
 print("WaterBoiler: Ohjaus käynnistyy. Ensimmäinen ohjaus tapahtuu 30 sekunnin kuluttua.");
 Timer.set(30000, true, function () {
     if (hour != new Date().getHours()) { executed = false; hour = new Date().getHours(); }
-    if (executed == true) { print("WaterBoiler: Odotetaan tunnin vaihtumista"); return; }
+    if (executed) { print("WaterBoiler: Odotetaan tunnin vaihtumista"); return; }
     Shelly.call("HTTP.GET", { url: url, timeout: 15, ssl_ca: "*" }, function (result, error_code) {
         if (error_code !== 0 || result == null) { ShellyCall(true); executed = false; print("WaterBoiler: Kytketty päälle (virhetilanne)"); return; }
         if (result.code == 200) { ShellyCall(true); executed = true; print("WaterBoiler: Kytketty päälle."); return; }
