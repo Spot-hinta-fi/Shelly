@@ -8,7 +8,7 @@ let RELE = 0;      // Mitä relettä ohjataan?
 
 // KOODI
 let url = "https://api.spot-hinta.fi/WaterBoiler/" + TUNNIT_YO + "/" + TUNNIT_IP; let hour = null;
-print("WaterBoiler: Ohjaus käynnistyy. Ensimmäinen ohjaus tapahtuu 30 sekunnin kuluttua.");
+print("WaterBoiler: Ohjaus käynnistyy 30 sekunnissa.");
 Timer.set(30000, true, function () {
     if (hour == new Date().getHours()) { print("WaterBoiler: Odotetaan tunnin vaihtumista."); return; }
     Shelly.call("HTTP.GET", { url: url, timeout: 15, ssl_ca: "*" }, function (res, err) {
