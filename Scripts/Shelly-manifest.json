@@ -1,5 +1,10 @@
 [
   {
+    "fname": "Shelly-Vesivaraaja.js",
+    "title": "Suomenkielinen lämminvesivaraaja-skripti",
+    "description": "Todella helppo skripti lämminvesivaraajalle! Valitse kuinka monta halvinta tuntia varaaja lämmitetään yöllä ja iltapäivällä. (Finnish region only)"
+  },
+  {
     "fname": "Shelly-Pikakoodi.js",
     "title": "Suomenkielinen pikakoodi-skripti",
     "description": "Aseta haluamasi Spot-hinta.fi pikakoodi skriptiin ja se on kaikki tarvittava fiksuun ohjaukseen. (Finnish region only)"
