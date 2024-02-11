@@ -18,10 +18,23 @@ Enjoy automatic control of your relays when the electricity price is cheap (or m
 
 ## Shelly scripts in this package
 
-1. Vesivaraaja: For Finland, designed especially for water boiler heating during night and afternoon hours. NOTE! This does NOT always use the day's cheapest hours - use Minimal Heating script for maximum effiency. 
-3. Pikakoodi: For Finland, to use simple pre-defined rules, see https://spot-hinta.fi/pikakoodit/
-4. Minimal Heating: Excellent choice for many cases, for example for water boiler and floor heating. Very versatile.  
-5. Smart Heating: Can control heating based on outdoor temperature and much more. 
-6. Rank and Price Limit: Can control two relays according to the fixed price, average price and cheapest price 
-7. Smart Monitoring: Monitors internet connection and script execution. Stores relay status change history to spot-hinta.fi cloud. 
-8. Street light: Only for Shelly Plus Plug S as those it has the RGB led. Makes the led green/yellow/red depending on electricity price. 
+### Vesivaraaja
+For Finland, designed especially for water boiler heating during night and afternoon hours. NOTE! This does NOT always use the day's cheapest hours - use Minimal Heating script for maximum effiency. 
+
+### Pikakoodi
+For Finland, to use simple pre-defined rules, see https://spot-hinta.fi/pikakoodit/
+
+### Minimal Heating
+Excellent choice for many cases, for example for water boiler and floor heating. Very versatile.  
+
+### Smart Heating
+Can control heating based on outdoor temperature and much more. 
+
+### Rank and Price Limit
+Can control two relays according to the fixed price, average price and cheapest price 
+
+### Smart Monitoring
+Monitors internet connection and script execution. Stores relay status change history to spot-hinta.fi cloud. 
+
+### Street light
+Only for Shelly Plus Plug S as those it has the RGB led. Makes the led green/yellow/red depending on electricity price. 
