@@ -1,10 +1,15 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.0.3 - 1.1.0. Skriptin versio: 2024-02-11
+// Tuetut Shelly ohjelmistot: 1.0.3 - 1.2.0. Skriptin versio: 2024-02-17
 
-// ASETUKSET. Anna pikakoodi niille releille, joita haluat ohjata. Koodi 999 ohittaa releen.
-let Pikakoodit = [103, 999, 999]; // Hae sopivat pikakoodit täältä: https://spot-hinta.fi/pikakoodit
+// OHJE: Anna "pikakoodi" kullekin ohjattavalle releelle. Koodilla 999 voit ohittaa releen.
+// Esimerkki 1: Ohjaa releitä 2 ja 3. Aseta pikakoodit näin: [999, 103, 125]
+// Esimerkki 2: Ohjaa vain yhtä relettä. Aseta pikakoodi näin: [103]
+// Hae sopivat pikakoodit täältä: https://spot-hinta.fi/pikakoodit
 
-// SKRIPTI. Älä muokkaa alla olevaa
+// PIKAKOODIT: Aseta tähän parametriin haluamasi pikakoodit
+let Pikakoodit = [103]; 
+
+// SKRIPTI. Älä muokkaa alla olevaa koodia
 let rr = -1; let tunti = -1; let vtila = false; print("Pikakoodi: Skripti käynnistyy.");
 Timer.set(15000, true, function () {
     if (tunti == new Date().getHours()) { return; } else {
