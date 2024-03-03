@@ -1,5 +1,5 @@
 // Thank you for your support: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.2.0. Script version: 2024-02-17
+// Supported Shelly firmwares: 1.0.3 - 1.2.3. Script version: 2024-03-03
 
 // Common settings
 const Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
