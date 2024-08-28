@@ -2,10 +2,10 @@
 // Supported Shelly firmwares: 1.0.3 - 1.4.2. Script version: 2024-08-26
 
 // Change these settings as you like
-let bn = 1; // Water heating - how many night hours?
-let ba = 1; // Water heating - How many afternoon hours?
-let hr = "2,3,4,5,6,7,8,9"; // Higher heating temperature ranks
-let nhr = "17,18,19,20,21,22,23,24"; // No heating ranks
+let bn = 1; // Relay 0: Water heating - how many night hours?
+let ba = 1; // Relay 0: Water heating - How many afternoon hours?
+let hr = "2,3,4,5,6,7,8,9"; // Relay 1: Ranks to activate relay (f.ex. higher heating temperature)
+let nhr = "17,18,19,20,21,22,23,24"; // Relay 2: Ranks to activate relay (f.ex. stopping heating during expensive hours)
 let pm = -1.43; // How much cheaper night hours are? Default: Caruna Espoo 1.9.2024 onwards
 
 // Script starts here - Do not edit anything below
