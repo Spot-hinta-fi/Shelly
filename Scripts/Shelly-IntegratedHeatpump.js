@@ -17,7 +17,7 @@ let url3 = api + "JustNowRanksAndPrice?priorityHours=22,23,0,1,2,3,4,5,6&priceMo
 print("IntegratedHeatPump: Script is starting...");
 Timer.set(15000, true, function () {
     let hour = new Date().getHours();
-    if (cHour !== hour) { cHour = hour; ex = false; print("IntegratedHeatPump: Hour changed.") }
+    if (cHour !== hour) { whon = false; cHour = hour; ex = false; print("IntegratedHeatPump: Hour changed.") }
     if (cHour == hour && ex == true) { print("IntegratedHeatPump: Waiting for an hour change."); return; }
 
     if (rr === 1) { utc = url1; rr = 2; rn = 0; }
@@ -29,14 +29,15 @@ Timer.set(15000, true, function () {
 function RunResponse(result, error_code) {
     if (error_code !== 0 || result === null) {
         Shelly.call("Switch.Set", "{ id:" + rn + ", on:false}", null, null);
-        print("IntegratedHeatPump: Relay OFF (error): " + rn); return;
+        print("IntegratedHeatPump: Relay OFF (error): " + rn);
+        if (rn === 0) { whon = false; }
+        return;
     }
 
-    // Water heating is a prioritized. No other action if water is going to be heated.
-    if (result.code === 200 && rn === 0) { whon = true; } else { whon = false; }
-    if (whon === true && rn > 0) { result.code = 400; }
-
     let on = (result.code === 200) ? true : false;
+    if (on === true && rn === 0) { whon = true; } // Water heating goes on this hour    
+    if (whon === true && rn > 0) { on = false; } // Other relays will not be enabled
+
     Shelly.call("Switch.Set", "{ id:" + rn + ", on:" + on + "}", null, null);
     print("IntegratedHeatPump: Relay number: " + rn + " - New status: " + on);
 }
