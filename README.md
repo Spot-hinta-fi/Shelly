@@ -19,7 +19,10 @@ Enjoy automatic control of your relays when the electricity price is cheap (or m
 ## Shelly scripts in this package
 
 ### Vesivaraaja
-For Finland, designed especially for water boiler heating during night and afternoon hours. NOTE! This does NOT always use the day's cheapest hours - use Minimal Heating script for maximum effiency. 
+For Finland, designed especially for water boiler heating during night and afternoon hours if you have small boiler or use lots of water. 
+
+### Vesivaraaja - Yösiirto
+Designed especially for water boiler heating in Finland, this script takes into account the day-night price difference for energy transfer. 
 
 ### Pikakoodi
 For Finland, to use simple pre-defined rules, see https://spot-hinta.fi/pikakoodit/
