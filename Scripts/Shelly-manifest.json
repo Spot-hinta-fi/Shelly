@@ -1,37 +1,37 @@
 [
   {
     "fname": "Shelly-Vesivaraaja.js",
-    "title": "Suomenkielinen lämminvesivaraaja-skripti",
-    "description": "Todella helppo skripti lämminvesivaraajalle! Valitse kuinka monta halvinta tuntia varaaja lämmitetään yöllä ja iltapäivällä. (Finnish region only)"
+    "title": "Lämminvesivaraaja - pieni varaaja/suuri kulutus",
+    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle kun varaaja on pieni tai kulutus suurta. Valitse kuinka monta halvinta tuntia varaaja lämmitetään yöllä ja iltapäivällä. (Finnish region)"
+  },
+  {
+    "fname": "Shelly-Vesivaraaja-yosiirto.js",
+    "title": "Lämminvesivaraaja - Yöajan siirtohinnan huomioiva lämmitys",
+    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle, jolla voi lämmittää halutun tuntimäärän ja samalla huomoida yösiirron halvemman siirtohinnan. (Finnish region)"
   },
   {
     "fname": "Shelly-Pikakoodi.js",
-    "title": "Suomenkielinen pikakoodi-skripti",
-    "description": "Aseta haluamasi Spot-hinta.fi pikakoodi skriptiin ja se on kaikki tarvittava fiksuun ohjaukseen. (Finnish region only)"
-  },
-  {
-    "fname": "Shelly-Minimal-Heating.js",
-    "title": "Minimal heating script - Simple script especially for a water boiler",
-    "description": "With this minimal and simple script, you can heat your water boiler based on cheapest hours and always allowed price. The script also has night-hours option."
+    "title": "Pikakoodi - Monenlaisia pörssiohjauksia pikakoodeilla",
+    "description": "Aseta haluamasi pikakoodi skriptiin lukuisista vaihtoehdoista fiksuun pörssiohjaukseen. (Finnish region)"
   },
   {
     "fname": "Shelly-SmartHeating.js",
-    "title": "SmartHeating based on the weather forecast and spot-prices!",
-    "description": "With this script, it is possible to control one or more relays according to the weather forecast adjusted hours and it has plenty of other features too."
+    "title": "SmartHeating - Heating based on the weather forecast and spot-prices!",
+    "description": "With this script, it is possible to control one or more relays according to the weather forecast adjusted hours and it has plenty of other features too. (multi-region)"
+  },
+  {
+    "fname": "Shelly-Minimal-Heating.js",
+    "title": "Minimal heating script - Simple but powerful script for different heating purposes",
+    "description": "With this you can heat based on cheapest hours and always allowed price. The script also has night-hours only option. (multi-region)"
   },
   {
     "fname": "Shelly-Rank-and-Price.js",
     "title": "Rank and Price - Advanced script with a price and rank rules.",
-    "description": "With this script it is possible to control two different relays with advanced price and rank rules."
+    "description": "With this it is possible to control multiple relays with advanced price and rank rules. (multi-region)"
   },
   {
     "fname": "Shelly-SmartMonitoring.js",
-    "title": "SmartMonitoring script",
-    "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud where you can see the history of changes."
-  },
-  {
-    "fname": "Shelly-PlusPlugS-StreetLight.js",
-    "title": "Shelly Plus Plug S - Street Light script",
-    "description": "This script changes Shelly Plus Plug S -device led-light color (green, yellow, red) based on the electricity price."
+    "title": "SmartMonitoring - Keep scripts running and report relay statuses",
+    "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud where you can see the history of changes. (multi-region)"
   }
 ]

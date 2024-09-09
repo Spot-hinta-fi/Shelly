@@ -2,13 +2,14 @@
 // Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.2. Skriptin versio: 2024-09-09
 
 // ASETUKSET
-let Tunnit_yo = 3;          // Yötuntien lukumäärä 22:00 - 07:00
-let Tunnit_ip = 0;          // Iltapäivätuntien lukumäärä 12:00 - 20:00
-let Rele = 0;               // Ohjattavan releen numero
-let Varatunnit = [3, 4, 5]; // Tunnit jolloin rele kytketään, mikäli Internet yhteys ei toimi tai palvelu on alhaalla
+let Rankit = [1, 2, 3];  // Listaa 'rankit' (eli tunnin järjestysnumero hinnan mukaan), jolloin rele kytketään
+let Rele = 0;  // Ohjattavan releen numero
+let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näihin ei tarvitse normaalisti koskea (edes kellonsiirron aikaan).
+let Hintaero = -1.43;  // Paljonko sähkön siirtohinta on halvempi yösiirron aikaan?
+let Varatunnit = [3, 4, 5];  // Tunnit jolloin rele kytketään, mikäli Internet yhteys ei toimi tai palvelu on alhaalla
 
 // KOODI
-let url = "https://api.spot-hinta.fi/WaterBoiler/" + Tunnit_yo + "/" + Tunnit_ip;
+let url = "https://api.spot-hinta.fi/JustNowRanksAndPrice?priorityHours=" + Yotunnit.join() + "&priceModifier=" + Hintaero + "&ranksAllowed=" + Rankit.join();
 let hour = -1; print("WaterBoiler: Ohjaus käynnistyy 30 sekunnissa.");
 Timer.set(30000, true, function () {
     if (hour == new Date().getHours()) { print("WaterBoiler: Odotetaan tunnin vaihtumista."); return; }
