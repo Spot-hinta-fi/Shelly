@@ -6,10 +6,11 @@ let Rankit = [1, 2, 3];      // Listaa 'rankit' (eli tunnin järjestysnumero hin
 let Releet = [0];            // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjataksesi kolmea relettä
 let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näihin ei tarvitse normaalisti koskea (edes kellonsiirron aikaan).
 let Hintaero = -1.43;        // Paljonko sähkön siirtohinta on halvempi yösiirron aikaan?
+let SallittuHinta = 0;       // Hinta kokonaisina sentteinä, jonka alapuolella lämmitys aina sallitaan (kokonaisina sentteinä)
 let Varatunnit = [3, 4, 5];  // Tunnit jolloin rele kytketään, mikäli ohjaustietoja ei saada haettua.
 
 // KOODI
-let url = "https://api.spot-hinta.fi/PlanAhead?priorityHours=" + Yotunnit.join() + "&priceModifier=" + Hintaero + "&ranksAllowed=" + Rankit.join();
+let url = "https://api.spot-hinta.fi/PlanAhead?priorityHours=" + Yotunnit.join() + "&priceModifier=" + Hintaero + "&ranksAllowed=" + Rankit.join() + "&priceAlwaysAllowed=" + SallittuHinta;
 let hour = -1; let minute = new Date().getMinutes(); let previousAction = ""; print("WaterBoiler: Ohjaus käynnistyy 15 sekunnissa.");
 let instructions = null; let loadInstructions = true; let instructionsTimeOut = new Date(); let previousStatus = "";
 
