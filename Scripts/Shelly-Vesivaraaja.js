@@ -1,5 +1,5 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.2. Skriptin versio: 2024-10-09
+// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2024-11-02
 
 // ASETUKSET
 let Tunnit_yo = 3;          // Yötuntien lukumäärä 22:00 - 07:00
