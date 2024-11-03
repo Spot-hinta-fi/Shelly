@@ -11,16 +11,16 @@ let Varatunnit = [3, 4, 5];  // Tunnit jolloin rele kytketään, mikäli ohjaust
 
 // KOODI
 let url = "https://api.spot-hinta.fi/PlanAhead?priorityHours=" + Yotunnit.join() + "&priceModifier=" + Hintaero + "&ranksAllowed=" + Rankit.join() + "&priceAlwaysAllowed=" + SallittuHinta;
-let hour = -1; let minute = new Date().getMinutes(); let previousAction = ""; print("WaterBoiler: Ohjaus käynnistyy 15 sekunnissa.");
-let instructions = null; let loadInstructions = true; let instructionsTimeOut = new Date(); let previousStatus = "";
+let hour = -1; let nextMessage = new Date(new Date().getTime() + 2 * 60 * 1000); let previousAction = ""; print("WaterBoiler: Ohjaus käynnistyy 15 sekunnissa.");
+let instructions = null; let loadInstructions = true; let instructionsTimeOut = new Date(); let previousStatus = ""; let nextStatusChange = new Date();
 
 Timer.set(15000, true, function () {
     if (loadInstructions == true || instructionsTimeOut < new Date()) { LoadInstructionsFromServer(); }
     else { ChangeRelayStatusIfNeeded(); }
 
-    if (minute !== new Date().getMinutes()) {
-        minute = new Date().getMinutes();
-        print("WaterBoiler: Ohjaus on toiminnassa. Releiden tila: " + previousStatus);
+    if (new Date() > nextMessage) {
+        nextMessage = new Date(new Date().getTime() + 2 * 60 * 1000);
+        print("WaterBoiler: Ohjaus on toiminnassa. Releiden tila: " + previousStatus + " - Seuraava tilamuutos: " + nextStatusChange.toString());
     }
 });
 
@@ -54,7 +54,7 @@ function GetCurrentlyExpectedRelayStatus() {
 
     for (let i = 0; i < instructions.length; i++) {
         if (instructions.length > i && instructions[i + 1].epochMs > epochMs) { continue; }
-        if (instructions.length > i && instructions[i + 1].epochMs <= epochMs) { return instructions[i + 1]; }
+        if (instructions.length > i && instructions[i + 1].epochMs <= epochMs) { nextStatusChange = new Date(instructions[i].epochMs); return instructions[i + 1]; }
         if (instructions[i].epochMs <= epochMs) { return instructions[i]; }
     }
 
