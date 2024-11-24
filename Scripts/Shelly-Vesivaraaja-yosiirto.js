@@ -6,7 +6,7 @@ let Rankit = [1, 2, 3];      // Listaa 'rankit' (eli tunnin järjestysnumero hin
 let Releet = [0];            // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjataksesi kolmea relettä
 let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näihin ei tarvitse normaalisti koskea (edes kellonsiirron aikaan).
 let Hintaero = -1.43;        // Paljonko sähkön siirtohinta on halvempi yösiirron aikaan?
-let SallittuHinta = 0;       // Hinta kokonaisina sentteinä, jonka alapuolella lämmitys aina sallitaan
+let SallittuHinta = 0;       // Päivähinta joka aina sallitaan. Yötunneilta sallitaan Hintaeron verran kalliimmatkin hinnat.
 let Varatunnit = [3, 4, 5];  // Tunnit jolloin rele kytketään, mikäli ohjaustietoja ei saada haettua.
 
 // KOODI
