@@ -1,5 +1,5 @@
 // Thank you for your support: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.4.2. Script version: 2024-08-26
+// Supported Shelly firmwares: 1.0.3 - 1.4.4. Script version: 2024-12-29
 
 // Change these settings as you like
 let bn = 1; // Relay 0: Water heating - how many night hours?

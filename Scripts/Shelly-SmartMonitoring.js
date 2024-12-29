@@ -1,5 +1,5 @@
 // Thank you for your support: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.4.4. Script version: 2024-11-02
+// Supported Shelly firmwares: 1.0.3 - 1.4.4. Script version: 2024-12-29
 
 // Common settings
 const Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
@@ -40,7 +40,7 @@ function CollectRelayStatusChanges() {
     for (i in RelayNumbersToMonitor) {
         if (RelayNumbersToMonitor[i] === null) { continue; }
         let relayNumber = RelayNumbersToMonitor[i];
-        let relayName = "Relay: " + i; if (RelayNames[i] !== null) { relayName = RelayNames[i]; }; 
+        let relayName = "Relay: " + i; if (RelayNames[i] !== null) { relayName = RelayNames[i]; };
         CheckRelayStatus(i, relayNumber, relayName);
     }
 }
@@ -107,9 +107,10 @@ function TestInternetConnection() {
     if (DebugLogs === true) { print("SmartMonitoring: Testing Internet connection..."); }
 
     // This is hosted in Azure Functions (Ireland) with 99,95% SLA promise
-    Shelly.call("HTTP.GET", { url: "https://api.spot-hinta.fi/ping", timeout: 5, ssl_ca: "*" }, function (result, error_code) {
-        if (error_code === 0 && result !== null && result.code === 200) { TestInternetConnectionResult(true); }
-        else { TestInternetConnectionResult(false); }
+    Shelly.call("HTTP.GET", { url: "https://api.spot-hinta.fi/ping", timeout: 10, ssl_ca: "*" }, function (result, error_code) {
+        if (result === null || error_code !== 0) { TestInternetConnectionResult(false); return; }
+        if (result !== null && result.code === 200) { TestInternetConnectionResult(true); return; }
+        else { TestInternetConnectionResult(false); return; }
     });
 }
 
