@@ -1,5 +1,5 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2024-11-02
+// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2024-12-29
 
 // ASETUKSET
 let Rankit = [1, 2, 3];      // Listaa 'rankit' (eli tunnin järjestysnumero hinnan mukaan), jolloin releet kytketään
