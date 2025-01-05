@@ -13,12 +13,12 @@ let Pikakoodit = [103];
 let rr = 0; let tunti = -1; let vtila = false; let tilat = [null, null, null, null]; print("Pikakoodi: Skripti käynnistyy.");
 Timer.set(30000, true, function () {
     if (tunti == new Date().getHours()) { print("Pikakoodi: Odotetaan tunnin vaihtumista."); return; }
-    if (rr < Pikakoodit.length) { ExecuteRelay(); rr++; return; }
-    if (vtila == false) { rr == 0; tunti = new Date().getHours(); return; } else { rr = 0; vtila = false; tunti = -1; return; }
+    if (rr < Pikakoodit.length) { ExecuteRelay(); return; }
+    if (vtila == false) { rr = 0; tunti = new Date().getHours(); return; } else { rr = 0; vtila = false; tunti = -1; return; }
 });
 
 function ExecuteRelay() {
-    if (Pikakoodit[rr] === 999 || Pikakoodit[rr] === undefined) { return; }
+    if (Pikakoodit[rr] === 999 || Pikakoodit[rr] === undefined) { rr++; return; }
     Shelly.call("HTTP.GET", { url: "https://api.spot-hinta.fi/QuickCode/" + Pikakoodit[rr], timeout: 10, ssl_ca: "*" }, RunResponse);
 }
 
@@ -31,4 +31,5 @@ function RunResponse(res, err) {
         print("Pikakoodi: Rele " + rr + " on kytketty " + (tila ? "päälle" : "pois päältä") + (!virhe ? "." : " (virhetilanne)."));
         if (virhe) { tilat[rr] = null; } else { tilat[rr] = tila; } // Aseta releen tila muistiin
     } else { print("Pikakoodi: Rele " + rr + " tilaa ei muutettu, koska tila on sama kuin edellisellä ohjauksella."); }
+    rr++;
 }
