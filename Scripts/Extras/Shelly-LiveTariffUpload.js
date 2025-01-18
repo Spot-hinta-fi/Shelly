@@ -5,6 +5,7 @@
 const ApiUrl = ""; // Shelly Control sivustolta haettu Live Tariff osoite (https://shelly...)
 const PriceNight = 0.0112; // Siirtohinta yöaikaan euroina (ilman veroa) (oletus: Caruna Espoo yösiirto)
 const PriceDay = 0.0255;   // Siirtohinta päiväaikaan euroina (ilman veroa) (oletus: Caruna Espoo yösiirto)
+const Margin = 0.00456;     // Pörssisähkön myyjän ottama toimitusmaksu/marginaali (oletus: PKS Priima) 
 const Tax = 0.02827515;    // Vero (sis. ALV 25.5%). Muuta vain jos laki muuttuu.
 
 // Scripti
@@ -18,7 +19,7 @@ Timer.set(15000, true, function () {
         started = false;
         Shelly.call("HTTP.GET", { url: pUrl, timeout: 5, ssl_ca: "*" }, function (res, err) {
             if (err != 0 || res == null || res.code !== 200) { print(fName + ": Hinnan haku epäonnistui."); return; }
-            let bodyText = JSON.stringify({ price: res.body * 1 + tra + Tax });
+            let bodyText = JSON.stringify({ price: res.body * 1 + tra + Tax + Margin });
             Shelly.call("HTTP.POST", { url: ApiUrl, body: bodyText, timeout: 5, ssl_ca: "*" }, function (res, err, errMsg) {
                 if (err !== 0) { print(fName + ": Virhe lähetyksessä:", errMsg); }
                 else { print(fName + ": Hinta lähetetty: " + res.body); }
