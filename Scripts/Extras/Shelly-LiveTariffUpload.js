@@ -4,7 +4,7 @@
 // Asetukset
 const ApiUrl = ""; // Shelly Control sivustolta haettu Live Tariff osoite (https://shelly...)
 const PriceNight = 0.0112; // Siirtohinta yöaikaan euroina (ilman veroa) (oletus: Caruna Espoo yösiirto)
-const PriceDay = 0.0255;   // Siirtohinta päiväaikaan euroina (ilman veroa) (oletus: Caruna Espoo yösiirto)
+const PriceDay = 0.0255;   // Siirtohinta päiväaikaan euroina (ilman veroa) (oletus: Caruna Espoo päiväsiirto)
 const Margin = 0.00456;    // Pörssisähkön myyjän ottama toimitusmaksu/marginaali (oletus: PKS Priima) 
 const Tax = 0.02827515;    // Sähkövero. Muuta vain jos laki muuttuu (oletus: vero Suomessa)
 const Area = "FI";         // Alue jolle hinta haetaan FI, SEx, NOx, DKx, EE, LV, LT. Hinta on aina euroina.
