@@ -1,5 +1,5 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2024-12-29
+// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2025-01-20
 
 // ASETUKSET
 let Rankit = [1, 2, 3];      // Listaa 'rankit' (eli tunnin järjestysnumero hinnan mukaan), jolloin releet kytketään
@@ -27,19 +27,19 @@ Timer.set(15000, true, function () {
 function ChangeRelayStatusIfNeeded() {
     let relayStatus = GetCurrentlyExpectedRelayStatus();
     if (loadInstructions == true) { print("WaterBoiler: uudet ohjaustiedot täytyy ladata."); return; }
-    if (previousStatus !== relayStatus.result) { SetRelayStatus(relayStatus); return; }
+    if (previousStatus !== relayStatus.result) { SetRelayStatus(relayStatus.result); return; }
 }
 
 function SetRelayStatus(newStatus) {
-    previousStatus = newStatus.result;
-    for (let i = 0; i < Releet.length; i++) { Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:" + newStatus.result + "}", null, null); }
-    print("WaterBoiler: Releiden tila vaihdettiin. Uusi tila: " + newStatus.result);
+    previousStatus = newStatus;
+    for (let i = 0; i < Releet.length; i++) { Shelly.call("Switch.Set", "{ id:" + Releet[i] + ", on:" + newStatus + "}", null, null); }
+    print("WaterBoiler: Releiden tila vaihdettiin. Uusi tila: " + newStatus);
 }
 
 function LoadInstructionsFromServer() {
     Shelly.call("HTTP.GET", { url: url, timeout: 15, ssl_ca: "*" }, function (res, err) {
         if (err != 0 || res == null || res.code !== 200 || res.body == null) {
-            print("WaterBoiler: Virhe ohjaustietoja haettaessa. Yritetään uudelleen.");
+            print("WaterBoiler: Virhe ohjaustietoja haettaessa. Yritetään uudelleen."); ActivateBackupHours();
         } else {
             instructions = JSON.parse(res.body); loadInstructions = false;
             instructionsTimeOut = new Date(instructions[0].epochMs - 10800 * 1000);
@@ -62,7 +62,7 @@ function GetCurrentlyExpectedRelayStatus() {
 }
 
 function ActivateBackupHours() {
-    loadInstructions = true; print("WaterBoiler: Siirrytään varatuntien käyttöön.");
-    if (Varatunnit.indexOf(new Date().getHours()) > -1) { SetRelayStatus(true); return; }
-    else { SetRelayStatus(false); return; }
+    loadInstructions = true;
+    if (Varatunnit.indexOf(new Date().getHours()) > -1) { print("WaterBoiler: Tunti on varatunti."); SetRelayStatus(true); return; }
+    else { print("WaterBoiler: Tunti ei ole varatunti."); SetRelayStatus(false); return; }
 }
