@@ -1,5 +1,5 @@
-// Thank you for your support: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.4.4. Script version: 2024-12-29
+// Thank you for your support: www.buymeacoffee.com/spothintafi
+// Supported Shelly firmwares: 1.0.3 - 1.4.4. Script version: 2025-02-11
 
 // Common settings
 const Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
@@ -99,11 +99,15 @@ function VerifyScriptStatus(script) {
 }
 
 // Internet connection test
-let lastInternetCheck = new Date();
-function TestInternetConnection() {
-    if (MonitorInternetConnection === false || new Date().getMinutes() === lastInternetCheck.getMinutes()) { return; }
+let nextInternetCheck = new Date();
+nextInternetCheck = new Date(nextInternetCheck.getTime() + 5 * 60 * 1000);
 
-    lastInternetCheck = new Date();
+function TestInternetConnection() {
+    if (MonitorInternetConnection === false || new Date() < nextInternetCheck) { return; }
+
+    nextInternetCheck = new Date();
+    nextInternetCheck = new Date(nextInternetCheck.getTime() + 5 * 60 * 1000);
+
     if (DebugLogs === true) { print("SmartMonitoring: Testing Internet connection..."); }
 
     // This is hosted in Azure Functions (Ireland) with 99,95% SLA promise
@@ -118,7 +122,7 @@ let minutesFailed = 0;
 function TestInternetConnectionResult(result) {
     if (result === true) { if (DebugLogs === true) { print("SmartMonitoring: Internet connection is OK"); } minutesFailed = 0; return; }
 
-    minutesFailed = minutesFailed + 1;
+    minutesFailed = minutesFailed + 5;
     print("SmartMonitoring: Internet connection has failed now " + minutesFailed + " minutes. Reboot will happen after " + RebootShellyInMinutes + " minutes.");
     if (minutesFailed > RebootShellyInMinutes) { Shelly.call("Shelly.Reboot"); }
 }
