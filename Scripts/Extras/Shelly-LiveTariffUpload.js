@@ -1,5 +1,5 @@
 /* Jos haluat tukea spot-hinta.fi palvelua: www.buymeacoffee.com/spothintafi
-   Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2025-01-25 */
+   Tuetut Shelly ohjelmistot: 1.4.4 - 1.6.2. Skriptin versio: 2025-06-02 */
 
 // Asetukset
 const ApiUrl = ""; // Shelly Control sivustolta haettu Live Tariff osoite (https://shelly...)

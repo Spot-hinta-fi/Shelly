@@ -1,5 +1,5 @@
 // Thank you for your support: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.0.3 - 1.4.4. Script version: 2024-12-29
+// Supported Shelly firmwares: 1.4.4 - 1.6.2. Script version: 2025-06-02
 
 // NOTE! This script works only with "Shelly Plus Plug S" -smart plug
 
