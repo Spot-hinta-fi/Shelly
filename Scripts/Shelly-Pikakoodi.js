@@ -1,5 +1,5 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.0.3 - 1.4.4. Skriptin versio: 2025-01-05
+// Tuetut Shelly ohjelmistot: 1.4.4 - 1.6.2. Skriptin versio: 2025-06-02
 
 // OHJE: Anna "pikakoodi" kullekin ohjattavalle releelle. Koodilla 999 voit ohittaa releen.
 // Esimerkki 1: Ohjaa releitä 2 ja 3. Aseta pikakoodit näin: [999, 103, 125]
