@@ -1,16 +1,18 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.4.4 - 1.6.2. Skriptin versio: 2025-06-02
+// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2025-09-30
+// Huomio: skripti toimii varttihinnoilla, eli valitut jaksot voivat alkaa ja päättyä vartin tarkkuudella.
 
 // ASETUKSET
-let Rankit = [1, 2, 3];      // Listaa 'rankit' (eli tunnin järjestysnumero hinnan mukaan), jolloin releet kytketään
-let Releet = [0];            // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjataksesi kolmea relettä
-let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näihin ei tarvitse normaalisti koskea (edes kellonsiirron aikaan).
-let Hintaero = -1.43;        // Paljonko sähkön siirtohinta on halvempi yösiirron aikaan?
-let SallittuHinta = 0;       // Päivähinta joka aina sallitaan. Yötunneilta sallitaan Hintaeron verran kalliimmatkin hinnat.
-let Varatunnit = [3, 4, 5];  // Tunnit jolloin rele kytketään, mikäli ohjaustietoja ei saada haettua.
+let ValitutHintajaksot = [1, 2, 3]; // Valittujen hintajaksojen ("rank") järjestysnumerot hinnan mukaan. Esim. [1, 2, 3] = kolme halvinta hintajaksoa, joille releet kytketään.
+let HintajaksonPituus = 60; // Yhden hintajakson ("rank") kesto minuutteina (15, 30, 60, 75, 90 tai 120). Kokonaiskytkentäaika = ValitutHintajaksot × HintajaksonPituus.
+let Releet = [0]; // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjaa kolmea relettä.
+let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näitä ei yleensä tarvitse muuttaa (myöskään kellonsiirron aikaan).
+let Hintaero = -1.43; // Yö- ja päivähinnan ero. Negatiivinen arvo = yösiirto on näin paljon halvempi. Siirtoyhtiöstä saatava tieto.
+let SallittuHinta = 0; // Päivähinta joka aina sallitaan. Yötunneilta sallitaan Hintaeron verran kalliimmatkin hinnat.
+let Varatunnit = [3, 4, 5]; // Tunnit, jolloin rele kytketään, jos ohjaustietoja ei saada haettua.
 
 // KOODI
-let url = "https://api.spot-hinta.fi/PlanAhead?priorityHours=" + Yotunnit.join() + "&priceModifier=" + Hintaero + "&ranksAllowed=" + Rankit.join() + "&priceAlwaysAllowed=" + SallittuHinta;
+let url = "https://api.spot-hinta.fi/PlanAhead?priorityHours=" + Yotunnit.join() + "&priceModifier=" + Hintaero + "&ranksAllowed=" + ValitutHintajaksot.join() + "&rankDuration=" + HintajaksonPituus + "&priceAlwaysAllowed=" + SallittuHinta;
 let hour = -1; let nextMessage = new Date(new Date().getTime() + 2 * 60 * 1000); let previousAction = ""; print("WaterBoiler: Ohjaus käynnistyy 15 sekunnissa.");
 let instructions = null; let loadInstructions = true; let instructionsTimeOut = new Date(); let previousStatus = ""; let nextStatusChange = new Date();
 
