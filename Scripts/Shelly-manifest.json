@@ -6,8 +6,8 @@
   },
   {
     "fname": "Shelly-Vesivaraaja-yosiirto.js",
-    "title": "Lämminvesivaraaja - Yöajan siirtohinnan huomioiva lämmitys",
-    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle, jolla voi lämmittää halutun tuntimäärän ja samalla huomoida yösiirron halvemman siirtohinnan. (Finnish region)"
+    "title": "Lämminvesivaraaja - Yöajan siirtohinnan huomioiva varttihinta-ohjaus",
+    "description": "Todella helppo pörssiohjaus esim. lämminvesivaraajalle, jolla voi lämmittää halutun tuntimäärän ja samalla huomoida yösiirron halvemman siirtohinnan. (Finnish region)"
   },
   {
     "fname": "Shelly-Pikakoodi.js",
