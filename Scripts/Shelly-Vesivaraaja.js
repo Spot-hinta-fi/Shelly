@@ -1,5 +1,5 @@
 ﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2025-10-01
+// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2025-10-03
 // Huomio: skripti toimii varttihinnoilla, eli hintajaksot voivat alkaa ja päättyä vartin tarkkuudella.
 
 // ASETUKSET
@@ -8,7 +8,6 @@ let Hintajaksoja_ip = 0; // Halvimpien hintajaksojen lukumäärä iltapäivän a
 let HintajaksonPituus = 60; // Yhden hintajakson pituus minuutteina (15, 30, 45, 60, 75, 90 tai 120)
 let Releet = [0]; // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjaa kolmea relettä.
 let Varatunnit = [3, 4, 5]; // Tunnit jolloin rele kytketään, mikäli Internet yhteys ei toimi tai palvelu on alhaalla
-
 
 // KOODI
 let url = "https://api.spot-hinta.fi/WaterBoiler/" + Hintajaksoja_yo + "/" + Hintajaksoja_ip + "?rankDuration=" + HintajaksonPituus;
