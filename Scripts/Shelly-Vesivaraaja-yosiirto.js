@@ -1,6 +1,6 @@
-﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
+﻿// Kiitos tuestasi: www.buymeacoffee.com/spothintafi
 // Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2025-09-30
-// Huomio: skripti toimii varttihinnoilla, eli valitut jaksot voivat alkaa ja päättyä vartin tarkkuudella.
+// Huomio: skripti toimii varttihinnoilla, eli hintajaksot voivat alkaa ja päättyä vartin tarkkuudella.
 
 // ASETUKSET
 let ValitutHintajaksot = [1, 2, 3]; // Valittujen hintajaksojen ("rank") järjestysnumerot hinnan mukaan. Esim. [1, 2, 3] = kolme halvinta hintajaksoa, joille releet kytketään.
