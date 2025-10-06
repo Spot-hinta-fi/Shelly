@@ -1,10 +1,10 @@
-﻿// Kiitos tuestasi: https://www.buymeacoffee.com/spothintafi
+﻿// Kiitos tuestasi: www.buymeacoffee.com/spothintafi
 // Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2025-09-30
-// Huomio: skripti toimii varttihinnoilla, eli valitut jaksot voivat alkaa ja päättyä vartin tarkkuudella.
+// Huomio: skripti toimii varttihinnoilla, eli hintajaksot voivat alkaa ja päättyä vartin tarkkuudella.
 
 // ASETUKSET
 let ValitutHintajaksot = [1, 2, 3]; // Valittujen hintajaksojen ("rank") järjestysnumerot hinnan mukaan. Esim. [1, 2, 3] = kolme halvinta hintajaksoa, joille releet kytketään.
-let HintajaksonPituus = 60; // Yhden hintajakson ("rank") kesto minuutteina (15, 30, 60, 75, 90 tai 120). Kokonaiskytkentäaika = ValitutHintajaksot × HintajaksonPituus.
+let HintajaksonPituus = 60; // Yhden hintajakson ("rank") kesto minuutteina (15, 30, 45, 60, 75, 90 tai 120). Kokonaiskytkentäaika = ValitutHintajaksot × HintajaksonPituus.
 let Releet = [0]; // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjaa kolmea relettä.
 let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näitä ei yleensä tarvitse muuttaa (myöskään kellonsiirron aikaan).
 let Hintaero = -1.43; // Yö- ja päivähinnan ero. Negatiivinen arvo = yösiirto on näin paljon halvempi. Siirtoyhtiöstä saatava tieto.

@@ -1,13 +1,13 @@
 [
   {
     "fname": "Shelly-Vesivaraaja.js",
-    "title": "Lämminvesivaraaja - pieni varaaja/suuri kulutus",
-    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle kun varaaja on pieni tai kulutus suurta. Valitse kuinka monta halvinta tuntia varaaja lämmitetään yöllä ja iltapäivällä. (Finnish region)"
+    "title": "Lämminvesivaraaja - pieni varaaja/suuri kulutus - varttihinta-ohjaus!",
+    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle kun varaaja on pieni tai kulutus suurta. Valitse kuinka monta halvinta jaksoa varaaja lämmitetään yöllä ja iltapäivällä. (Finnish region)"
   },
   {
     "fname": "Shelly-Vesivaraaja-yosiirto.js",
-    "title": "Lämminvesivaraaja - Yöajan siirtohinnan huomioiva lämmitys",
-    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle, jolla voi lämmittää halutun tuntimäärän ja samalla huomoida yösiirron halvemman siirtohinnan. (Finnish region)"
+    "title": "Lämminvesivaraaja - Yöajan siirtohinnan huomioiva varttihinta-ohjaus",
+    "description": "Todella helppo pörssiohjaus esim. lämminvesivaraajalle, jolla voi lämmittää halutun tuntimäärän ja samalla huomoida yösiirron halvemman siirtohinnan. (Finnish region)"
   },
   {
     "fname": "Shelly-Pikakoodi.js",
@@ -21,8 +21,8 @@
   },
   {
     "fname": "Shelly-Minimal-Heating.js",
-    "title": "Minimal heating script - Simple but powerful script for different heating purposes",
-    "description": "With this you can heat based on cheapest hours and always allowed price. The script also has night-hours only option. (multi-region)"
+    "title": "Minimal heating script - Simple but powerful script for different heating purposes. 15-minutes pricing support!",
+    "description": "With this you can heat based on cheapest periods and always allowed/maximum price. The script also has night-hours only option. (multi-region)"
   },
   {
     "fname": "Shelly-Rank-and-Price.js",

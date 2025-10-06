@@ -1,5 +1,5 @@
-// Thank you for your support: https://www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.6.2. Script version: 2025-06-02
+// Thank you for your support: www.buymeacoffee.com/spothintafi
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-06-02
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules.
 // Note! At the worst case temperature is off by 10-15c degrees as the measuring station is not at your home, so make your own measurements if precision is required.     
@@ -18,8 +18,8 @@ let SETTINGS =
 
     // Location for a temperature forecast. Temperature in use is 24h moving forecasted average temperature.
     PostalCode: "00100",      // Postal code (Finland only!). Use value "" if you are outside Finland or want to use coordinates!
-    Latitude: "60.169830",  // Latitude. Simple service to check the coordinates: https://www.latlong.net/
-    Longitude: "24.938190",  // Longitude. Simple service to check the coordinates: https://www.latlong.net/
+    Latitude: "60.169830",  // Latitude. Simple service to check the coordinates: www.latlong.net
+    Longitude: "24.938190",  // Longitude. Simple service to check the coordinates: www.latlong.net
 
     // Heating hours per temperature point. 
     // NOTE! Number of hours must increase(or stay the same) when going from warmer to colder.
