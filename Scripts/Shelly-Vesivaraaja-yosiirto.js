@@ -3,8 +3,8 @@
 // Huomio: skripti toimii varttihinnoilla, eli hintajaksot voivat alkaa ja päättyä vartin tarkkuudella.
 
 // ASETUKSET
-let ValitutHintajaksot = [1, 2, 3]; // Valittujen hintajaksojen ("rank") järjestysnumerot hinnan mukaan. Esim. [1, 2, 3] = kolme halvinta hintajaksoa, joille releet kytketään.
-let HintajaksonPituus = 60; // Yhden hintajakson ("rank") kesto minuutteina (15, 30, 45, 60, 75, 90 tai 120). Kokonaiskytkentäaika = ValitutHintajaksot × HintajaksonPituus.
+let ValitutHintajaksot = ["1-4"]; // Valitut hintajaksot hinnan mukaan (huom! lainausmerkit vain jaksoväleille). Voit myös määrittää yksitellen: [1,2,3,4].
+let HintajaksonPituus = 60; // Yhden hintajakson ("rank") kesto minuutteina (15, 30, 45, 60, 75, 90 tai 120). Kokonaiskytkentäaika = ValitutHintajaksot lkm. × HintajaksonPituus.
 let Releet = [0]; // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjaa kolmea relettä.
 let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näitä ei yleensä tarvitse muuttaa (myöskään kellonsiirron aikaan).
 let Hintaero = -1.43; // Yö- ja päivähinnan ero. Negatiivinen arvo = yösiirto on näin paljon halvempi. Siirtoyhtiöstä saatava tieto.
