@@ -4,8 +4,8 @@
 
 // Change these settings as you like
 let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
-let SelectedPricePeriods = [1, 2, 3, 4]; // The rank numbers of the selected price periods based on price. For example, [1, 2, 3] = the three cheapest price periods to which the relays are switched on.
-let PricePeriodLength = 60; // Duration of one price period ("rank") in minutes (15, 30, 45, 60, 75, 90, or 120). Total activation time = SelectedPricePeriods × PricePeriodLength.
+let SelectedPricePeriods = ["1-4"]; // Selects the cheapest price periods (Note! use quotes only for ranges). You can also define individually: [1,2,3,4].
+let PricePeriodLength = 60; // Duration of one price period ("rank") in minutes (15, 30, 45, 60, 75, 90, or 120). Total activation time = SelectedPricePeriods count × PricePeriodLength.
 let Relays = [0]; // Relays to control. For example: [0, 1, 2] to control three relays.
 let NightHours = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Night transfer hours. These usually don’t need to be changed (not even during daylight saving time changes).
 let PriceDifference = -1.43; // Difference between night and day prices. A negative value means the night transfer is cheaper by this amount. Information available from the electricity distribution company.
