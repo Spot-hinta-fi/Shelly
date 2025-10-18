@@ -20,7 +20,7 @@ const ExpensivePriceColor = [100, 0, 0]; // Red
 const UnknownPriceColor = [0, 0, 100]; // Blue
 
 // Script starts here, do not edit
-print("PlusPlugS-StreetLight: script is starting... (color will be set in 60 seconds)");
+print("PlusPlugS-StreetLight: script is starting... (color will be set in 30 seconds)");
 let config;
 let currentHour = -1;
 let currentQuarter = -1; // Track 15-minute periods (0, 1, 2, 3)
@@ -36,8 +36,8 @@ if (UsePriceLimits === true) {
 // Get current configuration. Only color is modified, other settings remain.
 Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response; });
 
-// Timer to change color each 15-minute period. Checks every minute if period has changed.
-Timer.set(60000, true, function () {
+// Timer to change color each 15-minute period. Checks every 30 seconds if period has changed.
+Timer.set(30000, true, function () {
     let now = new Date();
     let newHour = now.getHours();
     let newMinute = now.getMinutes();
