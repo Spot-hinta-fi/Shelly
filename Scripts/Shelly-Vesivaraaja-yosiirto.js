@@ -8,7 +8,7 @@ let HintajaksonPituus = 60; // Yhden hintajakson ("rank") kesto minuutteina (15,
 let Releet = [0]; // Ohjattavien releiden numerot. Esimerkiksi [0,1,2] ohjaa kolmea relettä.
 let Yotunnit = [22, 23, 0, 1, 2, 3, 4, 5, 6]; // Yösiirron tunnit. Näitä ei yleensä tarvitse muuttaa (myöskään kellonsiirron aikaan).
 let Hintaero = -1.43; // Yö- ja päivähinnan ero. Negatiivinen arvo = yösiirto on näin paljon halvempi. Siirtoyhtiöstä saatava tieto.
-let SallittuHinta = 0; // Päivähinta joka aina sallitaan. Yötunneilta sallitaan Hintaeron verran kalliimmatkin hinnat.
+let SallittuHinta = -99; // Päivähinta, joka aina sallitaan. Huom! Yöhinnoista vähennetään "Hintaero" ja sitä verrataan sallittuun hintaan. Pois käytöstä: -99
 let Varatunnit = [3, 4, 5]; // Tunnit, jolloin rele kytketään, jos ohjaustietoja ei saada haettua.
 
 // KOODI
