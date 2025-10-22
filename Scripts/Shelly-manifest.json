@@ -1,37 +1,37 @@
 [
   {
     "fname": "Shelly-Vesivaraaja.js",
-    "title": "Lämminvesivaraaja - pieni varaaja/suuri kulutus - varttihinta-ohjaus!",
-    "description": "Todella helppo pörssiohjaus lämminvesivaraajalle kun varaaja on pieni tai kulutus suurta. Valitse kuinka monta halvinta jaksoa varaaja lämmitetään yöllä ja iltapäivällä. (Finnish region)"
+    "title": "Lämminvesivaraaja – Älykäs varttihintaohjaus varaajalle",
+    "description": "Helppo pörssisähköohjaus varaajalle, kun haluat valita sekä yölle että iltapäivälle halvimmat jaksot. (Finnish region)"
   },
   {
     "fname": "Shelly-Vesivaraaja-yosiirto.js",
-    "title": "Lämminvesivaraaja - Yöajan siirtohinnan huomioiva varttihinta-ohjaus",
-    "description": "Todella helppo pörssiohjaus esim. lämminvesivaraajalle, jolla voi lämmittää halutun tuntimäärän ja samalla huomoida yösiirron halvemman siirtohinnan. (Finnish region)"
+    "title": "Lämminvesivaraaja – Yösiirtohinnan hyödyntävä varttihintaohjaus",
+    "description": "Vuorokausitasolta halvimmat jaksot etsivät skripti, mikä huomioi yöajan edullisemman siirtohinnan automaattisesti. (Finnish region)"
   },
   {
     "fname": "Shelly-Pikakoodi.js",
-    "title": "Pikakoodi - Monenlaisia pörssiohjauksia pikakoodeilla",
-    "description": "Aseta haluamasi pikakoodi skriptiin lukuisista vaihtoehdoista fiksuun pörssiohjaukseen. (Finnish region)"
+    "title": "Pikakoodi – Valmis pörssiohjaus sekunneissa",
+    "description": "Valitse pikakoodi ja ota käyttöön haluamasi pörssisähköohjaus ilman asetusten säätöä. (Finnish region)"
   },
   {
     "fname": "Shelly-SmartHeating.js",
-    "title": "SmartHeating - Heating based on the weather forecast and spot-prices!",
-    "description": "With this script, it is possible to control one or more relays according to the weather forecast adjusted hours and it has plenty of other features too. (multi-region)"
+    "title": "SmartHeating – Weather & price-based heating",
+    "description": "Smart heating that adapts to weather forecast and spot-prices. Supports multiple relays and flexible rules. (multi-region)"
   },
   {
     "fname": "Shelly-Minimal-Heating.js",
-    "title": "Minimal heating script - Simple but powerful script for different heating purposes. 15-minutes pricing support!",
-    "description": "With this you can heat based on cheapest periods and always allowed/maximum price. The script also has night-hours only option. (multi-region)"
+    "title": "Minimal Heating – Simple control with 15-min spot-prices support",
+    "description": "Heat during the cheapest periods with max price limits and optional night mode. (multi-region)"
   },
   {
     "fname": "Shelly-Rank-and-Price.js",
-    "title": "Rank and Price - Advanced script with a price and rank rules.",
-    "description": "With this it is possible to control multiple relays with advanced price and rank rules. (multi-region)"
+    "title": "Rank & Price – Multi-relay logic for pros",
+    "description": "Advanced control using price and rank rules for fine-tuned optimization. (multi-region)"
   },
   {
     "fname": "Shelly-SmartMonitoring.js",
-    "title": "SmartMonitoring - Keep scripts running and report relay statuses",
-    "description": "This script monitors other script statuses and Internet connection. Also saves relay status changes to spot-hinta.fi cloud where you can see the history of changes. (multi-region)"
+    "title": "SmartMonitoring – Script watchdog & relay tracker",
+    "description": "Keeps your scripts alive and logs relay changes to spot-hinta.fi for easy monitoring. (multi-region)"
   }
 ]
