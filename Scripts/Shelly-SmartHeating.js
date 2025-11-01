@@ -120,7 +120,7 @@ function ActivateBackupHours() {
 }
 
 function PrintSmartHeatingKeyAddressMessage() {
-    if (SETTINGS.PrivateKey === "<SHF-PrivateKey>") {
+    if (SETTINGS.PrivateKey.indexOf("PrivateKey") > -1) {
         print("SmartHeating: To see the current heating plan, please take this script through Spot-hinta.fi Shelly script library.");
     } else {
         print("SmartHeating: To view the current heating plan, please visit the following address:");
