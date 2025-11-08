@@ -1,5 +1,5 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-01
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-08
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules.
 // Note! Temperature forecast is based on YR.NO service. Please take into account, that accuracy of the forecast may vary.     
@@ -63,7 +63,6 @@ let SETTINGS =
 let url = "https://api.spot-hinta.fi/SmartHeating";
 let hour = -1; let nextMessage = new Date(new Date().getTime() + 2 * 60 * 1000); let previousAction = ""; print("SmartHeating: Control starts in 15 seconds.");
 let instructions = null; let loadInstructions = true; let instructionsTimeOut = new Date(); let previousStatus = ""; let nextStatusChange = new Date();
-
 
 Timer.set(15000, true, function () {
     if (loadInstructions == true || instructionsTimeOut < new Date()) { LoadInstructionsFromServer(); PrintSmartHeatingKeyAddressMessage(); }
