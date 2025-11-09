@@ -11,7 +11,7 @@ let SETTINGS =
     Region: "FI", // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 
     // Relay settings
-    RelayName: "Sleeping rooms and livingroom",  // Name for this configuration. Used in debug logging mostly.
+    RelayName: "Sleeping room and livingroom",  // Name for this configuration. Used in debug logging mostly.
     RelayNumbers: [0, 1], // List here relays that are controlled with this script. Shelly relay numbering starts from 0.
     Inverted: false,  // If this is set to 'true', the relay logic is inverted.
 
@@ -93,7 +93,7 @@ function LoadInstructionsFromServer() {
             print("SmartHeating: Error fetching control data. Retrying."); ActivateBackupHours();
         } else {
             instructions = JSON.parse(res.body); loadInstructions = false;
-            instructionsTimeOut = new Date(instructions.PlanAhead[0].epochMs - 10800 * 1000);
+            instructionsTimeOut = new Date(instructions.EpochMsExpiration);
             print("SmartHeating: Control data fetched successfully. New data will be fetched by: " + instructionsTimeOut.toString());
         }
     });
