@@ -15,9 +15,14 @@
     "description": "Valitse pikakoodi ja ota käyttöön haluamasi pörssisähköohjaus ilman asetusten säätöä. (Finnish region)"
   },
   {
+    "fname": "Shelly-SmartHeating-15.js",
+    "title": "SmartHeating – Weather & price-based heating - 15 min BETA",
+    "description": "New smart heating which adapts to weather forecast and 15min spot-prices. Supports multiple relays and flexible rules. (multi-region)"
+  },
+  {
     "fname": "Shelly-SmartHeating.js",
     "title": "SmartHeating – Weather & price-based heating",
-    "description": "Smart heating that adapts to weather forecast and spot-prices. Supports multiple relays and flexible rules. (multi-region)"
+    "description": "Smart heating that adapts to weather forecast and hourly spot-prices. Supports multiple relays and flexible rules. (multi-region)"
   },
   {
     "fname": "Shelly-Minimal-Heating.js",
