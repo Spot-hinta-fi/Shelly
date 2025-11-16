@@ -1,8 +1,9 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-08
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-06-02
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules.
-// Note! Temperature forecast is based on YR.NO service. Please take into account, that accuracy of the forecast may vary.     
+// Note! At the worst case temperature is off by 10-15c degrees as the measuring station is not at your home, so make your own measurements if precision is required.     
+// It is possible to configure the heating curve with a seven temperature points.
 
 // Modify these settings
 let SETTINGS =
@@ -11,118 +12,112 @@ let SETTINGS =
     Region: "FI", // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
 
     // Relay settings
-    RelayName: "Sleeping room and livingroom",  // Name for this configuration. Used in debug logging mostly.
-    RelayNumbers: [0, 1], // List here relays that are controlled with this script. Shelly relay numbering starts from 0.
+    RelayName: "Sleeping rooms and livingroom",  // Name for this configuration. Used in debug logging mostly.
+    RelayNumbers: [0, 1],  // List here relays that are controlled with this script. Shelly relay numbering starts from 0.
     Inverted: false,  // If this is set to 'true', the relay logic is inverted.
 
     // Location for a temperature forecast. Temperature in use is 24h moving forecasted average temperature.
-    PostalCode: "00100", // Postal code (Finland only!). Use value "" if you are outside Finland or want to use coordinates!
-    Latitude: "60.169830", // Latitude. Simple service to check the coordinates: www.latlong.net
-    Longitude: "24.938190", // Longitude. Simple service to check the coordinates: www.latlong.net
+    PostalCode: "00100",      // Postal code (Finland only!). Use value "" if you are outside Finland or want to use coordinates!
+    Latitude: "60.169830",  // Latitude. Simple service to check the coordinates: www.latlong.net
+    Longitude: "24.938190",  // Longitude. Simple service to check the coordinates: www.latlong.net
 
-    // Divide day into heating segments to avoid too long gaps between heating
-    // For example, if you want to have 4 heating segments per day, each segment is 6 hours long.
-    // Heating segments starts at 22:00 and ends at 21:59 the next day. This is to optimize night time heating.
-    HeatingSegments_PerDay: 4, // Valid values are 1, 2, 3, 4, 6, 8, 12, 24
+    // Heating hours per temperature point. 
+    // NOTE! Number of hours must increase(or stay the same) when going from warmer to colder.
+    HeatingHours_MaxTemperature: 25,  // Stop heating at this temperature (zero hours in all degrees above this)
+    HeatingHours_Plus30: 1,  	// Number of heating hours at +30C
+    HeatingHours_Plus20: 2,  	// Number of heating hours at +20C
+    HeatingHours_Plus10: 3,  	// Number of heating hours at +10C
+    HeatingHours_Zero: 5,  	    // Number of heating hours at 0C
+    HeatingHours_Minus10: 10, 	// Number of heating hours at -10C
+    HeatingHours_Minus20: 18, 	// Number of heating hours at -20C
+    HeatingHours_Minus30: 24, 	// Number of heating hours at -30C
+    HeatingHours_MinTemperature: -25, // Temperature where heating is always on (24 hours in all degrees below this)
 
-    // Minimum time for each heating period. With heat pumps, short heating times may not be efficient.
-    MinimumHeatingTime: 45, // Minimum length of one heating time in minutes. Valid values are 15, 30, 45, 60, 90, 120
+    // Minimum hours period (mainly for a daytime to avoid too long heating pauses)
+    MinimumHoursPeriod_IsActive: false, // Set to true, if you want to define minimum hours period
+    MinimumHoursPeriod_TemperatureStart: -10,  // Minimum hours are active only below this temperature
+    MinimumHoursPeriod_PriceAllowed: 50, // Minimum hour price limit in full euro cents. Skip hours that more expensive than this. Note! This can reduce minimum period hours.
+    MinimumHoursPeriod_Hours: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],  // List hours (0...23) for minimum hours period.
+    MinimumHoursPeriod_NumberOfHours: 3,  // How many hours at minimum must be put to this period. Note! Price limit can reduce this number.
 
-    // How many percent (%) of the day (22:00-21:59) the heating should be on at different outdoor temperatures.
-    // For example, if you want the heating to be on 12 hours per day at 0C, set the percent to 50.
-    // System automatically calculates how many MinimumHeatingTime -periods fits into the desired daily heating time.
-    HeatingPercentage_Plus30: 0, // Daily heating time percentage at +30C
-    HeatingPercentage_Plus20: 5, // Daily heating time percentage at +20C
-    HeatingPercentage_Plus10: 20, // Daily heating time percentage at +10C
-    HeatingPercentage_Zero: 50, // Daily heating time percentage at 0C
-    HeatingPercentage_Minus10: 70, // Daily heating time percentage at -10C
-    HeatingPercentage_Minus20: 80, // Daily heating time percentage at -20C
-    HeatingPercentage_Minus30: 100, // Daily heating time percentage at -30C
+    // Limitations and backup hours
+    AllowedDays: [1, 2, 3, 4, 5, 6, 7],  // Execution days: 1=Monday to 7=Sunday.
+    AllowedMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],  // Execution months: 1=January to 12=December.
+    BackupHours: [1, 2, 3, 4, 12, 13, 16, 17, 21, 22],  // Backup hours (0...23) if internet connection is not working.
+    MaximumPrice: 999, // Maximum allowed hour price in full euro cents. This can be used to f.ex. stop heating with electricity and switch to wood/oil/gas.
+    PriceAlwaysAllowed: 0, // Below what hour price the relay can be always on (or off, if inverted)? Value is in full euro cents. Use "-999" to disable.
 
-    // Reduce heating by given percentage when the heating segment average price is higher than HeatingReductionPrice.
-    // For example: if heating percentage is 50% and reduction percentage is 20%, the new heating percentage will be 40%.
-    // Note! average price is is calculated for each heating segment separately!
-    HeatingReductionPrice: "average", // Use "average" for daily average price limit or give limit in full euro cents, f.ex. "10".
-    HeatingReductionPercentage: 0, // Valid values are 0...100. Set to 0 to disable price based reduction.
-
-    // Price rules
-    NightHours: [22, 23, 0, 1, 2, 3, 4, 5, 6], // Night transfer hours. These usually don’t need to be changed (not even during daylight saving time changes).
-    PriceDifference: -1.43, // Difference between night and day prices. A negative value means the night transfer is cheaper by this amount. Information available from the electricity distribution company.
-    PriceDifference_Months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // Modify if price modification is valid only during certain months
-    PriceDifference_Days: [1, 2, 3, 4, 5, 6, 7], // Modify if the price modification is valid only during certain days
-    PriceAlwaysAllowed: -1.43, // Daytime price that is always allowed. During night hours, prices higher by the amount of the PriceDifference are also allowed.
-
-    // Backup hours
-    BackupHours: [1, 2, 3, 4, 12, 13, 16, 17, 21, 22],  // Backup hours (0...23) if internet connection is not working or service is down.
-
-    // Private key. Do not change this value!
-    PrivateKey: "<SHF-PrivateKey>" // This is generated by the server, when script is taken through Spot-hinta.fi Shelly script library.
+    // Price modification (f.ex. electricity transfer cost difference between night/day or seasonal price differences)
+    PriceModifier_IsActive: false,  // Change to true if price modification is wanted
+    PriceModifier_Sum: -2.30, // How much the price is modified in euro cents? Can be positive or negative amount.
+    PriceModifier_Months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], // Modify if price modification is valid only during certain months
+    PriceModifier_Days: [1, 2, 3, 4, 5, 6, 7], // Modify if the price modification is valid only during certain days
+    PriceModifier_Hours: [22, 23, 0, 1, 2, 3, 4, 5, 6], // List here the hours (0...23) which price is modified for rank calculation
 };
 
-// Code starts here - do not change
-let url = "https://api.spot-hinta.fi/SmartHeating";
-let hour = -1; let nextMessage = new Date(new Date().getTime() + 2 * 60 * 1000); let previousAction = ""; print("SmartHeating: Control starts in 15 seconds.");
-let instructions = null; let loadInstructions = true; let instructionsTimeOut = new Date(); let previousStatus = ""; let nextStatusChange = new Date();
+// Don't touch below!
+print("SmartHeating: Script has started succesfully. The first relay action happens in 30 seconds.");
+let cHour = 0; let Executed = false; let previousAction = ""; let invertedOn = "true"; let invertedOff = "false;"
+let urlToCall = "https://api.spot-hinta.fi/SmartHeating";
+if (SETTINGS.Inverted === true) { invertedOn = "false"; invertedOff = "true"; }
 
-Timer.set(15000, true, function () {
-    if (loadInstructions == true || instructionsTimeOut < new Date()) { LoadInstructionsFromServer(); PrintSmartHeatingKeyAddressMessage(); }
-    else { ChangeRelayStatusIfNeeded(); }
-
-    if (new Date() > nextMessage) {
-        nextMessage = new Date(new Date().getTime() + 2 * 60 * 1000);
-        print("SmartHeating: Control is running. Relay state: " + previousStatus + " - Next state change: " + nextStatusChange.toString());
-    }
+Timer.set(30000, true, function () {
+    let hour = new Date().getHours();
+    if (cHour !== hour) { cHour = hour; Executed = false; print("SmartHeating: The hour has now changed and a new relay action is going to be performed.") }
+    if (cHour == hour && Executed == true) { print("SmartHeating: This hour has already been executed. Waiting for an hour change."); return; }
+    Shelly.call("HTTP.POST", { url: urlToCall, body: SETTINGS, timeout: 15, ssl_ca: "*" }, RunResponse);
 });
 
-function ChangeRelayStatusIfNeeded() {
-    let relayStatus = GetCurrentlyExpectedRelayStatus();
-    if (loadInstructions == true) { print("SmartHeating: New control data must be loaded."); return; }
-    if (previousStatus !== relayStatus.result) { SetRelayStatus(relayStatus.result); return; }
-}
-
-function SetRelayStatus(newStatus) {
-    let invertedStatus = newStatus; if (SETTINGS.Inverted == true) { invertedStatus = !newStatus; }
-    previousStatus = newStatus;
-    for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) { Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedStatus + "}", null, null); }
-    print("SmartHeating: Relay state changed. New state: " + invertedStatus);
-}
-
-function LoadInstructionsFromServer() {
-    Shelly.call("HTTP.POST", { url: url, body: SETTINGS, timeout: 15, ssl_ca: "*" }, function (res, err) {
-        if (err != 0 || res == null || res.code !== 200 || res.body == null) {
-            print("SmartHeating: Error fetching control data. Retrying."); ActivateBackupHours();
-        } else {
-            instructions = JSON.parse(res.body); loadInstructions = false;
-            instructionsTimeOut = new Date(instructions.EpochMsExpiration);
-            print("SmartHeating: Control data fetched successfully. New data will be fetched by: " + instructionsTimeOut.toString());
+function RunResponse(result, error_code) {
+    if (error_code === 0 && result !== null) {
+        if ((result.code === 400 || result.code === 200) && previousAction === result.code) {
+            print("SmartHeating: Response JSON: " + result.body);
+            print("SmartHeating: No action is done. The relay statuses remains the same as during previous hour.");
+            Executed = true;
+            return;
         }
-    });
-}
-
-function GetCurrentlyExpectedRelayStatus() {
-    if (instructions == null || instructions.PlanAhead.length == 0) { ActivateBackupHours(); return; }
-    const epochMs = Date.now(); if (instructions.PlanAhead[0].epochMs < epochMs) { ActivateBackupHours(); return; }
-
-    for (let i = 0; i < instructions.PlanAhead.length; i++) {
-        if (instructions.PlanAhead.length > i && instructions.PlanAhead[i + 1].epochMs > epochMs) { continue; }
-        if (instructions.PlanAhead.length > i && instructions.PlanAhead[i + 1].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i + 1]; }
-        if (instructions.PlanAhead[i].epochMs <= epochMs) { return instructions.PlanAhead[i]; }
+        if (result.code === 400) {
+            print("SmartHeating: Response JSON: " + result.body);
+            print("SmartHeating: Changing relay status. Hour is too expensive. New relay status (true/false): " + invertedOff);
+            for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
+                Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOff + "}", null, null);
+            }
+            previousAction = result.code;
+            Executed = true;
+            return;
+        }
+        if (result.code === 200) {
+            print("SmartHeating: Response JSON: " + result.body);
+            print("SmartHeating: Changing relay status. Hour is cheap enough. New relay status (true/false): " + invertedOn);
+            for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
+                Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOn + "}", null, null);
+            }
+            previousAction = result.code;
+            Executed = true;
+            return;
+        }
+        if (result.code === 422) {
+            print("SmartHeating: Configuration error: " + JSON.stringify(result));
+            Executed = false;
+            return;
+        }
     }
 
-    print("SmartHeating: Error situation. No suitable control data found in the list."); ActivateBackupHours();
-}
-
-function ActivateBackupHours() {
-    loadInstructions = true;
-    if (SETTINGS.BackupHours.indexOf(new Date().getHours()) > -1) { print("SmartHeating: Hour now is backup hour."); SetRelayStatus(true); return; }
-    else { print("SmartHeating: Hour now is not backup hour."); SetRelayStatus(false); return; }
-}
-
-function PrintSmartHeatingKeyAddressMessage() {
-    if (SETTINGS.PrivateKey.indexOf("PrivateKey") > -1) {
-        print("SmartHeating: To see the current heating plan, please take this script through Spot-hinta.fi Shelly script library.");
-    } else {
-        print("SmartHeating: To view the current heating plan, please visit the following address:");
-        print("SmartHeating: https://api.spot-hinta.fi/SmartHeating?PrivateKey=" + SETTINGS.PrivateKey);
+    // Backup hour functionality
+    previousAction = "";
+    if (SETTINGS.BackupHours.indexOf(cHour) > -1) {
+        print("SmartHeating: Error while fetching control information. It is a backup hour now. New relay status (true/false): " + invertedOn);
+        for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
+            Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOn + "}", null, null);
+        }
+        Executed = false;
+        return;
+    }
+    else {
+        print("SmartHeating: Error while fetching control information. It is not a backup hour now. New relay status (true/false): " + invertedOff);
+        for (let i = 0; i < SETTINGS.RelayNumbers.length; i++) {
+            Shelly.call("Switch.Set", "{ id:" + SETTINGS.RelayNumbers[i] + ", on:" + invertedOff + "}", null, null);
+        }
+        Executed = false;
     }
 }
