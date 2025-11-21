@@ -1,5 +1,5 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-06-02
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-06-21
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules.
 // Note! At the worst case temperature is off by 10-15c degrees as the measuring station is not at your home, so make your own measurements if precision is required.     

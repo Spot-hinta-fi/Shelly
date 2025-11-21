@@ -16,8 +16,8 @@
   },
   {
     "fname": "Shelly-SmartHeating-15.js",
-    "title": "SmartHeating – Weather & price-based heating - 15 min BETA",
-    "description": "New smart heating which adapts to weather forecast and 15min spot-prices. Supports multiple relays and flexible rules. (multi-region)"
+    "title": "**BETA** SmartHeating – Weather & price-based heating - 15 min **BETA**",
+    "description": "New smart heating which adapts to weather forecast and 15 min spot-prices. Supports multiple relays and flexible rules. (multi-region)"
   },
   {
     "fname": "Shelly-SmartHeating.js",

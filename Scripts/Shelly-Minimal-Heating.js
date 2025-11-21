@@ -1,5 +1,5 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-10-05
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-21
 // Note: The script works with 15-minute prices, meaning the selected periods can start and end at 15-minute intervals.
 
 // Change these settings as you like
