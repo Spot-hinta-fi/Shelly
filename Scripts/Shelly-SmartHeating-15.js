@@ -1,5 +1,5 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-08
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-21
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules.
 // Note! Temperature forecast is based on YR.NO service. Please take into account, that accuracy of the forecast may vary.     
