@@ -104,9 +104,9 @@ function GetCurrentlyExpectedRelayStatus() {
     const epochMs = Date.now(); if (instructions.PlanAhead[0].epochMs < epochMs) { ActivateBackupHours(); return; }
 
     for (let i = 0; i < instructions.PlanAhead.length; i++) {
-        if (instructions.PlanAhead.length > i && instructions.PlanAhead[i + 1].epochMs > epochMs) { continue; }
-        if (instructions.PlanAhead.length > i && instructions.PlanAhead[i + 1].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i + 1]; }
-        if (instructions.PlanAhead[i].epochMs <= epochMs) { return instructions.PlanAhead[i]; }
+        if (instructions.PlanAhead.length > i + 1 && instructions.PlanAhead[i + 1].epochMs > epochMs) { continue; }
+        if (instructions.PlanAhead.length > i + 1 && instructions.PlanAhead[i + 1].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i + 1]; }
+        if (instructions.PlanAhead[i].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i]; }
     }
 
     print("SmartHeating: Error situation. No suitable control data found in the list."); ActivateBackupHours();
