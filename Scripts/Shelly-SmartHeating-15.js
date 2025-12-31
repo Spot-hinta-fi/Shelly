@@ -42,7 +42,7 @@ let SETTINGS =
     // Reduce heating by given percentage when the heating segment average price is higher than HeatingReductionPrice.
     // For example: if heating percentage is 50% and reduction percentage is 20%, the new heating percentage will be 40%.
     // Note! average price is is calculated for each heating segment separately!
-    HeatingReductionPrice: "average", // Use "average" for daily average price limit or give limit in full euro cents, f.ex. "10".
+    HeatingReductionPrice: "average", // Use "average" for daily average price limit or give limit in euro cents, f.ex. "10.5".
     HeatingReductionPercentage: 0, // Valid values are 0...100. Set to 0 to disable price based reduction.
 
     // Price rules
