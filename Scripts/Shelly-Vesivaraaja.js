@@ -1,5 +1,5 @@
 ﻿// Kiitos tuestasi: www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2025-11-21
+// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2026-01-06
 // Huomio: skripti toimii varttihinnoilla, eli hintajaksot voivat alkaa ja päättyä vartin tarkkuudella.
 
 // ASETUKSET

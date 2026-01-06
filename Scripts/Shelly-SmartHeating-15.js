@@ -1,5 +1,5 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2025-11-21
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2026-01-06
 
 // SmartHeating: outdoor temperature controlled heating with a possibility to control multiple relays with the same rules.
 // Note! Temperature forecast is based on YR.NO service. Please take into account, that accuracy of the forecast may vary.     
@@ -42,7 +42,7 @@ let SETTINGS =
     // Reduce heating by given percentage when the heating segment average price is higher than HeatingReductionPrice.
     // For example: if heating percentage is 50% and reduction percentage is 20%, the new heating percentage will be 40%.
     // Note! average price is is calculated for each heating segment separately!
-    HeatingReductionPrice: "average", // Use "average" for daily average price limit or give limit in full euro cents, f.ex. "10".
+    HeatingReductionPrice: "average", // Use "average" for daily average price limit or give limit in euro cents, f.ex. "10.5".
     HeatingReductionPercentage: 0, // Valid values are 0...100. Set to 0 to disable price based reduction.
 
     // Price rules
@@ -104,9 +104,9 @@ function GetCurrentlyExpectedRelayStatus() {
     const epochMs = Date.now(); if (instructions.PlanAhead[0].epochMs < epochMs) { ActivateBackupHours(); return; }
 
     for (let i = 0; i < instructions.PlanAhead.length; i++) {
-        if (instructions.PlanAhead.length > i && instructions.PlanAhead[i + 1].epochMs > epochMs) { continue; }
-        if (instructions.PlanAhead.length > i && instructions.PlanAhead[i + 1].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i + 1]; }
-        if (instructions.PlanAhead[i].epochMs <= epochMs) { return instructions.PlanAhead[i]; }
+        if (instructions.PlanAhead.length > i + 1 && instructions.PlanAhead[i + 1].epochMs > epochMs) { continue; }
+        if (instructions.PlanAhead.length > i + 1 && instructions.PlanAhead[i + 1].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i + 1]; }
+        if (instructions.PlanAhead[i].epochMs <= epochMs) { nextStatusChange = new Date(instructions.PlanAhead[i].epochMs); return instructions.PlanAhead[i]; }
     }
 
     print("SmartHeating: Error situation. No suitable control data found in the list."); ActivateBackupHours();
