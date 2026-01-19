@@ -1,6 +1,8 @@
 ﻿// Kiitos tuestasi: www.buymeacoffee.com/spothintafi
-// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2026-01-06
+// Tuetut Shelly ohjelmistot: 1.4.4 - 1.7.1. Skriptin versio: 2026-01-19
+
 // Huomio: skripti toimii varttihinnoilla, eli hintajaksot voivat alkaa ja päättyä vartin tarkkuudella.
+// Huomio: Lämmitysvuorokausi alkaa klo 22:00 ja päättyy seuraavan päivän klo 21:59.
 
 // ASETUKSET
 let Hintajaksoja_yo = 3; // Halvimpien hintajaksojen lukumäärä yötuntien aikana (22:00 - 07:00)
