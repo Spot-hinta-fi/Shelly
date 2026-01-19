@@ -1,6 +1,8 @@
 // Thank you for your support: www.buymeacoffee.com/spothintafi
-// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2026-01-06
+// Supported Shelly firmwares: 1.4.4 - 1.7.1. Script version: 2026-01-19
+
 // Note: The script works with 15-minute prices, meaning the selected periods can start and end at 15-minute intervals.
+// Note: Heating day is starting 22:00 and ending 21:59 the next day.
 
 // Change these settings as you like
 let Region = "FI"; // Supported regions: DK1, DK2, EE, FI, LT, LV, NO1, NO2, NO3, NO4, NO5, SE1, SE2, SE3, SE4
