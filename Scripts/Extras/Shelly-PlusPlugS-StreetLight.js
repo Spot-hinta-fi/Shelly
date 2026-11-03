@@ -20,7 +20,7 @@ const ExpensivePriceColor = [100, 0, 0]; // Red
 const UnknownPriceColor = [0, 0, 100]; // Blue
 
 // Script starts here, do not edit
-print("PlusPlugS-StreetLight: script is starting... (color will be set in 30 seconds)");
+print("PlusPlugS-StreetLight: script is starting... (color will be set in 120 seconds)");
 let config;
 let currentHour = -1;
 let currentQuarter = -1; // Track 15-minute periods (0, 1, 2, 3)
@@ -36,8 +36,8 @@ if (UsePriceLimits === true) {
 // Get current configuration. Only color is modified, other settings remain.
 Shelly.call("PLUGS_UI.GetConfig", null, function (response) { config = response; });
 
-// Timer to change color each 15-minute period. Checks every 30 seconds if period has changed.
-Timer.set(30000, true, function () {
+// Timer to change color each 15-minute period. Checks every 120 seconds if period has changed. API limit one request per minute.
+Timer.set(120000, true, function () {
     let now = new Date();
     let newHour = now.getHours();
     let newMinute = now.getMinutes();
@@ -78,7 +78,7 @@ function ProcessResponse(response, error_code) {
             ChangeColor(currentHourColor);
         }
         else {
-            // Dynamic pricing: 96 periods per day (24h × 4 = 96 fifteen-minute periods)
+            // Dynamic pricing: 96 periods per day (24h Ã— 4 = 96 fifteen-minute periods)
             // Split into thirds: 1-32 (cheap), 33-64 (middle), 65-96 (expensive, can be up to 100 during winter time change)
 
             if (responseCode >= 1 && responseCode <= 32) {
